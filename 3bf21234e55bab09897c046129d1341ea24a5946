@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16a16e7a_6ca3db3e",
+        "filename": "requirements/verify.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-05-05T14:11:09Z",
+      "side": 1,
+      "message": "Any relation with OPNFV here?",
+      "range": {
+        "startLine": 9,
+        "startChar": 66,
+        "endLine": 9,
+        "endChar": 71
+      },
+      "revId": "3bf21234e55bab09897c046129d1341ea24a5946",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
