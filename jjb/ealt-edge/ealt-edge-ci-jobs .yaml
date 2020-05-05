@@ -1,0 +1,127 @@
+---
+- project:
+
+    name: ealt-edge-ci
+
+    installer: 'ealt-edge'
+
+    project: 'ealt-edge'
+
+    master: &master
+      stream: master
+      branch: '{stream}'
+      gs-pathname: ''
+      ppa-pathname: '/{stream}'
+      disabled: false
+    # -------------------------------
+    # POD, INSTALLER, AND BRANCH MAPPING
+    # -------------------------------
+    #        CI PODs
+    # -------------------------------
+    pod:
+      - k8s-virtual:
+          slave-label: mec-k8s-virtual
+          <<: *master
+          auto-trigger-name: 'ealt-edge-deploy-{pod}-daily-{stream}'
+
+
+    jobs:
+      - 'ealt-edge-deploy-{pod}-daily-{stream}'
+
+########################
+# job templates
+########################
+- job-template:
+    name: 'ealt-edge-deploy-{pod}-daily-{stream}'
+
+    disabled: '{obj:disabled}'
+
+    concurrent: true
+
+    properties:
+      - logrotate-default
+      - throttle:
+          enabled: true
+          max-per-node: 1
+          option: 'project'
+      - build-blocker:
+          use-build-blocker: true
+          blocking-jobs:
+            - 'ealt-edge-deploy-{pod}-daily-.*?'
+            - 'ealt-edge-verify-deploy-.*?'
+          blocking-level: 'NODE'
+
+
+    wrappers:
+      - build-name:
+          name: '$BUILD_NUMBER'
+      - timeout:
+          timeout: 360
+          abort: true
+      - fix-workspace-permissions
+
+    parameters:
+      - project-parameter:
+          project: '{project}'
+          branch: '{branch}'
+      - ealt-edge-ci-parameter:
+          installer: '{installer}'
+          gs-pathname: '{gs-pathname}'
+          ppa-pathname: '{ppa-pathname}'
+      - '{slave-label}-defaults'
+      - '{installer}-defaults'
+
+    triggers:
+      - '{auto-trigger-name}'
+
+    scm:
+      - git-scm
+
+    builders:
+      - description-setter:
+          description: "POD: $NODE_NAME"
+      - conditional-step:
+          condition-kind: regex-match
+          regex: "k8s-.*"
+          label: '{pod}'
+          steps:
+            - shell:
+                !include-raw-escape: ./ealt-edge-clean.sh
+            - shell:
+                !include-raw-escape: ./ealt-edge-deploy.sh
+
+########################
+# parameter macros
+########################
+- parameter:
+    name: ealt-edge-ci-parameter
+    parameters:
+      - string:
+          name: GS_URL
+          default: '$GS_BASE{gs-pathname}'
+          description: "URL to Google Storage."
+      - string:
+          name: PPA_REPO
+          default: ""
+      - string:
+          name: PPA_CACHE
+          default: "$WORKSPACE/work/repo/"
+      - string:
+          name: LOG_DIRECTORY
+          default: $WORKSPACE/log_output
+          description: ""
+
+
+########################
+# trigger macros
+########################
+
+
+# -----------------
+# virtual-master
+# -----------------
+
+- trigger:
+    name: 'ealt-edge-deploy-k8s-virtual-daily-master'
+    triggers:
+      - timed: '0 21 * * *'
