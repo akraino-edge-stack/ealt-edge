@@ -1,0 +1,6 @@
+[flake8]
+format = pylint
+statistics = True
+count = True
+show_source = True
+exclude = ./bottlenecks_venv/
