@@ -1,0 +1,13 @@
+---
+- parameter:
+    name: 'mec-k8s-virtual-defaults'
+    parameters:
+      - label:
+          name: SLAVE_LABEL
+          default: 'mec-k8s-virtual'
+          all-nodes: false
+          node-eligibility: 'ignore-offline'
+      - string:
+          name: GIT_BASE
+          default: https://gerrit.akraino.org/r/$PROJECT
+          description: 'Git URL to use on this Jenkins Slave'

@@ -1,0 +1,285 @@
+---
+# Base macros
+#
+# NOTE: make sure macros are listed in execution ordered.
+#
+# 1. parameters/properties
+# 2. scm
+# 3. triggers
+# 4. wrappers
+# 5. prebuilders (maven only, configured like Builders)
+# 6. builders (maven, freestyle, matrix, etc..)
+# 7. postbuilders (maven only, configured like Builders)
+# 8. publishers/reporters/notifications
+
+- parameter:
+    name: project-parameter
+    parameters:
+      - string:
+          name: PROJECT
+          default: '{project}'
+          description: "JJB configured PROJECT parameter"
+      - string:
+          name: GS_BASE
+          default: artifacts.akraino.org/$PROJECT
+          description: "URL to Google Storage."
+      - string:
+          name: BRANCH
+          default: '{branch}'
+          description: "JJB configured BRANCH parameter"
+      - string:
+          name: GERRIT_BRANCH
+          default: '{branch}'
+          description: "JJB configured GERRIT_BRANCH parameter (deprecated)"
+      - string:
+          name: GERRIT_REFSPEC
+          default: 'refs/heads/{branch}'
+          description: "Default refspec needed for manually triggering."
+
+
+- property:
+    name: logrotate-default
+    properties:
+      - build-discarder:
+          days-to-keep: 60
+          num-to-keep: 200
+          artifact-days-to-keep: 60
+          artifact-num-to-keep: 200
+
+- scm:
+    name: git-scm
+    scm:
+      - git: &git-scm-defaults
+          credentials-id: 'jenkins-ssh'
+          url: '$GIT_BASE'
+          branches:
+            - 'origin/$BRANCH'
+          timeout: 15
+          per-build-tag: false
+          skip-tag: true
+          shallow-clone: false
+          use-author: false
+          ignore-notify: false
+          wipe-workspace: true
+          prune: false
+
+- scm:
+    name: git-scm-gerrit
+    scm:
+      - git:
+          choosing-strategy: 'gerrit'
+          refspec: '$GERRIT_REFSPEC'
+          <<: *git-scm-defaults
+
+- scm:
+    name: git-scm-gerrit-with-submodules
+    scm:
+      - git:
+          choosing-strategy: 'gerrit'
+          refspec: '$GERRIT_REFSPEC'
+          submodule:
+            recursive: true
+            timeout: 20
+          <<: *git-scm-defaults
+
+- trigger:
+    name: 'daily-trigger-disabled'
+    triggers:
+      - timed: ''
+
+- trigger:
+    name: 'weekly-trigger-disabled'
+    triggers:
+      - timed: ''
+
+- trigger:
+    name: gerrit-trigger-patchset-created
+    triggers:
+      - gerrit:
+          server-name: 'gerrit.akraino.org'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: 'false'
+                exclude-trivial-rebase: 'false'
+                exclude-no-code-change: 'false'
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: 'recheck'
+            - comment-added-contains-event:
+                comment-contains-value: 'reverify'
+          projects:
+            - project-compare-type: 'ANT'
+              project-pattern: '{project}'
+              branches:
+                - branch-compare-type: 'ANT'
+                  branch-pattern: '**/{branch}'
+              file-paths:
+                - compare-type: 'ANT'
+                  pattern: '{files}'
+          skip-vote:
+            successful: false
+            failed: false
+            unstable: false
+            notbuilt: false
+
+- wrapper:
+    name: ssh-agent-wrapper
+    wrappers:
+      - ssh-agent-credentials:
+          users:
+            - 'jenkins-ssh'
+
+- wrapper:
+    name: build-timeout
+    wrappers:
+      - timeout:
+          timeout: '{timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+
+- wrapper:
+    name: fix-workspace-permissions
+    wrappers:
+      - pre-scm-buildstep:
+          - shell: |
+             #!/bin/bash
+             sudo chown -R $USER:$USER $WORKSPACE || exit 1
+
+- builder:
+    name: upload-under-review-docs-to-akraino-artifacts
+    builders:
+      - shell: |
+          #!/bin/bash
+          set -o errexit
+          set -o pipefail
+          set -o xtrace
+          export PATH=$PATH:/usr/local/bin/
+
+          [[ $GERRIT_CHANGE_NUMBER =~ .+ ]]
+          [[ -d docs/_build/ ]] || exit 0
+
+          echo
+          echo "###########################"
+          echo "UPLOADING DOCS UNDER REVIEW"
+          echo "###########################"
+          echo
+
+          gs_base="artifacts.akraino.org/$PROJECT/review"
+          gs_path="$gs_base/$GERRIT_CHANGE_NUMBER"
+          local_path="upload/$GERRIT_CHANGE_NUMBER"
+
+          mkdir -p upload
+          mv docs/_build/html/ "$local_path"
+          gsutil -m cp -r "$local_path" "gs://$gs_base"
+
+          gsutil -m setmeta \
+              -h "Content-Type:text/html" \
+              -h "Cache-Control:private, max-age=0, no-transform" \
+              "gs://$gs_path"/**.html > /dev/null 2>&1
+
+          echo "Document link(s):" >> gerrit_comment.txt
+          find "$local_path" | grep -e 'index.html$' -e 'pdf$' | \
+              sed -e "s|^$local_path|    http://$gs_path|" >> gerrit_comment.txt
+
+# To take advantage of this macro, have your build write
+# out the file 'gerrit_comment.txt' with information to post
+# back to gerrit and include this macro in the list of builders.
+- builder:
+    name: report-build-result-to-gerrit
+    builders:
+      - shell: |
+          #!/bin/bash
+          set -o errexit
+          set -o pipefail
+          set -o xtrace
+          export PATH=$PATH:/usr/local/bin/
+          if [[ -e gerrit_comment.txt ]] ; then
+              echo
+              echo "posting review comment to gerrit..."
+              echo
+              cat gerrit_comment.txt
+              echo
+              ssh -p 29418 gerrit.akraino.org \
+                  "gerrit review -p $GERRIT_PROJECT \
+                   -m '$(cat gerrit_comment.txt)' \
+                   $GERRIT_PATCHSET_REVISION \
+                   --notify NONE"
+          fi
+
+- builder:
+    name: remove-old-docs-from-akraino-artifacts
+    builders:
+      - shell: |
+          #!/bin/bash
+          set -o errexit
+          set -o pipefail
+          set -o xtrace
+          export PATH=$PATH:/usr/local/bin/
+
+          [[ $GERRIT_CHANGE_NUMBER =~ .+ ]]
+
+          gs_path="artifacts.akraino.org/$PROJECT/review/$GERRIT_CHANGE_NUMBER"
+
+          if gsutil ls "gs://$gs_path" > /dev/null 2>&1 ; then
+              echo
+              echo "Deleting Out-of-dated Documents..."
+              gsutil -m rm -r "gs://$gs_path"
+          fi
+          gs_path="artifacts.akraino.org/review/$GERRIT_CHANGE_NUMBER"
+
+          if gsutil ls "gs://$gs_path" > /dev/null 2>&1 ; then
+              echo
+              echo "Deleting Out-of-dated Documents..."
+              gsutil -m rm -r "gs://$gs_path"
+          fi
+
+- builder:
+    name: upload-review-docs
+    builders:
+      - upload-under-review-docs-to-akraino-artifacts
+      - report-build-result-to-gerrit
+
+
+- builder:
+    name: clean-workspace
+    builders:
+      - shell: |
+          #!/bin/bash
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+          sudo /bin/rm -rf "$WORKSPACE"
+
+- builder:
+    name: clean-workspace-log
+    builders:
+      - shell: |
+          find $WORKSPACE -type f -name '*.log' | xargs rm -f
+
+- publisher:
+    name: archive-artifacts
+    publishers:
+      - archive:
+          artifacts: '{artifacts}'
+          allow-empty: true
+          fingerprint: true
+          latest-only: true
+
+- publisher:
+    name: publish-coverage
+    publishers:
+      - cobertura:
+          report-file: "coverage.xml"
+          only-stable: "true"
+          health-auto-update: "false"
+          stability-auto-update: "false"
+          zoom-coverage-chart: "true"
+          targets:
+            - files:
+                healthy: 10
+                unhealthy: 20
+                failing: 30
+            - method:
+                healthy: 50
+                unhealthy: 40
+                failing: 30

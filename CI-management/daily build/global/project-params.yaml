@@ -1,0 +1,16 @@
+---
+- parameter:
+    name: 'ealt-edge-defaults'
+    parameters:
+      - string:
+          name: NODE_IP
+          default: ""
+          description: 'IP of the node'
+      - string:
+          name: USERNAME
+          default: ""
+          description: 'username of the node'
+      - string:
+          name: PASSWORD
+          default: ""
+          description: 'password of the node'
