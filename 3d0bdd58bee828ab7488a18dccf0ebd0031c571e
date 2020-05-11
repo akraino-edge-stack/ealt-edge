@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "8051fd02_f2af11ec",
+        "filename": "mecm/mepm/applcm/k8shelm/go.sum",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 164
+      },
+      "writtenOn": "2020-05-11T17:34:27Z",
+      "side": 1,
+      "message": "Inclusion of some comment lines in this file to describe the functionality will make the code readable",
+      "revId": "3d0bdd58bee828ab7488a18dccf0ebd0031c571e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a34d3955_bc4c898d",
         "filename": "mecm/mepm/applcm/k8shelm/start.sh",
         "patchSetId": 1
