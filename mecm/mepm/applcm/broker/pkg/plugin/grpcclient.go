@@ -68,7 +68,7 @@ func NewClientGRPC(cfg ClientGRPCConfig) (c ClientGRPC, err error) {
 	return
 }
 
-func (c *ClientGRPC) Instantiate(ctx context.Context, f string, hostIP string) (workloadId string, status string) {
+func (c *ClientGRPC) Instantiate(ctx context.Context, f string, hostIP string) (workloadId string, status string, error error) {
 	var (
 		writing = true
 		buf     []byte
@@ -142,9 +142,10 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, f string, hostIP string) (
 	res, err := stream.CloseAndRecv()
 	if err != nil {
 		logger.Fatalf("failed to receive upstream status response: ", err)
+		return "", "", err
 	}
 	log.Printf("response", res)
-	return res.WorkloadId, res.Status
+	return res.WorkloadId, res.Status, err
 }
 
 func (c *ClientGRPC) Query(ctx context.Context, hostIP string, workloadId string) (status string) {

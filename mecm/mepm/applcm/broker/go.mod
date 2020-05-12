@@ -9,6 +9,7 @@ require (
 	github.com/golang/protobuf v1.4.0
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/mux v1.7.4
+	github.com/jinzhu/gorm v1.9.12
 	golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3 // indirect
 	golang.org/x/net v0.0.0-20200506145744-7e3656a0809f
 	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135 // indirect
