@@ -1,0 +1,52 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: check if rabbitmq is already installed
+  shell: 
+    cmd: kubectl get pods rabbitmq-0
+  register: result
+  ignore_errors: True
+
+- name: copy common folder to host
+  copy:
+    src: common
+    dest: /tmp/rabbitmq/
+  when: result is failed
+
+- name: Install common
+  shell:
+    cmd: kubectl apply -f /tmp/rabbitmq/common
+  when: result is failed
+
+- name: copy statefulset_x86.yaml to host
+  copy:
+    src: statefulset_x86.yaml
+    dest: /tmp/rabbitmq/
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: Install rabbitmq on x86_64
+  shell:
+    cmd: kubectl apply -f /tmp/rabbitmq/statefulset_x86.yaml
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: copy statefulset_arm.yaml to host
+  copy:
+    src: statefulset_arm.yaml
+    dest: /tmp/rabbitmq/
+  when: result is failed and ansible_architecture == 'aarch64'
+
+- name: Install rabbitmq on aarch64
+  shell:
+    cmd: kubectl apply -f /tmp/rabbitmq/statefulset_arm.yaml
+  when: result is failed and ansible_architecture == 'aarch64'
