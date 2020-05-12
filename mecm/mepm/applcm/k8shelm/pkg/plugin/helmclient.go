@@ -1,93 +1,156 @@
+/*
+ * Copyright 2020 Huawei Technologies Co., Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package plugin
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart/loader"
 	"helm.sh/helm/v3/pkg/kube"
-	"log"
 	"os"
 )
 
-const releaseNamespace  = "default"
-const chartPath  = "/go/release/charts/"
-const kubeconfigPath  = "/go/release/kubeconfig/"
+// Constants to be taken from deployment file
+const (
+	releaseNamespace  = "default"
+	chartPath  = "/go/release/charts/"
+	kubeconfigPath  = "/go/release/kubeconfig/"
+)
 
-//const chartPath  = "/home/root1/code/mecm/mepm/applcm/k8shelm/pkg/plugin/"
-//const kubeconfigPath  = "/home/root1/"
+// Helm client
+type HelmClient struct {
+	hostIP string
+	kubeconfig string
+	logger *logrus.Logger
+}
 
-func installChart(helmPkg bytes.Buffer, hostIP string) string {
-	logger := log.New(os.Stdout, "helmplugin ", log.LstdFlags|log.Lshortfile)
-	logger.Println("Inside helm client")
+// Constructor of helm client for a given host IP
+func NewHelmClient(hostIP string, logger *logrus.Logger) (*HelmClient, error) {
+	// Kubeconfig file will be picked based on host IP and will be check for existence
+	exists, err := fileExists(kubeconfigPath + hostIP)
+	if exists {
+		return &HelmClient{hostIP: hostIP, kubeconfig: kubeconfigPath + hostIP, logger: logger}, nil
+	} else {
+		logger.Errorf("No file exist with name: %s. Err: %s", kubeconfigPath + hostIP)
+		return nil, err
+	}
+}
 
+// Install a given helm chart
+func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
+	hc.logger.Info("Inside helm client")
+
+	// Create temporary file to hold helm chart
 	file, err := os.Create(chartPath + "temp.tar.gz")
 	if err != nil {
-		logger.Printf("unable to create file")
+		hc.logger.Errorf("Unable to create file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		return "", err
 	}
+	defer os.Remove(chartPath + "temp.tar.gz")
 
+	// Write input bytes to temp file
 	_, err = helmPkg.WriteTo(file)
 	if err != nil {
-		logger.Printf("uanble to write to file")
+		hc.logger.Errorf("Unable to write to file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		return "", err
 	}
 
+	// Load the file to chart
 	chart, err := loader.Load(chartPath + "temp.tar.gz")
 	if err != nil {
-
-		panic(err)
+		hc.logger.Errorf("Unable to load chart from file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		return "", err
 	}
 
-	releaseName := chart.Metadata.Name
+	// Release name will be taken from the name in chart's metadata
+	relName := chart.Metadata.Name
 
-	kubeconfig := kubeconfigPath + hostIP
-
+	// Initialize action config
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(kube.GetConfig(kubeconfig, "", releaseNamespace), releaseNamespace, os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
+	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
+		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
 		fmt.Sprintf(format, v)
-	}); err != nil {
-		panic(err)
-	}
+		}); err != nil {
+		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
+		return "", err
+		}
 
-	iCli := action.NewInstall(actionConfig)
-	iCli.Namespace = releaseNamespace
-	iCli.ReleaseName = releaseName
-	rel, err := iCli.Run(chart, nil)
+	// Prepare chart install action and install chart
+	installer := action.NewInstall(actionConfig)
+	installer.Namespace = releaseNamespace
+	installer.ReleaseName = relName
+	rel, err := installer.Run(chart, nil)
 	if err != nil {
-		panic(err)
+		hc.logger.Errorf("Unable to install chart with release name: %s. Err: %s", relName, err)
+		return "", err
 	}
-	fmt.Println("Successfully installed release: ", rel.Name)
-	return rel.Name
+	hc.logger.Info("Successfully create chart with release name: %s", relName)
+	return rel.Name, err
 }
 
-func uninstallChart(relName string, hostIP string) {
-	kubeconfig := kubeconfigPath + hostIP
+// Un-Install a given helm chart
+func (hc *HelmClient) uninstallChart(relName string) (error) {
+	// Prepare action config and uninstall chart
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(kube.GetConfig(kubeconfig, "", releaseNamespace), releaseNamespace, os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
+	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
+		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
 		fmt.Sprintf(format, v)
-	}); err != nil {
-		panic(err)
-	}
-	iCli := action.NewUninstall(actionConfig)
-	res, err := iCli.Run(relName);
+		}); err != nil {
+		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
+		return err
+		}
+
+	ui := action.NewUninstall(actionConfig)
+	res, err := ui.Run(relName);
 	if err != nil {
-		panic(err)
+		hc.logger.Errorf("Unable to uninstall chart with release name: %s. Err: %s", relName, err)
+		return err
 	}
-	fmt.Println("Successfully uninstalled release: ", res.Info)
+	hc.logger.Info("Successfully uninstalled chart with release name: %s. Response Info: %s", res.Release.Name, res.Info)
+	return nil
 }
 
-func queryChart(relName string, hostIP string) string  {
-	kubeconfig := kubeconfigPath + hostIP
+// Query a given chart
+func (hc *HelmClient) queryChart(relName string) (string, error)  {
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(kube.GetConfig(kubeconfig, "", releaseNamespace), releaseNamespace, os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
+	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
+		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
 		fmt.Sprintf(format, v)
 	}); err != nil {
-		panic(err)
+		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
+		return "", err
 	}
-	iCli := action.NewStatus(actionConfig)
-	res, err := iCli.Run(relName)
+	s := action.NewStatus(actionConfig)
+	res, err := s.Run(relName)
 	if err != nil {
-		panic(err)
+		hc.logger.Errorf("Unable to query chart with release name: %s. Err: %s", relName, err)
+		return "", err
 	}
-	return res.Info.Status.String()
+	return res.Info.Status.String(), nil
+}
+
+// fileExists checks if a file exists and is not a directory before we
+// try using it to prevent further errors.
+func fileExists(filename string) (bool, error) {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false, err
+	}
+	return !info.IsDir(), nil
 }
 
