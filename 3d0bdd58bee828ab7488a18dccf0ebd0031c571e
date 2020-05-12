@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a2d1f609_427df7b7",
+        "filename": "mecm/mepm/applcm/k8shelm/go.sum",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-05-12T04:28:56Z",
+      "side": 1,
+      "message": "This is auto-generated dependency and its recommended not to edit this file",
+      "parentUuid": "8051fd02_f2af11ec",
+      "revId": "3d0bdd58bee828ab7488a18dccf0ebd0031c571e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a34d3955_bc4c898d",
         "filename": "mecm/mepm/applcm/k8shelm/start.sh",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-05-11T17:32:03Z",
       "side": 1,
       "message": "unreachable commented code has to be removed",
+      "revId": "3d0bdd58bee828ab7488a18dccf0ebd0031c571e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1f43df7_a8f274c1",
+        "filename": "mecm/mepm/applcm/k8shelm/start.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-05-12T04:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a34d3955_bc4c898d",
       "revId": "3d0bdd58bee828ab7488a18dccf0ebd0031c571e",
       "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
       "unresolved": true
