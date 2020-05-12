@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f927cd9_df14b106",
+        "filename": "ocd/infra/playbooks/ealt-all.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-05-12T07:59:49Z",
+      "side": 1,
+      "message": "delete the empty line; line number  25",
+      "revId": "35d1403becdf4f685f1438b7aba528ba7d6cec87",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be0c9914_60784a35",
+        "filename": "ocd/infra/playbooks/ealt-inventory.ini",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-05-12T07:59:49Z",
+      "side": 1,
+      "message": "keep the ip space empty and also the ansible_password. we will give this as a step to execute before executing ocd commands.",
+      "range": {
+        "startLine": 16,
+        "startChar": 12,
+        "endLine": 16,
+        "endChar": 24
+      },
+      "revId": "35d1403becdf4f685f1438b7aba528ba7d6cec87",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a6078ef_d6c19ddd",
+        "filename": "ocd/infra/playbooks/roles/grafana/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-05-12T07:59:49Z",
+      "side": 1,
+      "message": "Remove one blank space after :",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 9
+      },
+      "revId": "35d1403becdf4f685f1438b7aba528ba7d6cec87",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a845789_5d6c6d2e",
+        "filename": "ocd/infra/playbooks/roles/grafana/tasks/uninstall.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-05-12T07:59:49Z",
+      "side": 1,
+      "message": "remove one blank space after :, pls check in all other files. thanks.",
+      "revId": "35d1403becdf4f685f1438b7aba528ba7d6cec87",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
