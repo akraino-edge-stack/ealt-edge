@@ -13,40 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package main
+package plugin
 
 import (
 	"github.com/sirupsen/logrus"
-	"k8shelm/pkg/plugin"
 	"os"
 )
 
-const (
-	serverPort = 50051
-	certificate = ""
-	key = ""
-	logFile = "/go/release/logfile"
-	loggerLevel = logrus.InfoLevel
-)
+func GetLogger(logFile string, loggerLevel logrus.Level, file *os.File) *logrus.Logger {
 
-func main() {
-	// Prepare logger
-	file, err := os.Create(logFile)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-	defer file.Close()
-
-	var logger = plugin.GetLogger(logFile, loggerLevel, file)
-
-	// Create GRPC server
-	serverConfig := plugin.ServerGRPCConfig{Certificate: certificate, Port:serverPort, Key:key, Logger:logger}
-	server := plugin.NewServerGRPC(serverConfig)
-
-	// Start listening
-	err = server.Listen()
-	if err != nil {
-		logger.Fatalf("failed to listen: %v", err)
-	}
+	logger := logrus.New()
+	logger.SetOutput(file)
+	logger.SetFormatter(&logrus.TextFormatter{
+		DisableColors: true,
+		FullTimestamp: true,
+	})
+	logger.SetLevel(loggerLevel)
+	logger.Info("logger created")
+	return logger
 }
