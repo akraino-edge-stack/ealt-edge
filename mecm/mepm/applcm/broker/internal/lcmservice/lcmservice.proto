@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package lcmservice;
+
+message InstantiateRequest {
+  oneof data {
+    string hostIp = 1;
+    bytes package = 2;
+  };
+}
+
+message InstantiateResponse {
+  string workloadId = 1;
+  string status = 2;
+}
+
+message TerminateRequest {
+   string hostIp = 1;
+   string workloadId = 2;
+}
+
+message TerminateResponse {
+  string status = 1;
+}
+
+message QueryRequest {
+   string hostIp = 1;
+   string workloadId = 2;
+}
+
+message QueryResponse {
+  string status = 1;
+}
+
+service AppLCM {
+  rpc instantiate (stream InstantiateRequest) returns (InstantiateResponse) {}
+  rpc terminate (TerminateRequest) returns (TerminateResponse) {}
+  rpc query (QueryRequest) returns (QueryResponse) {}
+}
