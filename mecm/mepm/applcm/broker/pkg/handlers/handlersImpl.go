@@ -27,7 +27,6 @@ import (
 	"github.com/ghodss/yaml"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,42 +38,18 @@ import (
 	"strings"
 )
 
-// DB name
-const DbName = "applcmDB"
-
 // Handler of REST APIs
 type HandlerImpl struct {
-	logger *logrus.Logger
-	db     *gorm.DB
+	logger     *logrus.Logger
+	dbAdapter  *dbAdapter.DbAdapter
 }
 
 // Creates handler implementation
 func newHandlerImpl(logger *logrus.Logger) (impl HandlerImpl) {
 	impl.logger = logger
-	impl.db = impl.createDatabase()
+	impl.dbAdapter = dbAdapter.NewDbAdapter(logger)
+	impl.dbAdapter.CreateDatabase()
 	return
-}
-
-// Creates database
-func (impl *HandlerImpl) createDatabase() *gorm.DB {
-	impl.logger.Info("creating Database...")
-
-	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
-	host := "@tcp(" + "dbhost" + ":3306)/"
-
-	db, err := gorm.Open("mysql", usrpswd + host)
-	if err != nil {
-		impl.logger.Fatalf("Database connect error", err.Error())
-	}
-
-	db.Exec("CREATE DATABASE  " + DbName)
-	db.Exec("USE applcmDB")
-	gorm.DefaultCallback.Create().Remove("mysql:set_identity_insert")
-
-	impl.logger.Info("Migrating models...")
-	db.AutoMigrate(&model.AppPackageInfo{})
-	db.AutoMigrate(&model.AppInstanceInfo{})
-	return db
 }
 
 // Uploads package
@@ -124,7 +99,7 @@ func (impl *HandlerImpl) UploadPackage(w http.ResponseWriter, r *http.Request) {
 	impl.logger.Infof("Application package info from package")
 	defer r.Body.Close()
 
-	dbAdapter.InsertAppPackageInfo(impl.db, appPkgInfo)
+	impl.dbAdapter.InsertAppPackageInfo(appPkgInfo)
 
 	/*http.StatusOK*/
 	respondJSON(w, http.StatusCreated, appPkgInfo)
@@ -206,7 +181,7 @@ func (impl *HandlerImpl) decodeApplicationDescriptor(w http.ResponseWriter, serv
 func (impl *HandlerImpl) QueryAppPackageInfo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	appPkgId := params["appPkgId"]
-	appPkgInfo := dbAdapter.GetAppPackageInfo(impl.db, appPkgId)
+	appPkgInfo := impl.dbAdapter.GetAppPackageInfo(appPkgId)
 	if appPkgInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
@@ -218,12 +193,12 @@ func (impl *HandlerImpl) QueryAppPackageInfo(w http.ResponseWriter, r *http.Requ
 func (impl *HandlerImpl) DeleteAppPackage(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	appPkgId := params["appPkgId"]
-	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appPkgId)
+	appPackageInfo := impl.dbAdapter.GetAppPackageInfo(appPkgId)
 	if appPackageInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
-	dbAdapter.DeleteAppPackageInfo(impl.db, appPkgId)
+	impl.dbAdapter.DeleteAppPackageInfo(appPkgId)
 
 	deletePackage := PackageFolderPath + appPackageInfo.AppPackage
 
@@ -247,7 +222,7 @@ func (impl *HandlerImpl) CreateAppInstance(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	appPkgInfo := dbAdapter.GetAppPackageInfo(impl.db, req.AppDID)
+	appPkgInfo := impl.dbAdapter.GetAppPackageInfo(req.AppDID)
 	if appPkgInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
@@ -272,7 +247,7 @@ func (impl *HandlerImpl) CreateAppInstance(w http.ResponseWriter, r *http.Reques
 		AppPkgID:               appPkgInfo.AppDID,
 		InstantiationState:     "NOT_INSTANTIATED",
 	}
-	dbAdapter.InsertAppInstanceInfo(impl.db, appInstanceInfo)
+	impl.dbAdapter.InsertAppInstanceInfo(appInstanceInfo)
 	impl.logger.Infof("CreateAppInstance:", req)
 	/*http.StatusOK*/
 	respondJSON(w, http.StatusCreated, json.NewEncoder(w).Encode(appInstanceInfo))
@@ -290,8 +265,8 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
+	appInstanceInfo := impl.dbAdapter.GetAppInstanceInfo(appInstanceId)
+	appPackageInfo := impl.dbAdapter.GetAppPackageInfo(appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
@@ -347,7 +322,7 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 			respondError(w, http.StatusInternalServerError, err.Error())
 		}
 	}
-	dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(impl.db, appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
+	impl.dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
 
 	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
 }
@@ -387,8 +362,8 @@ func (impl *HandlerImpl) QueryAppInstanceInfo(w http.ResponseWriter, r *http.Req
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
+	appInstanceInfo := impl.dbAdapter.GetAppInstanceInfo(appInstanceId)
+	appPackageInfo := impl.dbAdapter.GetAppPackageInfo(appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
@@ -439,8 +414,8 @@ func (impl *HandlerImpl) TerminateAppInstance(w http.ResponseWriter, r *http.Req
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
+	appInstanceInfo := impl.dbAdapter.GetAppInstanceInfo(appInstanceId)
+	appPackageInfo := impl.dbAdapter.GetAppPackageInfo(appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
 		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
@@ -468,7 +443,7 @@ func (impl *HandlerImpl) TerminateAppInstance(w http.ResponseWriter, r *http.Req
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	dbAdapter.UpdateAppInstanceInfoInstStatusAndWorkload(impl.db, appInstanceId, "NOT_INSTANTIATED", "")
+	impl.dbAdapter.UpdateAppInstanceInfoInstStatusAndWorkload(appInstanceId, "NOT_INSTANTIATED", "")
 
 	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
 }
@@ -479,7 +454,7 @@ func (impl *HandlerImpl) DeleteAppInstanceIdentifier(w http.ResponseWriter, r *h
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	dbAdapter.DeleteAppInstanceInfo(impl.db, appInstanceId)
+	impl.dbAdapter.DeleteAppInstanceInfo(appInstanceId)
 	respondJSON(w, http.StatusOK, json.NewEncoder(w).Encode(""))
 }
 
