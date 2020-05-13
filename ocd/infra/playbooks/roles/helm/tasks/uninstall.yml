@@ -22,7 +22,7 @@
   command: rm -rf linux-amd64/helm
   when: result is succeeded and ansible_architecture == 'x86_64'
 
-- name: Remove download file on x86_64
+- name: Remove download helm file on x86_64
   command: rm ~/helm-v3.0.2-linux-amd64.tar.gz
   when: result is succeeded and ansible_architecture == 'x86_64'
 
@@ -30,7 +30,7 @@
   command: rm -rf linux-arm64/helm
   when: result is succeeded and ansible_architecture == 'aarch64'
 
-- name: Remove download file on aarch64
+- name: Remove download helm file on aarch64
   command: rm helm-v3.0.2-linux-arm64.tar.gz
   when: result is succeeded and ansible_architecture == 'aarch64'
 
