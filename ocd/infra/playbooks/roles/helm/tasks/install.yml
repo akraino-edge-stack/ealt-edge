@@ -1,0 +1,57 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+
+- name: check whether helm is already installed
+  command: which helm
+  register: result
+  ignore_errors: 'True'
+
+- name: "Helm download command on x86_64"
+  command: wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "Untar helm on x86_64"
+  command: tar -zxvf helm-v3.0.2-linux-amd64.tar.gz
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "Move to bin folder on x86_64"
+  command: mv linux-amd64/helm /usr/local/bin/
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "Helm download command on aarch64"
+  command: wget https://get.helm.sh/helm-v3.0.2-linux-arm64.tar.gz
+  when: result is failed and ansible_architecture == 'aarch64'
+
+- name: "Untar helm on aarch64"
+  command: tar -zxvf helm-v3.0.2-linux-arm64.tar.gz
+  when: result is failed and ansible_architecture == 'aarch64'
+
+- name: "Move to bin folder on aarch64"
+  command: mv linux-arm64/helm /usr/local/bin/
+  when: result is failed and ansible_architecture == 'aarch64'
+
+- name: "Add repo"
+# yamllint disable rule:line-length
+  command: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+# yamllint disable rule:line-length
+  when: result is failed
+
+- name: "update repo"
+  command: helm repo update
+  when: result is failed
+
+- name: "list repo"
+  command: helm repo list
+  when: result is failed

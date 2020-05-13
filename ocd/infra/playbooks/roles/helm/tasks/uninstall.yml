@@ -1,0 +1,39 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: check whether helm is installed before deleting
+  command: which helm
+  register: result
+  ignore_errors: 'True'
+
+- name: Helm Uninstall on x86_64
+  command: rm -rf linux-amd64/helm
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
+- name: Remove download file on x86_64
+  command: rm ~/helm-v3.0.2-linux-amd64.tar.gz
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
+- name: Helm Uninstall on aarch64
+  command: rm -rf linux-arm64/helm
+  when: result is succeeded and ansible_architecture == 'aarch64'
+
+- name: Remove download file on aarch64
+  command: rm helm-v3.0.2-linux-arm64.tar.gz
+  when: result is succeeded and ansible_architecture == 'aarch64'
+
+- name: Remove helm from bin
+  command: rm /usr/local/bin/helm
+  when: result is succeeded
