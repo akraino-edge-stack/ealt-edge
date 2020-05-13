@@ -16,129 +16,91 @@
 package handlers
 
 import (
-	"broker/pkg/handlers/model"
-	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
+	"github.com/sirupsen/logrus"
 	"net/http"
-	"os"
-	"time"
 )
 
-const CreateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances"
-const InstantiateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/instantiate"
-const QueryAppInstanceInfo = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
-const QueryAppLcmOperationStatus = "/ealtedge/mepm/app_lcm/v1/app_lcm_op_occs"
-const TerminateAppIns = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/terminate"
-const DeleteAppInstanceIdentifier = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
-const OnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages"
-const QueryOnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
+// URLS
+const (
+	CreateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances"
+    InstantiateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/instantiate"
+    QueryAppInstanceInfo = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
+    QueryAppLcmOperationStatus = "/ealtedge/mepm/app_lcm/v1/app_lcm_op_occs"
+    TerminateAppIns = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/terminate"
+    DeleteAppInstanceIdentifier = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
+    OnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages"
+    QueryOnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
+)
 
-const PackageFolderPath = "/go/release/application/packages/"
-const PackageArtifactPath = "/Artifacts/Deployment/"
+// Package paths, to be created in deployment file (docker-compose/k8s yaml/helm)
+const (
+	PackageFolderPath = "/go/release/application/packages/"
+	PackageArtifactPath = "/Artifacts/Deployment/"
+)
 
+// Handler of REST APIs
 type Handlers struct {
-	Router *mux.Router
-	logger *log.Logger
-	db     *gorm.DB
+	router *mux.Router
+	logger *logrus.Logger
+	impl   HandlerImpl
 }
 
-const DB_NAME = "applcmDB"
-
-// Run the app on it's router
-func (hdlr *Handlers) Run(host string) {
-	fmt.Println("Binding to port...: %d", host)
-	log.Fatal(http.ListenAndServe(host, hdlr.Router))
-}
-
-func createDatabase() *gorm.DB {
-	fmt.Println("creating Database...")
-
-	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
-	host := "@tcp(" + "dbhost" + ":3306)/"
-
-	db, err := gorm.Open("mysql", usrpswd + host)
-	if err != nil {
-		fmt.Println("Database connect error", err.Error())
-	}
-//	db = db.Exec("DROP DATABASE IF EXISTS " +  DB_NAME)
-//	db = db.Exec("CREATE DATABASE "+ DB_NAME)
-	db.Exec("CREATE DATABASE  " + DB_NAME)
-	db.Exec("USE applcmDB")
-
-	//db.Close()
-	//db, err = gorm.Open("mysql", usrpswd + host + DB_NAME + "?charset=utf8&parseTime=True")
-	/*if err != nil {
-		fmt.Println("Database connect error", err.Error())
-	} else {
-		fmt.Println("Database connected successfully")
-	}*/
-	gorm.DefaultCallback.Create().Remove("mysql:set_identity_insert")
-
-	fmt.Println("Migrating models...")
-	db.AutoMigrate(&model.AppPackageInfo{})
-	db.AutoMigrate(&model.AppInstanceInfo{})
-	//db.LogMode(true)
-	return db
-}
-
-// Initialize initializes the app with predefined configuration
-func (hdlr *Handlers) Initialize(logger *log.Logger) {
-	hdlr.Router = mux.NewRouter()
-
+// Initialize initializes the handler
+func (hdlr *Handlers) Initialize(logger *logrus.Logger) {
+	hdlr.router = mux.NewRouter()
 	hdlr.logger = logger
 	hdlr.setRouters()
-	hdlr.db = createDatabase()
+	hdlr.impl = newHandlerImpl(hdlr.logger)
 }
 
-func (hdlr *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		startTime := time.Now()
-		defer hdlr.logger.Printf("request processed in %s\n", time.Now().Sub(startTime))
-		next(w, r)
+// Run on it's router
+func (hdlr *Handlers) Run(host string) {
+	hdlr.logger.Info("Server is running on port %s", host)
+	err := http.ListenAndServe(host, hdlr.router)
+	if err != nil {
+		hdlr.logger.Fatalf("Server couldn't run on port %s", host)
 	}
 }
 
-// setRouters sets the all required routers
+// SetRouters sets the all required routers
 func (hdlr *Handlers) setRouters() {
 	// Routing for handling the requests
-	hdlr.Post(OnboardPackage, hdlr.handleRequest(UploadFileHldr))
-	hdlr.Get(QueryOnboardPackage, hdlr.handleRequest(QueryAppPackageInfo))
-	hdlr.Post(CreateAppInstance, hdlr.handleRequest(CreateAppInstanceHldr))
-	hdlr.Delete(QueryOnboardPackage, hdlr.handleRequest(DeleteAppPackage))
-	hdlr.Post(InstantiateAppInstance, hdlr.handleRequest(InstantiateAppInstanceHldr))
-	hdlr.Get(QueryAppInstanceInfo, hdlr.handleRequest(QueryAppInstanceInfoHldr))
-	hdlr.Get(QueryAppLcmOperationStatus, hdlr.handleRequest(QueryAppLcmOperationStatusHldr))
-	hdlr.Post(TerminateAppIns, hdlr.handleRequest(TerminateAppInsHldr))
-	hdlr.Delete(DeleteAppInstanceIdentifier, hdlr.handleRequest(DeleteAppInstanceIdentifierHldr))
+	hdlr.Post(OnboardPackage, hdlr.handleRequest(hdlr.impl.UploadPackage))
+	hdlr.Get(QueryOnboardPackage, hdlr.handleRequest(hdlr.impl.QueryAppPackageInfo))
+	hdlr.Post(CreateAppInstance, hdlr.handleRequest(hdlr.impl.CreateAppInstance))
+	hdlr.Delete(QueryOnboardPackage, hdlr.handleRequest(hdlr.impl.DeleteAppPackage))
+	hdlr.Post(InstantiateAppInstance, hdlr.handleRequest(hdlr.impl.InstantiateAppInstance))
+	hdlr.Get(QueryAppInstanceInfo, hdlr.handleRequest(hdlr.impl.QueryAppInstanceInfo))
+	hdlr.Get(QueryAppLcmOperationStatus, hdlr.handleRequest(hdlr.impl.QueryAppLcmOperationStatus))
+	hdlr.Post(TerminateAppIns, hdlr.handleRequest(hdlr.impl.TerminateAppInstance))
+	hdlr.Delete(DeleteAppInstanceIdentifier, hdlr.handleRequest(hdlr.impl.DeleteAppInstanceIdentifier))
 }
 
 // Get wraps the router for GET method
 func (hdlr *Handlers) Get(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	hdlr.Router.HandleFunc(path, f).Methods("GET")
+	hdlr.router.HandleFunc(path, f).Methods("GET")
 }
 
 // Post wraps the router for POST method
 func (hdlr *Handlers) Post(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	hdlr.Router.HandleFunc(path, f).Methods("POST")
+	hdlr.router.HandleFunc(path, f).Methods("POST")
 }
 
 // Put wraps the router for PUT method
 func (hdlr *Handlers) Put(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	hdlr.Router.HandleFunc(path, f).Methods("PUT")
+	hdlr.router.HandleFunc(path, f).Methods("PUT")
 }
 
 // Delete wraps the router for DELETE method
 func (hdlr *Handlers) Delete(path string, f func(w http.ResponseWriter, r *http.Request)) {
-	hdlr.Router.HandleFunc(path, f).Methods("DELETE")
+	hdlr.router.HandleFunc(path, f).Methods("DELETE")
 }
 
-type RequestHandlerFunction func(db *gorm.DB, w http.ResponseWriter, r *http.Request)
+type RequestHandlerFunction func(w http.ResponseWriter, r *http.Request)
 
 func (hdlr *Handlers) handleRequest(handler RequestHandlerFunction) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		handler(hdlr.db, w, r)
+		handler(w, r)
 	}
 }

@@ -19,7 +19,6 @@ import (
 	"archive/zip"
 	"broker/pkg/handlers/adapter/dbAdapter"
 	"broker/pkg/handlers/adapter/pluginAdapter"
-	"broker/pkg/handlers/common"
 	"broker/pkg/handlers/model"
 	"bytes"
 	"encoding/json"
@@ -29,27 +28,68 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func UploadFileHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// DB name
+const DbName = "applcmDB"
+
+// Handler of REST APIs
+type HandlerImpl struct {
+	logger *logrus.Logger
+	db     *gorm.DB
+}
+
+// Creates handler implementation
+func newHandlerImpl(logger *logrus.Logger) (impl HandlerImpl) {
+	impl.logger = logger
+	impl.db = impl.createDatabase()
+	return
+}
+
+// Creates database
+func (impl *HandlerImpl) createDatabase() *gorm.DB {
+	impl.logger.Info("creating Database...")
+
+	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
+	host := "@tcp(" + "dbhost" + ":3306)/"
+
+	db, err := gorm.Open("mysql", usrpswd + host)
+	if err != nil {
+		impl.logger.Fatalf("Database connect error", err.Error())
+	}
+
+	db.Exec("CREATE DATABASE  " + DbName)
+	db.Exec("USE applcmDB")
+	gorm.DefaultCallback.Create().Remove("mysql:set_identity_insert")
+
+	impl.logger.Info("Migrating models...")
+	db.AutoMigrate(&model.AppPackageInfo{})
+	db.AutoMigrate(&model.AppInstanceInfo{})
+	return db
+}
+
+// Uploads package
+func (impl *HandlerImpl) UploadPackage(w http.ResponseWriter, r *http.Request) {
 
 	file, header, err := r.FormFile("file")
 	defer file.Close()
 	if err != nil {
-		common.RespondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	buf := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buf, file); err != nil {
-		common.RespondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -58,45 +98,46 @@ func UploadFileHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	if len(f) > 0 {
 		packageName = f[0]
 	}
-	fmt.Println(packageName)
+	impl.logger.Infof(packageName)
 
 	pkgPath := PackageFolderPath + header.Filename
 	newFile, err := os.Create(pkgPath)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	defer newFile.Close()
 	if _, err := newFile.Write(buf.Bytes()); err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	/* Unzip package to decode appDescriptor */
-	openPackage(w, pkgPath)
+	impl.openPackage(w, pkgPath)
 
 	var yamlFile = PackageFolderPath + packageName + "/Definitions/" + "MainServiceTemplate.yaml"
-	appPkgInfo := decodeApplicationDescriptor(w, yamlFile)
+	appPkgInfo := impl.decodeApplicationDescriptor(w, yamlFile)
 	appPkgInfo.AppPackage = header.Filename
 	appPkgInfo.OnboardingState = "ONBOARDED"
 
-	log.Println("Application package info from package")
+	impl.logger.Infof("Application package info from package")
 	defer r.Body.Close()
 
-	dbAdapter.InsertAppPackageInfo(db, appPkgInfo)
+	dbAdapter.InsertAppPackageInfo(impl.db, appPkgInfo)
 
 	/*http.StatusOK*/
-	common.RespondJSON(w, http.StatusCreated, appPkgInfo)
+	respondJSON(w, http.StatusCreated, appPkgInfo)
 }
 
-func openPackage(w http.ResponseWriter, packagePath string) {
+// Opens package
+func (impl *HandlerImpl) openPackage(w http.ResponseWriter, packagePath string) {
 	zipReader, _ := zip.OpenReader(packagePath)
 	for _, file := range zipReader.Reader.File {
 
 		zippedFile, err := file.Open()
 		if err != nil {
-			common.RespondError(w, http.StatusBadRequest, err.Error())
+			respondError(w, http.StatusBadRequest, err.Error())
 		}
 		defer zippedFile.Close()
 
@@ -115,28 +156,29 @@ func openPackage(w http.ResponseWriter, packagePath string) {
 				file.Mode(),
 			)
 			if err != nil {
-				common.RespondError(w, http.StatusBadRequest, err.Error())
+				respondError(w, http.StatusBadRequest, err.Error())
 			}
 			defer outputFile.Close()
 
 			_, err = io.Copy(outputFile, zippedFile)
 			if err != nil {
-				common.RespondError(w, http.StatusBadRequest, err.Error())
+				respondError(w, http.StatusBadRequest, err.Error())
 			}
 		}
 	}
 }
 
-func decodeApplicationDescriptor(w http.ResponseWriter, serviceTemplate string) model.AppPackageInfo {
+// Decodes application descriptor
+func (impl *HandlerImpl) decodeApplicationDescriptor(w http.ResponseWriter, serviceTemplate string) model.AppPackageInfo {
 
 	yamlFile, err := ioutil.ReadFile(serviceTemplate)
 	if err != nil {
-		common.RespondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, http.StatusBadRequest, err.Error())
 	}
 
 	jsondata, err := yaml.YAMLToJSON(yamlFile)
 	if err != nil {
-		common.RespondError(w, http.StatusBadRequest, err.Error())
+		respondError(w, http.StatusBadRequest, err.Error())
 	}
 
 	appDId, _, _, _ := jsonparser.Get(jsondata, "topology_template", "node_templates", "face_recognition", "properties", "appDId")
@@ -160,26 +202,28 @@ func decodeApplicationDescriptor(w http.ResponseWriter, serviceTemplate string) 
 	return appPkgInfo
 }
 
-func QueryAppPackageInfo(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Query application package information
+func (impl *HandlerImpl) QueryAppPackageInfo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	appPkgId := params["appPkgId"]
-	appPkgInfo := dbAdapter.GetAppPackageInfo(db, appPkgId)
+	appPkgInfo := dbAdapter.GetAppPackageInfo(impl.db, appPkgId)
 	if appPkgInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
-	common.RespondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(appPkgInfo))
+	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(appPkgInfo))
 }
 
-func DeleteAppPackage(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Deletes application package
+func (impl *HandlerImpl) DeleteAppPackage(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	appPkgId := params["appPkgId"]
-	appPackageInfo := dbAdapter.GetAppPackageInfo(db, appPkgId)
+	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appPkgId)
 	if appPackageInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
-	dbAdapter.DeleteAppPackageInfo(db, appPkgId)
+	dbAdapter.DeleteAppPackageInfo(impl.db, appPkgId)
 
 	deletePackage := PackageFolderPath + appPackageInfo.AppPackage
 
@@ -191,27 +235,28 @@ func DeleteAppPackage(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		/*Delete unzipped*/
 		os.Remove(packageName)
 	}
-	common.RespondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
+	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
 }
 
-func CreateAppInstanceHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Creates application instance
+func (impl *HandlerImpl) CreateAppInstance(w http.ResponseWriter, r *http.Request) {
 	var req model.CreateApplicationReq
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	appPkgInfo := dbAdapter.GetAppPackageInfo(db, req.AppDID)
+	appPkgInfo := dbAdapter.GetAppPackageInfo(impl.db, req.AppDID)
 	if appPkgInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
-	fmt.Println("Query appPkg Info:", appPkgInfo)
+	impl.logger.Infof("Query appPkg Info:", appPkgInfo)
 
 	appInstanceId, err := uuid.NewUUID()
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 	}
 
 	appInstanceInfo := model.AppInstanceInfo{
@@ -227,32 +272,33 @@ func CreateAppInstanceHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) 
 		AppPkgID:               appPkgInfo.AppDID,
 		InstantiationState:     "NOT_INSTANTIATED",
 	}
-	dbAdapter.InsertAppInstanceInfo(db, appInstanceInfo)
-	fmt.Println("CreateAppInstanceHldr:", req)
+	dbAdapter.InsertAppInstanceInfo(impl.db, appInstanceInfo)
+	impl.logger.Infof("CreateAppInstance:", req)
 	/*http.StatusOK*/
-	common.RespondJSON(w, http.StatusCreated, json.NewEncoder(w).Encode(appInstanceInfo))
+	respondJSON(w, http.StatusCreated, json.NewEncoder(w).Encode(appInstanceInfo))
 }
 
-func InstantiateAppInstanceHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Instantiates application instance
+func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.Request) {
 	var req model.InstantiateApplicationReq
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(db, appInstanceInfo.AppDID)
+	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
+	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
 
 	if appInstanceInfo.InstantiationState == "INSTANTIATED" {
-		common.RespondError(w, http.StatusInternalServerError, "Application already instantiated")
+		respondError(w, http.StatusInternalServerError, "Application already instantiated")
 		return
 	}
 
@@ -262,7 +308,7 @@ func InstantiateAppInstanceHldr(db *gorm.DB, w http.ResponseWriter, r *http.Requ
 	if len(f) > 0 {
 		packageName = f[0]
 	}
-	fmt.Println(packageName)
+	impl.logger.Infof(packageName)
 
 	var artifact string
 	var pluginInfo string
@@ -270,57 +316,64 @@ func InstantiateAppInstanceHldr(db *gorm.DB, w http.ResponseWriter, r *http.Requ
 	switch appPackageInfo.DeployType {
 	case "helm":
 		pkgPath := PackageFolderPath + packageName + PackageArtifactPath + "Charts"
-		artifact = getDeploymentArtifact(pkgPath, ".tar")
+		artifact = impl.getDeploymentArtifact(pkgPath, ".tar")
 		if artifact == "" {
-			common.RespondError(w, http.StatusInternalServerError, "artifact not available in application package")
+			respondError(w, http.StatusInternalServerError, "artifact not available in application package")
 			return
 		}
 		pluginInfo = "helm.plugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
 	case "kubernetes":
 		pkgPath := PackageFolderPath + packageName + PackageArtifactPath + "Kubernetes"
-		artifact = getDeploymentArtifact(pkgPath, "*.yaml")
+		artifact = impl.getDeploymentArtifact(pkgPath, "*.yaml")
 		if artifact == "" {
-			common.RespondError(w, http.StatusInternalServerError, "artifact not available in application package")
+			respondError(w, http.StatusInternalServerError, "artifact not available in application package")
 			return
 		}
 		pluginInfo = "kubernetes.plugin" + ":" + os.Getenv("KUBERNETES_PLUGIN_PORT")
 	default:
-		common.RespondError(w, http.StatusInternalServerError, "Deployment type not supported")
+		respondError(w, http.StatusInternalServerError, "Deployment type not supported")
 		return
 	}
-	fmt.Println("Artifact to deploy:", artifact)
+	impl.logger.Infof("Artifact to deploy:", artifact)
 
-	workloadId, err := pluginAdapter.Instantiate(pluginInfo, req.SelectedMECHostInfo.HostID, artifact)
+	adapter := pluginAdapter.NewPluginAdapter(pluginInfo, impl.logger)
+	workloadId, err := adapter.Instantiate(pluginInfo, req.SelectedMECHostInfo.HostID, artifact)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
-		return
+		st, ok := status.FromError(err)
+		if ok && st.Code() == codes.InvalidArgument {
+			respondError(w, http.StatusBadRequest, err.Error())
+			return
+		} else {
+			respondError(w, http.StatusInternalServerError, err.Error())
+		}
 	}
-	dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(db, appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
+	dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(impl.db, appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
 
-	common.RespondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
+	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
 }
 
-func getDeploymentArtifact(dir string, ext string) string {
+// Gets deployment artifact
+func (impl *HandlerImpl) getDeploymentArtifact(dir string, ext string) string {
 	d, err := os.Open(dir)
 	if err != nil {
-		fmt.Println(err)
+		impl.logger.Infof("Error: ", err)
 		return ""
 	}
 	defer d.Close()
 
 	files, err := d.Readdir(-1)
 	if err != nil {
-		fmt.Println(err)
+		impl.logger.Infof("Error: ", err)
 		return ""
 	}
 
-	fmt.Println("Directory to read " + dir)
+	impl.logger.Infof("Directory to read " + dir)
 
 	for _, file := range files {
 		if file.Mode().IsRegular() {
 			if filepath.Ext(file.Name()) == ext || filepath.Ext(file.Name()) == ".gz" {
-				fmt.Println(file.Name())
-				fmt.Println(dir + "/" + file.Name())
+				impl.logger.Infof(file.Name())
+				impl.logger.Infof(dir + "/" + file.Name())
 				return dir + "/" + file.Name()
 			}
 		}
@@ -328,15 +381,16 @@ func getDeploymentArtifact(dir string, ext string) string {
 	return ""
 }
 
-func QueryAppInstanceInfoHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Queries application instance information
+func (impl *HandlerImpl) QueryAppInstanceInfo(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(db, appInstanceInfo.AppDID)
+	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
+	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
 	var instantiatedAppState string
@@ -350,47 +404,50 @@ func QueryAppInstanceInfoHldr(db *gorm.DB, w http.ResponseWriter, r *http.Reques
 		case "kubernetes":
 			pluginInfo = "kubernetes.plugin" + ":" + os.Getenv("KUBERNETES_PLUGIN_PORT")
 		default:
-			common.RespondError(w, http.StatusInternalServerError, "Deployment type not supported")
+			respondError(w, http.StatusInternalServerError, "Deployment type not supported")
 			return
 		}
 
-		state, err := pluginAdapter.Query(pluginInfo, appInstanceInfo.Host, appInstanceInfo.WorkloadID)
+		adapter := pluginAdapter.NewPluginAdapter(pluginInfo, impl.logger)
+		state, err := adapter.Query(pluginInfo, appInstanceInfo.Host, appInstanceInfo.WorkloadID)
 		if err != nil {
-			common.RespondError(w, http.StatusInternalServerError, err.Error())
+			respondError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
 		instantiatedAppState = state
 	}
 	appInstanceInfo.InstantiatedAppState = instantiatedAppState
 
-	common.RespondJSON(w, http.StatusCreated, json.NewEncoder(w).Encode(appInstanceInfo))
+	respondJSON(w, http.StatusCreated, json.NewEncoder(w).Encode(appInstanceInfo))
 }
 
-func QueryAppLcmOperationStatusHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+// Queries application lcm operation status
+func (impl *HandlerImpl) QueryAppLcmOperationStatus(w http.ResponseWriter, r *http.Request) {
 	var req model.QueryApplicationLCMOperStatusReq
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	fmt.Fprintf(w, "QueryApplicationLCMOperStatus: %+v", req)
 }
 
-func TerminateAppInsHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	log.Println("TerminateAppInsHldr...")
+// Terminates application instance
+func (impl *HandlerImpl) TerminateAppInstance(w http.ResponseWriter, r *http.Request) {
+	impl.logger.Infof("TerminateAppInstance...")
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	appInstanceInfo := dbAdapter.GetAppInstanceInfo(db, appInstanceId)
-	appPackageInfo := dbAdapter.GetAppPackageInfo(db, appInstanceInfo.AppDID)
+	appInstanceInfo := dbAdapter.GetAppInstanceInfo(impl.db, appInstanceId)
+	appPackageInfo := dbAdapter.GetAppPackageInfo(impl.db, appInstanceInfo.AppDID)
 	if appInstanceInfo.ID == "" || appPackageInfo.ID == "" {
-		common.RespondJSON(w, http.StatusNotFound, "ID not exist")
+		respondJSON(w, http.StatusNotFound, "ID not exist")
 		return
 	}
 
 	if appInstanceInfo.InstantiationState == "NOT_INSTANTIATED" {
-		common.RespondError(w, http.StatusNotAcceptable, "instantiationState: NOT_INSTANTIATED")
+		respondError(w, http.StatusNotAcceptable, "instantiationState: NOT_INSTANTIATED")
 		return
 	}
 
@@ -401,24 +458,45 @@ func TerminateAppInsHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	case "kubernetes":
 		pluginInfo = "kubernetes.plugin" + ":" + os.Getenv("KUBERNETES_PLUGIN_PORT")
 	default:
-		common.RespondError(w, http.StatusInternalServerError, "Deployment type not supported")
+		respondError(w, http.StatusInternalServerError, "Deployment type not supported")
 		return
 	}
 
-	_, err := pluginAdapter.Terminate(pluginInfo, appInstanceInfo.Host, appInstanceInfo.WorkloadID)
+	adapter := pluginAdapter.NewPluginAdapter(pluginInfo, impl.logger)
+	_, err := adapter.Terminate(pluginInfo, appInstanceInfo.Host, appInstanceInfo.WorkloadID)
 	if err != nil {
-		common.RespondError(w, http.StatusInternalServerError, err.Error())
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	dbAdapter.UpdateAppInstanceInfoInstStatusAndWorkload(db, appInstanceId, "NOT_INSTANTIATED", "")
+	dbAdapter.UpdateAppInstanceInfoInstStatusAndWorkload(impl.db, appInstanceId, "NOT_INSTANTIATED", "")
 
-	common.RespondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
+	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
 }
-func DeleteAppInstanceIdentifierHldr(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DeleteAppInstanceIdentifierHldr:")
+
+// Deletes application instance identifier
+func (impl *HandlerImpl) DeleteAppInstanceIdentifier(w http.ResponseWriter, r *http.Request) {
+	impl.logger.Infof("DeleteAppInstanceIdentifier:")
 	params := mux.Vars(r)
 	appInstanceId := params["appInstanceId"]
 
-	dbAdapter.DeleteAppInstanceInfo(db, appInstanceId)
-	common.RespondJSON(w, http.StatusOK, json.NewEncoder(w).Encode(""))
+	dbAdapter.DeleteAppInstanceInfo(impl.db, appInstanceId)
+	respondJSON(w, http.StatusOK, json.NewEncoder(w).Encode(""))
+}
+
+// It makes the JSON
+func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
+	response, err := json.Marshal(payload)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	w.Write([]byte(response))
+}
+
+// RespondError makes the error response with payload as json format
+func respondError(w http.ResponseWriter, code int, message string) {
+	respondJSON(w, code, map[string]string{"error": message})
 }

@@ -18,81 +18,94 @@ package pluginAdapter
 import (
 	"broker/pkg/plugin"
 	"context"
-	"log"
-	"os"
+	"github.com/sirupsen/logrus"
 	"time"
 )
 
-func Instantiate(pluginInfo string, host string, deployArtifact string) (workloadId string, error error) {
-	logger := log.New(os.Stdout, "broker ", log.LstdFlags|log.Lshortfile)
-	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: 1024, RootCertificate: ""}
+const (
+	chunkSize = 1024
+	rootCertificate  = ""
+)
+
+// Plugin adapter which decides a specific client based on plugin info
+// TODO PluginInfo to have other information about plugins to find the client and implementation to handle accordingly.
+type PluginAdapter struct {
+	pluginInfo string
+	logger *logrus.Logger
+}
+
+// Constructor of PluginAdapter
+func NewPluginAdapter(pluginInfo string, logger *logrus.Logger) *PluginAdapter {
+	return &PluginAdapter{pluginInfo: pluginInfo, logger: logger}
+}
+
+// Instantiate application
+func (c *PluginAdapter) Instantiate(pluginInfo string, host string, deployArtifact string) (workloadId string, error error) {
+	c.logger.Info("Instantation started")
+	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
 	var client, err = plugin.NewClientGRPC(clientConfig)
 	if err != nil {
-		logger.Fatalf("failed to create client: %v", err)
+		c.logger.Errorf("failed to create client: %v", err)
 		return "", err
 	}
-	log.Printf("pluginInfo: ", pluginInfo)
-	log.Printf("host: ", host)
-	log.Printf("deployArtifact: ", deployArtifact)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
 	defer cancel()
 
 	//Instantiate
 	workloadId, status, err := client.Instantiate(ctx, deployArtifact, host)
 	if err != nil {
-		logger.Println("server failed to respond %s", err.Error())
-	} else {
-		logger.Println(workloadId, status)
-		return workloadId, nil
-	}
-	return "", err
-}
-
-func Query(pluginInfo string, host string, workloadId string) (status string, error error) {
-	logger := log.New(os.Stdout, "broker ", log.LstdFlags|log.Lshortfile)
-	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: 1024, RootCertificate: ""}
-	var client, err = plugin.NewClientGRPC(clientConfig)
-	if err != nil {
-		logger.Fatalf("failed to create client: %v", err)
+		c.logger.Errorf("server failed to respond %s", err.Error())
 		return "", err
 	}
-	log.Printf("pluginInfo: ", pluginInfo)
-	log.Printf("host: ", host)
-	log.Printf("workloadId: ", workloadId)
+	c.logger.Info("Instantiation success with workloadId %s, status: %s ", workloadId, status)
+	return workloadId, nil
+}
+
+// Query application
+func (c *PluginAdapter) Query(pluginInfo string, host string, workloadId string) (status string, error error) {
+	c.logger.Info("Query started")
+	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
+	var client, err = plugin.NewClientGRPC(clientConfig)
+	if err != nil {
+		c.logger.Errorf("failed to create client: %v", err)
+		return "", err
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	//Query
-	stats := client.Query(ctx, host, workloadId)
+	status, err = client.Query(ctx, host, workloadId)
 	if err != nil {
-		logger.Fatalf("failed to instantiate: %v", err)
-		return stats, err
+		c.logger.Errorf("failed to query: %v", err)
+		return "", err
 	}
-	logger.Println("query status: ", stats)
-	return stats, nil
+	c.logger.Info("query status: ", status)
+	return status, nil
 }
 
-func Terminate(pluginInfo string, host string, workloadId string) (status string, error error) {
-	logger := log.New(os.Stdout, "broker ", log.LstdFlags|log.Lshortfile)
-	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: 1024, RootCertificate: ""}
+// Terminate application
+func (c *PluginAdapter) Terminate(pluginInfo string, host string, workloadId string) (status string, error error) {
+	c.logger.Info("Terminate started")
+	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
 	var client, err = plugin.NewClientGRPC(clientConfig)
 	if err != nil {
-		logger.Fatalf("failed to create client: %v", err)
-		return
+		c.logger.Errorf("failed to create client: %v", err)
+		return "Failure", err
 	}
-	log.Printf("pluginInfo: ", pluginInfo)
-	log.Printf("host: ", host)
-	log.Printf("workloadId: ", workloadId)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	//Terminate
-	ts := client.Terminate(ctx, host, workloadId)
+	status, err = client.Terminate(ctx, host, workloadId)
+
 	if err != nil {
-		logger.Fatalf("failed to instantiate: %v", err)
-		return ts, err
+		c.logger.Errorf("failed to instantiate: %v", err)
+		return "Failure", err
 	}
 
-	logger.Println("termination status: ", ts)
-	return ts, nil
+	c.logger.Info("termination success with status: ", status)
+	return status, nil
 }
