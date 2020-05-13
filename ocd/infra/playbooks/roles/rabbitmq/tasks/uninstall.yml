@@ -19,7 +19,7 @@
   register: result
   ignore_errors: true
 
-- name: Uninstall rabbitmq
+- name: Uninstalling rabbitmq
   shell:
     cmd: kubectl delete -f /tmp/rabbitmq/common
   when: result is succeeded

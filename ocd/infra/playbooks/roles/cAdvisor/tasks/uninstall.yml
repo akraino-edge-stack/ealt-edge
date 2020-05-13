@@ -20,7 +20,7 @@
   register: result
   ignore_errors: 'True'
 
-- name: "Go to helm ls"
+- name: "If cAdvisor present, then list the content inside helm for uninstalling cAdvisor"
   command: helm ls
   when: result is succeeded
 
