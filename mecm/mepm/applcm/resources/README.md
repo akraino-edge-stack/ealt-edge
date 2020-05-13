@@ -1,0 +1,1 @@
+This folder contains test artifacts to try out applcm in local machine
