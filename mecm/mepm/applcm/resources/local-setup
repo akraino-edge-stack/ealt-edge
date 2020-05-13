@@ -1,0 +1,28 @@
+
+MIKI kube install:
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+&& chmod +x minikube 
+sudo mkdir -p /usr/local/bin/
+sudo install minikube /usr/local/bin/ 
+minikube start
+
+sudo minikube start --driver=docker
+
+Kubectl install:
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl 
+
+
+copy from local envi to helmplugin docker to the same location in docker
+/home/root1/.minikube/profiles/minikube/client.crt
+/home/root1/.minikube/profiles/minikube/client.key
+/home/root1/.minikube/ca.crt
+
+Copy kubeconfig:
+.kube/config   to /go/release/kubeconfig/{hostIp}
+
+
+
+
+
