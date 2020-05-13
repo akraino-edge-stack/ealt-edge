@@ -26,7 +26,7 @@
   command: tar -zxvf helm-v3.0.2-linux-amd64.tar.gz
   when: result is failed and ansible_architecture == 'x86_64'
 
-- name: "Move to bin folder on x86_64"
+- name: "Helm move to bin folder on x86_64"
   command: mv linux-amd64/helm /usr/local/bin/
   when: result is failed and ansible_architecture == 'x86_64'
 
@@ -38,20 +38,20 @@
   command: tar -zxvf helm-v3.0.2-linux-arm64.tar.gz
   when: result is failed and ansible_architecture == 'aarch64'
 
-- name: "Move to bin folder on aarch64"
+- name: "Helm move to bin folder on aarch64"
   command: mv linux-arm64/helm /usr/local/bin/
   when: result is failed and ansible_architecture == 'aarch64'
 
-- name: "Add repo"
+- name: "Add helm repo"
 # yamllint disable rule:line-length
   command: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 # yamllint disable rule:line-length
   when: result is failed
 
-- name: "update repo"
+- name: "Updated helm repo"
   command: helm repo update
   when: result is failed
 
-- name: "list repo"
+- name: "List helm repo"
   command: helm repo list
   when: result is failed

@@ -19,11 +19,11 @@
   register: result
   ignore_errors: 'True'
 
-- name: "This is for Add repo helm "
+- name: "Add helm repo"
   command: helm repo add code-chris https://code-chris.github.io/helm-charts
   when: result is failed
 
-- name: "This is for Update helm repo"
+- name: "Update helm repo"
   command: helm repo update
   when: result is failed
 
@@ -33,7 +33,7 @@
     dest: /tmp/cAdvisor/
   when: result is failed
 
-- name: "Command for install cAdvisor"
+- name: "Installing cAdvisor"
 # yamllint disable rule:line-length
   command: helm install cadvisor code-chris/cadvisor -f /tmp/cAdvisor/values.yaml
 # yamllint disable rule:line-length
