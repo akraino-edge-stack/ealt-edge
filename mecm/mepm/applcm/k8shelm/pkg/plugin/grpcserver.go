@@ -69,17 +69,16 @@ func (s *ServerGRPC) Listen() (err error) {
 	// Listen announces on the network address
 	listener, err = net.Listen("tcp", ":"+strconv.Itoa(s.port))
 	if err != nil {
-		s.logger.Fatalf("failed to listen on port: %s. Err: %s", s.port, err)
-		return err
+		s.logger.Fatalf("failed to listen on specified port")
 	}
-	s.logger.Infof("Server started listening on port ", s.port)
+	s.logger.Infof("Server started listening on specified port")
 
 	// Secure connection if asked
 	if s.certificate != "" && s.key != "" {
 		grpcCreds, err = credentials.NewServerTLSFromFile(
 			s.certificate, s.key)
 		if err != nil {
-			s.logger.Fatalf("failed to create tls grpc server using cert %s and key: %s. Err: %s", s.certificate, s.key, err)
+			s.logger.Fatalf("failed to create tls grpc server using given cert and key")
 		}
 		grpcOpts = append(grpcOpts, grpc.Creds(grpcCreds))
 	}
@@ -104,15 +103,14 @@ func (s *ServerGRPC) Query(ctx context.Context, req *lcmservice.QueryRequest) (r
 
 	// Input validation
 	if (req.GetHostIp() == "") || (req.GetWorkloadId() == "") {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Nil input HostIp: %s or workloadId: %s. " +
-			"Err: %s", req.GetHostIp(), req.GetWorkloadId(), err))
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "HostIP & WorkloadId can't be null", err))
 	}
 
 	// Create HELM Client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig for HostIp can't be found: %s. " +
-			"Err: %s", req.GetHostIp(), err))
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. " +
+			"Err: %s", err))
 	}
 
 	// Query Chart
@@ -131,15 +129,14 @@ func (s *ServerGRPC) Query(ctx context.Context, req *lcmservice.QueryRequest) (r
 func (s *ServerGRPC) Terminate(ctx context.Context, req *lcmservice.TerminateRequest) (resp *lcmservice.TerminateResponse, err error) {
 	// Input validation
 	if (req.GetHostIp() == "") || (req.GetWorkloadId() == "") {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Nil input HostIp: %s or workloadId: %s. " +
-			"Err: %s", req.GetHostIp(), req.GetWorkloadId(), err))
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "HostIP & WorkloadId can't be null", err))
 	}
 
 	// Create HELM client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig for HostIp can't be found: %s. " +
-			"Err: %s", req.GetHostIp(), err))
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. " +
+			"Err: %s", err))
 	}
 
 	// Uninstall chart
@@ -170,11 +167,11 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	}
 
 	hostIP := req.GetHostIp()
-	s.logger.Info("Recieved instantiate request for host ", hostIP)
+	s.logger.Info("Recieved instantiate request")
 
 	// Host validation
 	if (hostIP == "") {
-		return s.logError(status.Errorf(codes.InvalidArgument, "Nil input for HostIp: %s Err: %s", req.GetHostIp(), err))
+		return s.logError(status.Errorf(codes.InvalidArgument, "HostIP & WorkloadId can't be null", err))
 	}
 
 	// Receive package
@@ -185,11 +182,11 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 			return err
 		}
 
-		s.logger.Info("Waiting to receive more data")
+		s.logger.Debug("Waiting to receive more data")
 
 		req, err := stream.Recv()
 		if err == io.EOF {
-			s.logger.Info("No more data")
+			s.logger.Debug("No more data")
 			break
 		}
 		if err != nil {
@@ -210,8 +207,8 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	// Create HELM client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig for HostIp can't be found: %s. " +
-			"Err: %s", req.GetHostIp(), err))
+		return s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to edge can't be found. " +
+			"Err: %s", err))
 	}
 
 	relName, err := hc.installChart(helmPkg)

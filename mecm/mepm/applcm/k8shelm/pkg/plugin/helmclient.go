@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package plugin
 
 import (
@@ -53,7 +54,7 @@ func NewHelmClient(hostIP string, logger *logrus.Logger) (*HelmClient, error) {
 
 // Install a given helm chart
 func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
-	hc.logger.Info("Inside helm client")
+	hc.logger.Debug("Inside helm client")
 
 	// Create temporary file to hold helm chart
 	file, err := os.Create(chartPath + "temp.tar.gz")
@@ -84,11 +85,11 @@ func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
 		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
-		fmt.Sprintf(format, v)
+			fmt.Sprintf(format, v)
 		}); err != nil {
 		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
 		return "", err
-		}
+	}
 
 	// Prepare chart install action and install chart
 	installer := action.NewInstall(actionConfig)
@@ -109,11 +110,11 @@ func (hc *HelmClient) uninstallChart(relName string) (error) {
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
 		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
-		fmt.Sprintf(format, v)
+			fmt.Sprintf(format, v)
 		}); err != nil {
 		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
 		return err
-		}
+	}
 
 	ui := action.NewUninstall(actionConfig)
 	res, err := ui.Run(relName);
@@ -130,8 +131,8 @@ func (hc *HelmClient) queryChart(relName string) (string, error)  {
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
 		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {
-		fmt.Sprintf(format, v)
-	}); err != nil {
+			fmt.Sprintf(format, v)
+		}); err != nil {
 		hc.logger.Errorf("Unable to initialize action config Err: %s", err)
 		return "", err
 	}
@@ -153,4 +154,3 @@ func fileExists(filename string) (bool, error) {
 	}
 	return !info.IsDir(), nil
 }
-
