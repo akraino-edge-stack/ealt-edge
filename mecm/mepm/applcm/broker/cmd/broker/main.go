@@ -13,22 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package main
 
 import (
 	"broker/pkg/handlers"
-	"log"
+	"broker/pkg/util"
+	"github.com/sirupsen/logrus"
 	"os"
 )
-/*
-var (
-	GcukCertFile    = os.Getenv("GCUK_CERT_FILE")
-	GcukKeyFile     = os.Getenv("GCUK_KEY_FILE")
-	GcukServiceAddr = os.Getenv("GCUK_SERVICE_ADDR")
-)*/
+
+const (
+	logFile = "/home/root1/code/ealt-edge/mecm/mepm/applcm/k8shelm/pkg/plugin/logfile"
+	loggerLevel = logrus.InfoLevel
+)
 
 func main() {
-	logger := log.New(os.Stdout, "broker ", log.LstdFlags|log.Lshortfile)
+	// Prepare logger
+	file, err := os.Create(logFile)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	defer file.Close()
+
+	var logger = util.GetLogger(logFile, loggerLevel, file)
 
 	handler := &handlers.Handlers{}
 	handler.Initialize(logger)
