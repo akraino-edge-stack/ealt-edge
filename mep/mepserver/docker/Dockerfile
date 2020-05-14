@@ -26,6 +26,7 @@ RUN go mod download
 WORKDIR /go/release
 
 ADD . .
+RUN apk update && apk add --no-cache musl-dev gcc build-base
 
 RUN GOOS=linux CGO_ENABLED=0 go build -buildmode=pie -ldflags="-s -w" -installsuffix cgo -o app main.go
 
