@@ -11,22 +11,16 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: 'db'
-      # So you don't have to use root, but you can if you like
       MYSQL_USER: 'root'
-      # You can use whatever password you like
       MYSQL_PASSWORD: 'password'
       # Password for root access
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      # <Port exposed> : < MySQL Port running inside container>
       - '3306:3306'
     expose:
-      # Opens port 3306 on the container
       - '3306'
-      # Where our data will be persisted
     volumes:
       - my-db:/var/lib/mysql
-      - /var/lib/mysql
     logging:
       driver: "json-file"
       options:
@@ -46,19 +40,19 @@ services:
     container_name: applcm-broker
     environment:
       MYSQL_DATABASE: 'db'
-      # So you don't have to use root, but you can if you like
       MYSQL_USER: 'root'
-      # You can use whatever password you like
       MYSQL_PASSWORD: 'password'
-      # Password for root access
       MYSQL_ROOT_PASSWORD: 'password'
       HELM_PLUGIN_PORT: '50051'
       KUBERNETES_PLUGIN_PORT: '50052'
+      LOGFILE_PATH: "/go/release/logfile"
+      LOGGER_LEVEL: "logrus.InfoLevel"
+      ADDRESS: "0.0.0.0:8081"
+      PACKAGE_PATH: "/go/release/application/packages/"
+      PACKAGE_ARTIFACT_PATH: "/Artifacts/Deployment/"
     ports:
-      # <Port exposed> : < Applcm Broker Port running inside container>
       - '28081:8081'
     expose:
-      # Opens port 8081 on the container
       - '8081'
     logging:
       driver: "json-file"
@@ -85,9 +79,12 @@ services:
       # Presently all application to be deployed in same namespace, in future it can be an input while app creation
       RELEASE_NAMESPACE: "default"
     ports:
-      # <Port exposed> : < Applcm helm plugin Port running inside container>
       - '50051:50051'
     expose:
-      # Opens port 50051 on the container
       - '50051'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+        max-file: "5"
 # yamllint enable

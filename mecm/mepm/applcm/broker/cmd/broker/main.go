@@ -23,12 +23,13 @@ import (
 	"os"
 )
 
-const (
-	//logFile = "/go/release/logfile"
-	logFile = "/home/root1/code/akraino/ealt-edge/mecm/mepm/applcm/broker/cmd/broker/logfile"
-	loggerLevel = logrus.InfoLevel
-	applcmAddress = "0.0.0.0:8081"
+// Variables to be defined in deployment file
+var (
+	logFile = os.Getenv("LOGFILE_PATH")
+	loggerLevel = os.Getenv("LOGGER_LEVEL")
+	applcmAddress = os.Getenv("ADDRESS")
 )
+
 
 func main() {
 	// Prepare logger
@@ -38,7 +39,8 @@ func main() {
 	}
 	defer file.Close()
 
-	var logger = util.GetLogger(logFile, loggerLevel, file)
+	level, err := logrus.ParseLevel(loggerLevel)
+	var logger = util.GetLogger(logFile, level, file)
 
 	handler := &handlers.Handlers{}
 	handler.Initialize(logger)
