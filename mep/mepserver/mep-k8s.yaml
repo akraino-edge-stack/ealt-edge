@@ -24,8 +24,8 @@ metadata:
     app: mep
 spec:
   containers:
-    - image: khemendra/mep:latest
-      imagePullPolicy: Always
+    - image: mep:latest
+      imagePullPolicy: IfNotPresent
       name: mep-pod
       ports:
         - containerPort: 8088
