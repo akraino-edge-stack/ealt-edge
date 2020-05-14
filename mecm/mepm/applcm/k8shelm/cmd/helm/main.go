@@ -20,14 +20,16 @@ import (
 	"github.com/sirupsen/logrus"
 	"k8shelm/pkg/plugin"
 	"os"
+	"strconv"
 )
 
-const (
-	serverPort = 50051
-	certificate = ""
-	key = ""
-	logFile = "/go/release/logfile"
-	loggerLevel = logrus.InfoLevel
+// Variables to be defined in deployment file
+var (
+	serverPort = os.Getenv("HELM_PLUGIN_PORT")
+	logFile = os.Getenv("LOGFILE_PATH")
+	loggerLevel = os.Getenv("LOGGER_LEVEL")
+	certificate = os.Getenv("CERTIFICATE_PATH")
+	key = os.Getenv("KEY_PATH")
 )
 
 func main() {
@@ -38,10 +40,12 @@ func main() {
 	}
 	defer file.Close()
 
-	var logger = plugin.GetLogger(logFile, loggerLevel, file)
+	level, err := logrus.ParseLevel(loggerLevel)
+	var logger = plugin.GetLogger(logFile, level, file)
 
 	// Create GRPC server
-	serverConfig := plugin.ServerGRPCConfig{Certificate: certificate, Port:serverPort, Key:key, Logger:logger}
+	sp, err := strconv.Atoi(serverPort)
+	serverConfig := plugin.ServerGRPCConfig{Certificate: certificate, Port:sp, Key:key, Logger:logger}
 	server := plugin.NewServerGRPC(serverConfig)
 
 	// Start listening

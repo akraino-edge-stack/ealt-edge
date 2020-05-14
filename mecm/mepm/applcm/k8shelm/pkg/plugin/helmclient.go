@@ -26,12 +26,13 @@ import (
 	"os"
 )
 
-// Constants to be taken from deployment file
-const (
-	releaseNamespace  = "default"
-	chartPath  = "/go/release/charts/"
-	kubeconfigPath  = "/go/release/kubeconfig/"
+// Variables to be defined in deployment file
+var (
+	chartPath = os.Getenv("CHART_PATH")
+	kubeconfigPath = os.Getenv("KUBECONFIG_DIR_PATH")
+	releaseNamespace = os.Getenv("RELEASE_NAMESPACE")
 )
+
 
 // Helm client
 type HelmClient struct {
