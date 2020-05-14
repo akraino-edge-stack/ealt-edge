@@ -25,7 +25,7 @@ func NewInfraCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "infra",
 		Short: "Install only infrastructure components on MECM and Edge Node",
-		Long:  `Command to install only infrastructure components on MECM and Edge Node For Example : ealt init infra`,		
+		Long:  `Command to install only infrastructure components on MECM and Edge Node For Example : ealt init infra`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			err := setup.EaltInstall("infra")
 			if err != nil {

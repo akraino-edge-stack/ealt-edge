@@ -15,8 +15,7 @@
  */
 package cmd
 
-
- import (
+import (
 	"fmt"
 	"os"
 

@@ -26,13 +26,14 @@ import (
 // applcmCmd represents the applcm command
 var applcmCmd = &cobra.Command{
 	Use:   "applcm",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Commands to send request to the APPLCM Application",
+	Long: `To manage the application running on the MEP Node, APPLCM exposes
+	some API which can be used to manage the Applicaton running on the MEP Node
+	The command have following options :
+	1. Create
+	2. Start
+	3. Delete
+	4. Stop.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("applcm called")
 	},
@@ -41,6 +42,10 @@ to quickly create a Cobra application.`,
 func init() {
 
 	applcmCmd.AddCommand(applcmCmds.NewApplcmCreateCommand())
+	applcmCmd.AddCommand(applcmCmds.NewApplcmStartCommand())
+	applcmCmd.AddCommand(applcmCmds.NewApplcmDeleteCommand())
+	applcmCmd.AddCommand(applcmCmds.NewApplcmTerminateCommand())
+
 	rootCmd.AddCommand(applcmCmd)
 
 }
