@@ -19,6 +19,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"os"
 )
 
 // URLS
@@ -33,10 +34,9 @@ const (
     QueryOnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
 )
 
-// Package paths, to be created in deployment file (docker-compose/k8s yaml/helm)
-const (
-	PackageFolderPath = "/go/release/application/packages/"
-	PackageArtifactPath = "/Artifacts/Deployment/"
+var (
+	PackageFolderPath = os.Getenv("PACKAGE_PATH")
+	PackageArtifactPath = os.Getenv("PACKAGE_ARTIFACT_PATH")
 )
 
 // Handler of REST APIs
