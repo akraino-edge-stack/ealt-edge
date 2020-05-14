@@ -21,25 +21,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// allCmd represents the all command
-func NewApplcmTerminateCommand() *cobra.Command {
+// deployCmd represents the deploy command
+func NewApplcmCreateCommand() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:   "kill",
-		Short: "To kill the application ",
-		Long:  `Install Complete EALT Deployment Environment`,
+		Use:   "create",
+		Short: "To create the application instance on MEP Node",
+		Long:  `To create the application instance on MEP Node`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var theFlags []string
-			theFlags[0] = cmd.Flag("appid").Value.String()
-			err := adapter.BuilderRequest(theFlags, "NewApplcmTerminateCommand")
+			theFlags := []string{cmd.Flag("appdid").Value.String(),
+				cmd.Flag("name").Value.String(),
+				cmd.Flag("desc").Value.String()}
+			err := adapter.BuilderRequest(theFlags, "NewApplcmCreateCommand")
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 	}
-
-	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be terminated")
-	cmd.MarkFlagRequired("appid")
-
+	cmd.Flags().StringP("appdid", "i", "", "Application  ID to be created MEP")
+	cmd.Flags().StringP("name", "n", "", "Application Instance Name")
+	cmd.Flags().StringP("desc", "d", "", "Application Instance Descriptor")
+	cmd.MarkFlagRequired("appdid")
+	cmd.MarkFlagRequired("name")
+	cmd.MarkFlagRequired("desc")
 	return cmd
 }

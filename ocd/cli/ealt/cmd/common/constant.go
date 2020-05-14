@@ -13,26 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package init
 
-import (
-	setup "ealt/cmd/setup"
+package common
 
-	"github.com/spf13/cobra"
+const (
+	AppmUri   = "/ealtedge/mepm/app_pkgm/v1/app_packages/"
+	ApplcmUri = "/ealtedge/mepm/app_lcm/v1/app_instances/"
+
+	InstantiateUri = "/instantiate"
+	TerminateUri   = "/terminate"
+
+	PATHSLASH = "/"
 )
-
-func NewInfraCommand() *cobra.Command {
-	var cmd = &cobra.Command{
-		Use:   "infra",
-		Short: "Uninstall only infrastructure components on MECM and Edge Node",
-		Long:  `Command to Uninstall only infrastructure components on MECM and Edge Node For Example : ealt clean  infra`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			err := setup.EaltReset("infra")
-			if err != nil {
-				return err
-			}
-			return nil
-		},
-	}
-	return cmd
-}

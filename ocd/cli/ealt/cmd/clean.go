@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-
 	cleancmds "ealt/cmd/clean"
 	"github.com/spf13/cobra"
 )
@@ -25,7 +24,7 @@ import (
 var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "To uninstall ealt environment or specific component or node.",
-	Long: `To uninstall ealt environment or specific component or node.`,
+	Long:  `To uninstall ealt environment or specific component or node.`,
 }
 
 func init() {

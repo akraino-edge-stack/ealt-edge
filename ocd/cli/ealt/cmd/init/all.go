@@ -16,7 +16,6 @@ limitations under the License.
 package init
 
 import (
-
 	setup "ealt/cmd/setup"
 
 	"github.com/spf13/cobra"

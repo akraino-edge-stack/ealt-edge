@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package applcmpkg
+package appm
 
 import (
 	"ealt/cmd/adapter"
@@ -21,25 +21,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// allCmd represents the all command
-func NewApplcmTerminateCommand() *cobra.Command {
+// deployCmd represents the deploy command
+func NewAppCreateCommand() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:   "kill",
-		Short: "To kill the application ",
-		Long:  `Install Complete EALT Deployment Environment`,
+		Use:   "create",
+		Short: "To create the application on MEP Node",
+		Long:  `To create the application on MEP Node`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var theFlags []string
-			theFlags[0] = cmd.Flag("appid").Value.String()
-			err := adapter.BuilderRequest(theFlags, "NewApplcmTerminateCommand")
+			theFlags[0] = cmd.Flag("packagefile").Value.String()
+			err := adapter.BuilderRequest(theFlags, "NewAppCreateCommand")
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 	}
-
-	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be terminated")
-	cmd.MarkFlagRequired("appid")
-
+	cmd.Flags().StringP("packagefile", "f", "", "Application Package File to be onboarded to MEP")
+	cmd.MarkFlagRequired("packagefile")
 	return cmd
 }

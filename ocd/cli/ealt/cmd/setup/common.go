@@ -18,7 +18,6 @@ limitations under the License.
 // It returns an error if the command outputs anything on the stderr.
 package setup
 
-
 import (
 	"bytes"
 	"fmt"
@@ -89,14 +88,14 @@ func (cm Command) ExecuteCmdShowOutput() error {
 }
 
 func runCommandAtShell(command string) (string, error) {
-    cmd := &Command{Cmd: exec.Command("sh", "-c", command)}
-    err := cmd.ExecuteCmdShowOutput()
-    if err != nil {
-            return "", err
-    }
-    errout := cmd.GetStdErr()
-    if errout != "" {
-            return "", fmt.Errorf("%s", errout)
-    }
-    return cmd.GetStdOutput(), nil
+	cmd := &Command{Cmd: exec.Command("sh", "-c", command)}
+	err := cmd.ExecuteCmdShowOutput()
+	if err != nil {
+		return "", err
+	}
+	errout := cmd.GetStdErr()
+	if errout != "" {
+		return "", fmt.Errorf("%s", errout)
+	}
+	return cmd.GetStdOutput(), nil
 }
