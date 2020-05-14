@@ -16,7 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-
 	initCmds "ealt/cmd/init"
 
 	"github.com/spf13/cobra"
@@ -35,7 +34,7 @@ var initCmd = &cobra.Command{
 
 func init() {
 	//Adding the various sub-commands of init command
-	//Adding all subcommand to init 
+	//Adding all subcommand to init
 	initCmd.AddCommand(initCmds.NewAllCommand())
 	//ealt init infra
 	initCmd.AddCommand(initCmds.NewInfraCommand())

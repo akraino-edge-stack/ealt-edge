@@ -15,10 +15,10 @@ limitations under the License.
 */
 package setup
 
-
 import (
 	"fmt"
 )
+
 func EaltInstall(component string) error {
 	var strEaltSetup string
 	switch component {
@@ -33,7 +33,7 @@ func EaltInstall(component string) error {
 	case "k8s":
 		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"k8s\" --extra-vars \"operation=install\"")
 	case "k3s":
-		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"k3s\" --extra-vars \"operation=install\"")		
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"k3s\" --extra-vars \"operation=install\"")
 	default:
 		fmt.Println("Provide subcommand for ealt init [all|infra|manager|edge|k8s|k3s]")
 	}
@@ -61,7 +61,7 @@ func EaltReset(component string) error {
 	case "k8s":
 		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"k8s\" --extra-vars \"operation=uninstall\"")
 	case "k3s":
-		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"k3s\" --extra-vars \"operation=uninstall\"")		
+		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"k3s\" --extra-vars \"operation=uninstall\"")
 	default:
 		fmt.Println("Provide subcommand for ealt clean [all|infra|manager|edge|k8s|k3s]")
 	}
