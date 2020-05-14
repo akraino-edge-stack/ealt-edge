@@ -20,7 +20,7 @@
   register: result
   ignore_errors: 'True'
 
-- name: "Go to helm ls"
+- name: "Helm ls for list advisor"
   command: helm ls
   when: result is succeeded
 
