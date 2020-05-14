@@ -167,7 +167,7 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	}
 
 	hostIP := req.GetHostIp()
-	s.logger.Info("Recieved instantiate request")
+	s.logger.Infof("Recieved instantiate request")
 
 	// Host validation
 	if (hostIP == "") {
@@ -196,7 +196,7 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 		// Receive chunk and write to helm package
 		chunk := req.GetPackage()
 
-		s.logger.Info("Recieved chunk")
+		s.logger.Infof("Recieved chunk")
 
 		_, err = helmPkg.Write(chunk)
 		if err != nil {
@@ -218,15 +218,16 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 
 	if (err != nil) {
 		res.Status = "Failure"
+		s.logger.Infof("Instantiation Failed")
 	} else {
 		res.Status = "Success"
+		s.logger.Infof("Successful Instantiation")
 	}
 
 	err = stream.SendAndClose(&res)
 	if err != nil {
 		return s.logError(status.Errorf(codes.Unknown, "cannot send response: %v", err))
 	}
-	s.logger.Info("Successful Instantiation")
 	return
 }
 

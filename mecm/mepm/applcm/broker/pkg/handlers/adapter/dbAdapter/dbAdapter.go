@@ -37,7 +37,7 @@ func NewDbAdapter(logger *logrus.Logger) *DbAdapter {
 
 // Creates database
 func (adapter *DbAdapter) CreateDatabase() {
-	adapter.logger.Info("creating Database...")
+	adapter.logger.Infof("creating Database...")
 
 	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
 	host := "@tcp(" + "dbhost" + ":3306)/"
@@ -51,7 +51,7 @@ func (adapter *DbAdapter) CreateDatabase() {
 	db.Exec("USE applcmDB")
 	gorm.DefaultCallback.Create().Remove("mysql:set_identity_insert")
 
-	adapter.logger.Info("Migrating models...")
+	adapter.logger.Infof("Migrating models...")
 	db.AutoMigrate(&model.AppPackageInfo{})
 	db.AutoMigrate(&model.AppInstanceInfo{})
 	adapter.db = db

@@ -2,7 +2,6 @@
 cd ../broker
 . docker-build.sh
 
-
 #helmplugin compile and build docker image
 cd ../k8shelm
 . docker-build.sh

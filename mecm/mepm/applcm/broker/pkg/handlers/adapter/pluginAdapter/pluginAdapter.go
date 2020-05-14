@@ -40,31 +40,31 @@ func NewPluginAdapter(pluginInfo string, logger *logrus.Logger) *PluginAdapter {
 }
 
 // Instantiate application
-func (c *PluginAdapter) Instantiate(pluginInfo string, host string, deployArtifact string) (workloadId string, error error) {
-	c.logger.Info("Instantation started")
-	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
+func (c *PluginAdapter) Instantiate(pluginInfo string, host string, deployArtifact string) (workloadId string, error error, status string) {
+	c.logger.Infof("Instantation started")
+	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate, Logger: c.logger}
 	var client, err = plugin.NewClientGRPC(clientConfig)
 	if err != nil {
 		c.logger.Errorf("failed to create client: %v", err)
-		return "", err
+		return "", err, "Failure"
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
 	defer cancel()
 
 	//Instantiate
-	workloadId, status, err := client.Instantiate(ctx, deployArtifact, host)
+	workloadId, status, err = client.Instantiate(ctx, deployArtifact, host)
 	if err != nil {
 		c.logger.Errorf("server failed to respond %s", err.Error())
-		return "", err
+		return "", err, "Failure"
 	}
-	c.logger.Info("Instantiation success with workloadId %s, status: %s ", workloadId, status)
-	return workloadId, nil
+	c.logger.Infof("Instantiation completed with workloadId %s, status: %s ", workloadId, status)
+	return workloadId, nil, status
 }
 
 // Query application
 func (c *PluginAdapter) Query(pluginInfo string, host string, workloadId string) (status string, error error) {
-	c.logger.Info("Query started")
+	c.logger.Infof("Query started")
 	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
 	var client, err = plugin.NewClientGRPC(clientConfig)
 	if err != nil {
@@ -81,13 +81,13 @@ func (c *PluginAdapter) Query(pluginInfo string, host string, workloadId string)
 		c.logger.Errorf("failed to query: %v", err)
 		return "", err
 	}
-	c.logger.Info("query status: ", status)
+	c.logger.Infof("query status: ", status)
 	return status, nil
 }
 
 // Terminate application
 func (c *PluginAdapter) Terminate(pluginInfo string, host string, workloadId string) (status string, error error) {
-	c.logger.Info("Terminate started")
+	c.logger.Infof("Terminate started")
 	clientConfig := plugin.ClientGRPCConfig{Address: pluginInfo, ChunkSize: chunkSize, RootCertificate: rootCertificate}
 	var client, err = plugin.NewClientGRPC(clientConfig)
 	if err != nil {
@@ -106,6 +106,6 @@ func (c *PluginAdapter) Terminate(pluginInfo string, host string, workloadId str
 		return "Failure", err
 	}
 
-	c.logger.Info("termination success with status: ", status)
+	c.logger.Infof("termination success with status: ", status)
 	return status, nil
 }

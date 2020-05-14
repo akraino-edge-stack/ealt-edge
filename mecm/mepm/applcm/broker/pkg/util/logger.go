@@ -29,6 +29,6 @@ func GetLogger(logFile string, loggerLevel logrus.Level, file *os.File) *logrus.
 		FullTimestamp: true,
 	})
 	logger.SetLevel(loggerLevel)
-	logger.Info("logger created")
+	logger.Infof("logger created")
 	return logger
 }

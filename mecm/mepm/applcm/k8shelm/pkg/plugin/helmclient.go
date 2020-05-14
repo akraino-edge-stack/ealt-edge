@@ -101,7 +101,7 @@ func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
 		hc.logger.Errorf("Unable to install chart with release name: %s. Err: %s", relName, err)
 		return "", err
 	}
-	hc.logger.Info("Successfully create chart with release name: %s", relName)
+	hc.logger.Infof("Successfully create chart with release name: %s", relName)
 	return rel.Name, err
 }
 
@@ -123,7 +123,7 @@ func (hc *HelmClient) uninstallChart(relName string) (error) {
 		hc.logger.Errorf("Unable to uninstall chart with release name: %s. Err: %s", relName, err)
 		return err
 	}
-	hc.logger.Info("Successfully uninstalled chart with release name: %s. Response Info: %s", res.Release.Name, res.Info)
+	hc.logger.Infof("Successfully uninstalled chart with release name: %s. Response Info: %s", res.Release.Name, res.Info)
 	return nil
 }
 

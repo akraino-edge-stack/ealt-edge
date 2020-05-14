@@ -82,7 +82,7 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 		n       int
 		file    *os.File
 	)
-	c.logger.Info("deployArtifact: ", deployArtifact)
+	c.logger.Infof("deployArtifact: ", deployArtifact)
 
 	// Get a file handle for the file we
 	// want to upload
@@ -154,8 +154,8 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 		c.logger.Errorf("failed to receive upstream status response: ", err)
 		return "","Failure", err
 	}
-	c.logger.Info("Instantiation Completed")
-	return res.WorkloadId, res.Status, err
+	c.logger.Infof("Instantiation Completed with workloadId %s and status", res.GetWorkloadId(), res.GetStatus())
+	return res.GetWorkloadId(), res.GetStatus(), err
 }
 
 // Query application

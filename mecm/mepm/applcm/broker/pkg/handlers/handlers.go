@@ -56,7 +56,7 @@ func (hdlr *Handlers) Initialize(logger *logrus.Logger) {
 
 // Run on it's router
 func (hdlr *Handlers) Run(host string) {
-	hdlr.logger.Info("Server is running on port %s", host)
+	hdlr.logger.Infof("Server is running on port %s", host)
 	err := http.ListenAndServe(host, hdlr.router)
 	if err != nil {
 		hdlr.logger.Fatalf("Server couldn't run on port %s", host)

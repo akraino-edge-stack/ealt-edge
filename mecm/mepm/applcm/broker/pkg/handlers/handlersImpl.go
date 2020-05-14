@@ -297,6 +297,7 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 			return
 		}
 		pluginInfo = "helm.plugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
+		impl.logger.Infof("Plugin Info ", pluginInfo)
 	case "kubernetes":
 		pkgPath := PackageFolderPath + packageName + PackageArtifactPath + "Kubernetes"
 		artifact = impl.getDeploymentArtifact(pkgPath, "*.yaml")
@@ -312,7 +313,7 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 	impl.logger.Infof("Artifact to deploy:", artifact)
 
 	adapter := pluginAdapter.NewPluginAdapter(pluginInfo, impl.logger)
-	workloadId, err := adapter.Instantiate(pluginInfo, req.SelectedMECHostInfo.HostID, artifact)
+	workloadId, err, resStatus := adapter.Instantiate(pluginInfo, req.SelectedMECHostInfo.HostID, artifact)
 	if err != nil {
 		st, ok := status.FromError(err)
 		if ok && st.Code() == codes.InvalidArgument {
@@ -322,9 +323,13 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 			respondError(w, http.StatusInternalServerError, err.Error())
 		}
 	}
-	impl.dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
 
-	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(""))
+	if resStatus == "Failure" {
+		respondError(w, http.StatusInternalServerError, err.Error())
+	}
+
+	impl.dbAdapter.UpdateAppInstanceInfoInstStatusHostAndWorkloadId(appInstanceId, "INSTANTIATED", req.SelectedMECHostInfo.HostID, workloadId)
+	respondJSON(w, http.StatusAccepted, json.NewEncoder(w).Encode(workloadId))
 }
 
 // Gets deployment artifact
