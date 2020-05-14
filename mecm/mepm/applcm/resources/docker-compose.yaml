@@ -33,7 +33,7 @@ services:
         max-size: "30m"
         max-file: "5"
   #################################################################################
-  applcm-brk:
+  applcm-broker:
     network_mode: bridge
     image: ealtedge/applcm-broker:latest
     depends_on:
@@ -43,7 +43,7 @@ services:
       - db:dbhost
       - helm-plugin:helm.plugin
     restart: always
-    container_name: applcm-brk
+    container_name: applcm-broker
     environment:
       MYSQL_DATABASE: 'db'
       # So you don't have to use root, but you can if you like
@@ -71,15 +71,23 @@ services:
     image: ealtedge/helmplugin:latest
     restart: always
     container_name: helmplugin
+    environment:
+      HELM_PLUGIN_PORT: '50051'
+      # Log file path, also to match dockerfile
+      LOGFILE_PATH: "/go/release/logfile"
+      LOGGER_LEVEL: "logrus.InfoLevel"
+      CERTIFICATE_PATH: ""
+      KEY_PATH: ""
+      # Temp chart file path, to be created in dockerfile
+      CHART_PATH: "/go/release/charts/"
+      # Kubeconfig based directory path, to be created in dockerfile, to hold kubeconfig of hosts with <host-ip>
+      KUBECONFIG_DIR_PATH: "/go/release/kubeconfig/"
+      # Presently all application to be deployed in same namespace, in future it can be an input while app creation
+      RELEASE_NAMESPACE: "default"
     ports:
       # <Port exposed> : < Applcm helm plugin Port running inside container>
       - '50051:50051'
     expose:
       # Opens port 50051 on the container
-      - '8089'
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-        max-file: "5"
+      - '50051'
 # yamllint enable
