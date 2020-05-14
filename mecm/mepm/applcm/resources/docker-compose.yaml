@@ -5,6 +5,9 @@ networks:
   bridge:
     external: true
 
+volumes:
+  my-db:
+
 services:
   db:
     network_mode: bridge
@@ -46,7 +49,7 @@ services:
       HELM_PLUGIN_PORT: '50051'
       KUBERNETES_PLUGIN_PORT: '50052'
       LOGFILE_PATH: "/go/release/logfile"
-      LOGGER_LEVEL: "logrus.InfoLevel"
+      LOGGER_LEVEL: "info"
       ADDRESS: "0.0.0.0:8081"
       PACKAGE_PATH: "/go/release/application/packages/"
       PACKAGE_ARTIFACT_PATH: "/Artifacts/Deployment/"
@@ -69,7 +72,7 @@ services:
       HELM_PLUGIN_PORT: '50051'
       # Log file path, also to match dockerfile
       LOGFILE_PATH: "/go/release/logfile"
-      LOGGER_LEVEL: "logrus.InfoLevel"
+      LOGGER_LEVEL: "info"
       CERTIFICATE_PATH: ""
       KEY_PATH: ""
       # Temp chart file path, to be created in dockerfile

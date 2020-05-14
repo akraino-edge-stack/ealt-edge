@@ -1,9 +1,12 @@
-AppLcm broker compile and build docker image 
-/applcm/broker/docker-build.sh
+#AppLcm broker compile and build docker image
+cd ../broker
+. docker-build.sh
 
 
-helmplugin compile and build docker image 
-/applcm/k8shelm/docker-build.sh
+#helmplugin compile and build docker image
+cd ../k8shelm
+. docker-build.sh
 
-Run docker images:
-run docker-compose file
+#Run docker images:
+cd ../resources
+sudo docker-compose up -d
