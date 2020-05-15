@@ -24,7 +24,7 @@ metadata:
     app: mep
 spec:
   containers:
-    - image: mep:latest
+    - image: ealtedge/mep:latest
       imagePullPolicy: IfNotPresent
       name: mep-pod
       ports:
