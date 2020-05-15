@@ -13,5 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MEP_VERSION=latest
-docker build --no-cache -t ealtedge/applcm-broker:${MEP_VERSION} -f build/Dockerfile .
+DOCKER_BUILD_DIR=`pwd`
+MECM_VERSION=latest
+IMAGE_NAME=helmplugin
+REPO_NAME=ealtedge
+
+echo "DOCKER_BUILD_DIR=${DOCKER_BUILD_DIR}"
+echo "In Build and Push K8s Help Plugin"
+
+function build_image {
+    docker build --no-cache -t ${REPO_NAME}/${IMAGE_NAME}:${MECM_VERSION} -f build/Dockerfile .
+}
+
+build_image
