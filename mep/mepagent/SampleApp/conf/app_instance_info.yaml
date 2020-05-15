@@ -1,0 +1,63 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+appInstanceId: id12345
+mepServerIP: 192.168.0.101
+mepServerPORT: 30088
+serviceInfoPosts:
+  - serName: ExampleService
+    serInstanceId:
+    serCategory:
+      href: "/example/catalogue1"
+      id: id12345
+      name: RNI
+      version: version1
+    version: ServiceVersion1
+    state: ACTIVE
+    transportId: Rest1
+    transportInfo:
+      id: TransId12345
+      name: REST
+      description: REST API
+      type: REST_HTTP
+      protocol: HTTP
+      version: '2.0'
+      endpoint:
+        uris:
+          - http://ExampleService:30005
+      implSpecificInfo: {}
+    serializer: JSON
+    scopeOfLocality: MEC_SYSTEM
+    consumedLocalOnly: false
+    isLocal: true
+serAvailabilityNotificationSubscriptions:
+  - subscriptionType: SerAvailabilityNotificationSubscription
+    callbackReference: string
+    links:
+      self:
+        href: /mecSerMgmtApi/example
+    filteringCriteria:
+      serInstanceIds:
+        - ServiceInstance123
+      serNames:
+        - ExampleService
+      serCategories:
+        - href: /example/catalogue1
+          id: id12345
+          name: RNI
+          version: version1
+      states:
+        - ACTIVE
+      isLocal: true
