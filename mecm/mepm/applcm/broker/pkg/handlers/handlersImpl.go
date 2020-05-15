@@ -296,7 +296,7 @@ func (impl *HandlerImpl) InstantiateAppInstance(w http.ResponseWriter, r *http.R
 			respondError(w, http.StatusInternalServerError, "artifact not available in application package")
 			return
 		}
-		pluginInfo = "helm.plugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
+		pluginInfo = "helmplugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
 		impl.logger.Infof("Plugin Info ", pluginInfo)
 	case "kubernetes":
 		pkgPath := PackageFolderPath + packageName + PackageArtifactPath + "Kubernetes"
@@ -380,7 +380,7 @@ func (impl *HandlerImpl) QueryAppInstanceInfo(w http.ResponseWriter, r *http.Req
 
 		switch appPackageInfo.DeployType {
 		case "helm":
-			pluginInfo = "helm.plugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
+			pluginInfo = "helmplugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
 		case "kubernetes":
 			pluginInfo = "kubernetes.plugin" + ":" + os.Getenv("KUBERNETES_PLUGIN_PORT")
 		default:
@@ -434,7 +434,7 @@ func (impl *HandlerImpl) TerminateAppInstance(w http.ResponseWriter, r *http.Req
 	var pluginInfo string
 	switch appPackageInfo.DeployType {
 	case "helm":
-		pluginInfo = "helm.plugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
+		pluginInfo = "helmplugin" + ":" + os.Getenv("HELM_PLUGIN_PORT")
 	case "kubernetes":
 		pluginInfo = "kubernetes.plugin" + ":" + os.Getenv("KUBERNETES_PLUGIN_PORT")
 	default:

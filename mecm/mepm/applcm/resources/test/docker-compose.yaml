@@ -38,7 +38,7 @@ services:
       - helm-plugin
     links:
       - db:dbhost
-      - helm-plugin:helm.plugin
+      - helm-plugin:helmplugin
     restart: always
     container_name: applcm-broker
     environment:
