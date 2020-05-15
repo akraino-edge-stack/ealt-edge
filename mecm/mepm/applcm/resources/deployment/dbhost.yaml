@@ -33,31 +33,27 @@ spec:
         dbhost.app: dbhost
     spec:
       containers:
-      - env:
-        - name: MYSQL_DATABASE
-          value: dbhost
-        - name: MYSQL_PASSWORD
-          value: password
-        - name: MYSQL_ROOT_PASSWORD
-          value: password
-        - name: MYSQL_USER
-          value: root
-        image: mysql:5.7
-        imagePullPolicy: ""
-        name: dbhost
-        ports:
-        - containerPort: 3306
-        resources: {}
-        volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: my-db
-      restartPolicy: Always
-      serviceAccountName: ""
+        - image: mysql:5.7
+          imagePullPolicy: IfNotPresent
+          name: dbhost
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: dbhost
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+            - name: MYSQL_USER
+              value: root
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: my-db
       volumes:
-      - name: my-db
-        persistentVolumeClaim:
-          claimName: my-db
-status: {}
+        - name: my-db
+          persistentVolumeClaim:
+            claimName: my-db
 
 # dbhost service
 ---

@@ -31,31 +31,26 @@ spec:
         app.name: helmplugin
     spec:
       containers:
-      - env:
-        - name: CERTIFICATE_PATH
-        - name: CHART_PATH
-          value: /go/release/charts/
-        - name: HELM_PLUGIN_PORT
-          value: "50051"
-        - name: KEY_PATH
-        - name: KUBECONFIG_DIR_PATH
-          value: /go/release/kubeconfig/
-        - name: LOGFILE_PATH
-          value: /go/release/logfile
-        - name: LOGGER_LEVEL
-          value: info
-        - name: RELEASE_NAMESPACE
-          value: default
-        image: ealtedge/helmplugin:latest
-        imagePullPolicy: IfNotPresent
-        name: helmplugin
-        ports:
-        - containerPort: 50051
-        resources: {}
-      restartPolicy: Always
-      serviceAccountName: ""
-      volumes: null
-status: {}
+        - image: ealtedge/helmplugin:latest
+          imagePullPolicy: IfNotPresent
+          name: helmplugin
+          ports:
+            - containerPort: 50051
+          env:
+            - name: CERTIFICATE_PATH
+            - name: CHART_PATH
+              value: /go/release/charts/
+            - name: HELM_PLUGIN_PORT
+              value: "50051"
+            - name: KEY_PATH
+            - name: KUBECONFIG_DIR_PATH
+              value: /go/release/kubeconfig/
+            - name: LOGFILE_PATH
+              value: /go/release/logfile
+            - name: LOGGER_LEVEL
+              value: info
+            - name: RELEASE_NAMESPACE
+              value: default
 
 # helmplugin service
 ---
@@ -72,6 +67,5 @@ spec:
       targetPort: 50051
   selector:
     app.name: helmplugin
-
 status:
   loadBalancer: {}

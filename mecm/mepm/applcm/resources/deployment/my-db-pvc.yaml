@@ -23,8 +23,7 @@ metadata:
   name: my-db
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi
-status: {}

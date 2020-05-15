@@ -31,39 +31,34 @@ spec:
         app.name: applcm-broker
     spec:
       containers:
-      - env:
-        - name: ADDRESS
-          value: 0.0.0.0:8081
-        - name: HELM_PLUGIN_PORT
-          value: "50051"
-        - name: KUBERNETES_PLUGIN_PORT
-          value: "50052"
-        - name: LOGFILE_PATH
-          value: /go/release/logfile
-        - name: LOGGER_LEVEL
-          value: info
-        - name: MYSQL_DATABASE
-          value: db
-        - name: MYSQL_PASSWORD
-          value: password
-        - name: MYSQL_ROOT_PASSWORD
-          value: password
-        - name: MYSQL_USER
-          value: root
-        - name: PACKAGE_ARTIFACT_PATH
-          value: /Artifacts/Deployment/
-        - name: PACKAGE_PATH
-          value: /go/release/application/packages/
-        image: ealtedge/applcm-broker:latest
-        imagePullPolicy: IfNotPresent
-        name: applcm-broker
-        ports:
-        - containerPort: 8081
-        resources: {}
-      restartPolicy: Always
-      serviceAccountName: ""
-      volumes: null
-status: {}
+        - image: ealtedge/applcm-broker:latest
+          imagePullPolicy: IfNotPresent
+          name: applcm-broker
+          ports:
+            - containerPort: 8081
+          env:
+            - name: ADDRESS
+              value: 0.0.0.0:8081
+            - name: HELM_PLUGIN_PORT
+              value: "50051"
+            - name: KUBERNETES_PLUGIN_PORT
+              value: "50052"
+            - name: LOGFILE_PATH
+              value: /go/release/logfile
+            - name: LOGGER_LEVEL
+              value: info
+            - name: MYSQL_DATABASE
+              value: db
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+            - name: MYSQL_USER
+              value: root
+            - name: PACKAGE_ARTIFACT_PATH
+              value: /Artifacts/Deployment/
+            - name: PACKAGE_PATH
+              value: /go/release/application/packages/
 
 # applcm service
 ---
