@@ -18,17 +18,18 @@ package plugin
 import (
 	"bytes"
 	"context"
+	"io"
+	"k8shelm/internal/lcmservice"
+	"net"
+	"os"
+	"strconv"
+
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	_ "google.golang.org/grpc/encoding/gzip"
 	"google.golang.org/grpc/status"
-	"io"
-	"k8shelm/internal/lcmservice"
-	"net"
-	"os"
-	"strconv"
 )
 
 // GRPC server
@@ -109,13 +110,13 @@ func (s *ServerGRPC) Query(ctx context.Context, req *lcmservice.QueryRequest) (r
 	// Create HELM Client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. " +
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. "+
 			"Err: %s", err))
 	}
 
 	// Query Chart
 	r, err := hc.queryChart(req.GetWorkloadId())
-	if (err != nil) {
+	if err != nil {
 		return nil, s.logError(status.Errorf(codes.NotFound, "Chart not found for workloadId: %s. Err: %s",
 			req.GetWorkloadId(), err))
 	}
@@ -135,14 +136,14 @@ func (s *ServerGRPC) Terminate(ctx context.Context, req *lcmservice.TerminateReq
 	// Create HELM client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. " +
+		return nil, s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to given Edge can't be found. "+
 			"Err: %s", err))
 	}
 
 	// Uninstall chart
 	err = hc.uninstallChart(req.GetWorkloadId())
 
-	if (err != nil) {
+	if err != nil {
 		resp = &lcmservice.TerminateResponse{
 			Status: "Failure",
 		}
@@ -170,7 +171,7 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	s.logger.Infof("Recieved instantiate request")
 
 	// Host validation
-	if (hostIP == "") {
+	if hostIP == "" {
 		return s.logError(status.Errorf(codes.InvalidArgument, "HostIP & WorkloadId can't be null", err))
 	}
 
@@ -207,7 +208,7 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	// Create HELM client
 	hc, err := NewHelmClient(req.GetHostIp(), s.logger)
 	if os.IsNotExist(err) {
-		return s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to edge can't be found. " +
+		return s.logError(status.Errorf(codes.InvalidArgument, "Kubeconfig corresponding to edge can't be found. "+
 			"Err: %s", err))
 	}
 
@@ -216,7 +217,7 @@ func (s *ServerGRPC) Instantiate(stream lcmservice.AppLCM_InstantiateServer) (er
 	var res lcmservice.InstantiateResponse
 	res.WorkloadId = relName
 
-	if (err != nil) {
+	if err != nil {
 		res.Status = "Failure"
 		s.logger.Infof("Instantiation Failed")
 	} else {

@@ -19,17 +19,17 @@ package main
 import (
 	"broker/pkg/handlers"
 	"broker/pkg/util"
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Variables to be defined in deployment file
 var (
-	logFile = os.Getenv("LOGFILE_PATH")
-	loggerLevel = os.Getenv("LOGGER_LEVEL")
+	logFile       = os.Getenv("LOGFILE_PATH")
+	loggerLevel   = os.Getenv("LOGGER_LEVEL")
 	applcmAddress = os.Getenv("ADDRESS")
 )
-
 
 func main() {
 	// Prepare logger

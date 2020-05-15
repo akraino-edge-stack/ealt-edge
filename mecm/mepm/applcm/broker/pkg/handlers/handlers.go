@@ -16,26 +16,27 @@
 package handlers
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 // URLS
 const (
-	CreateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances"
-    InstantiateAppInstance = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/instantiate"
-    QueryAppInstanceInfo = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
-    QueryAppLcmOperationStatus = "/ealtedge/mepm/app_lcm/v1/app_lcm_op_occs"
-    TerminateAppIns = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/terminate"
-    DeleteAppInstanceIdentifier = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
-    OnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages"
-    QueryOnboardPackage = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
+	CreateAppInstance           = "/ealtedge/mepm/app_lcm/v1/app_instances"
+	InstantiateAppInstance      = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/instantiate"
+	QueryAppInstanceInfo        = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
+	QueryAppLcmOperationStatus  = "/ealtedge/mepm/app_lcm/v1/app_lcm_op_occs"
+	TerminateAppIns             = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}/terminate"
+	DeleteAppInstanceIdentifier = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
+	OnboardPackage              = "/ealtedge/mepm/app_pkgm/v1/app_packages"
+	QueryOnboardPackage         = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
 )
 
 var (
-	PackageFolderPath = os.Getenv("PACKAGE_PATH")
+	PackageFolderPath   = os.Getenv("PACKAGE_PATH")
 	PackageArtifactPath = os.Getenv("PACKAGE_ARTIFACT_PATH")
 )
 

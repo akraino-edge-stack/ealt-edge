@@ -19,26 +19,26 @@ package plugin
 import (
 	"bytes"
 	"fmt"
+	"os"
+
 	"github.com/sirupsen/logrus"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart/loader"
 	"helm.sh/helm/v3/pkg/kube"
-	"os"
 )
 
 // Variables to be defined in deployment file
 var (
-	chartPath = os.Getenv("CHART_PATH")
-	kubeconfigPath = os.Getenv("KUBECONFIG_DIR_PATH")
+	chartPath        = os.Getenv("CHART_PATH")
+	kubeconfigPath   = os.Getenv("KUBECONFIG_DIR_PATH")
 	releaseNamespace = os.Getenv("RELEASE_NAMESPACE")
 )
 
-
 // Helm client
 type HelmClient struct {
-	hostIP string
+	hostIP     string
 	kubeconfig string
-	logger *logrus.Logger
+	logger     *logrus.Logger
 }
 
 // Constructor of helm client for a given host IP
@@ -48,7 +48,7 @@ func NewHelmClient(hostIP string, logger *logrus.Logger) (*HelmClient, error) {
 	if exists {
 		return &HelmClient{hostIP: hostIP, kubeconfig: kubeconfigPath + hostIP, logger: logger}, nil
 	} else {
-		logger.Errorf("No file exist with name: %s. Err: %s", kubeconfigPath + hostIP)
+		logger.Errorf("No file exist with name: %s. Err: %s", kubeconfigPath+hostIP)
 		return nil, err
 	}
 }
@@ -60,7 +60,7 @@ func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
 	// Create temporary file to hold helm chart
 	file, err := os.Create(chartPath + "temp.tar.gz")
 	if err != nil {
-		hc.logger.Errorf("Unable to create file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		hc.logger.Errorf("Unable to create file: %s. Err: %s", chartPath+"temp.tar.gz", err)
 		return "", err
 	}
 	defer os.Remove(chartPath + "temp.tar.gz")
@@ -68,14 +68,14 @@ func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
 	// Write input bytes to temp file
 	_, err = helmPkg.WriteTo(file)
 	if err != nil {
-		hc.logger.Errorf("Unable to write to file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		hc.logger.Errorf("Unable to write to file: %s. Err: %s", chartPath+"temp.tar.gz", err)
 		return "", err
 	}
 
 	// Load the file to chart
 	chart, err := loader.Load(chartPath + "temp.tar.gz")
 	if err != nil {
-		hc.logger.Errorf("Unable to load chart from file: %s. Err: %s", chartPath + "temp.tar.gz", err)
+		hc.logger.Errorf("Unable to load chart from file: %s. Err: %s", chartPath+"temp.tar.gz", err)
 		return "", err
 	}
 
@@ -106,7 +106,7 @@ func (hc *HelmClient) installChart(helmPkg bytes.Buffer) (string, error) {
 }
 
 // Un-Install a given helm chart
-func (hc *HelmClient) uninstallChart(relName string) (error) {
+func (hc *HelmClient) uninstallChart(relName string) error {
 	// Prepare action config and uninstall chart
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
@@ -118,7 +118,7 @@ func (hc *HelmClient) uninstallChart(relName string) (error) {
 	}
 
 	ui := action.NewUninstall(actionConfig)
-	res, err := ui.Run(relName);
+	res, err := ui.Run(relName)
 	if err != nil {
 		hc.logger.Errorf("Unable to uninstall chart with release name: %s. Err: %s", relName, err)
 		return err
@@ -128,7 +128,7 @@ func (hc *HelmClient) uninstallChart(relName string) (error) {
 }
 
 // Query a given chart
-func (hc *HelmClient) queryChart(relName string) (string, error)  {
+func (hc *HelmClient) queryChart(relName string) (string, error) {
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(kube.GetConfig(hc.kubeconfig, "", releaseNamespace), releaseNamespace,
 		os.Getenv("HELM_DRIVER"), func(format string, v ...interface{}) {

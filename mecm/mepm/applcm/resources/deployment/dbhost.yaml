@@ -51,8 +51,10 @@ spec:
               name: my-db
       volumes:
         - name: my-db
-          persistentVolumeClaim:
-            claimName: my-db
+          hostPath:
+            # data folder needs to be created in host machine
+            path: /data
+
 # dbhost service
 ---
 apiVersion: v1

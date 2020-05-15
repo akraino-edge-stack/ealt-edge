@@ -16,8 +16,9 @@
 package plugin
 
 import (
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 func GetLogger(logFile string, loggerLevel logrus.Level, file *os.File) *logrus.Logger {

@@ -18,20 +18,21 @@ package pluginAdapter
 import (
 	"broker/pkg/plugin"
 	"context"
-	"github.com/sirupsen/logrus"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
-	chunkSize = 1024
-	rootCertificate  = ""
+	chunkSize       = 1024
+	rootCertificate = ""
 )
 
 // Plugin adapter which decides a specific client based on plugin info
 // TODO PluginInfo to have other information about plugins to find the client and implementation to handle accordingly.
 type PluginAdapter struct {
 	pluginInfo string
-	logger *logrus.Logger
+	logger     *logrus.Logger
 }
 
 // Constructor of PluginAdapter

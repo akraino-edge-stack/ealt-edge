@@ -23,6 +23,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/buger/jsonparser"
 	"github.com/ghodss/yaml"
 	"github.com/google/uuid"
@@ -30,18 +37,12 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 // Handler of REST APIs
 type HandlerImpl struct {
-	logger     *logrus.Logger
-	dbAdapter  *dbAdapter.DbAdapter
+	logger    *logrus.Logger
+	dbAdapter *dbAdapter.DbAdapter
 }
 
 // Creates handler implementation

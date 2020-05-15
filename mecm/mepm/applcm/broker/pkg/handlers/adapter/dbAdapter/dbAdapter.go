@@ -17,9 +17,10 @@ package dbAdapter
 
 import (
 	"broker/pkg/handlers/model"
+	"os"
+
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
-	"os"
 )
 
 // DB name
@@ -42,7 +43,7 @@ func (adapter *DbAdapter) CreateDatabase() {
 	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
 	host := "@tcp(" + "dbhost" + ":3306)/"
 
-	db, err := gorm.Open("mysql", usrpswd + host)
+	db, err := gorm.Open("mysql", usrpswd+host)
 	if err != nil {
 		adapter.logger.Fatalf("Database connect error", err.Error())
 	}
@@ -69,7 +70,7 @@ func (adapter *DbAdapter) GetAppInstanceInfo(key string) (appInstInfo model.AppI
 	adapter.logger.Infof("Get App Instance Info %s", key)
 	var appInstanceInfo model.AppInstanceInfo
 	returnVal := adapter.db.First(&appInstanceInfo, "id=?", key).Error
-	if returnVal !=  nil {
+	if returnVal != nil {
 		return
 	}
 
@@ -114,7 +115,7 @@ func (adapter *DbAdapter) GetAppPackageInfo(key string) (appPackageInfo model.Ap
 	adapter.logger.Infof("Get App Package Info: %s", key)
 	var appPkgInfo model.AppPackageInfo
 	err := adapter.db.First(&appPkgInfo, "id=?", key).Error
-	if err !=  nil {
+	if err != nil {
 		return
 	}
 	return appPkgInfo

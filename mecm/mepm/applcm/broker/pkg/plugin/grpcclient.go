@@ -18,13 +18,14 @@ package plugin
 
 import (
 	"broker/internal/lcmservice"
+	"io"
+	"os"
+
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	_ "google.golang.org/grpc/encoding/gzip"
-	"io"
-	"os"
 )
 
 // GRPC client to different GRPC supported plugins
@@ -89,7 +90,7 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 	file, err := os.Open(deployArtifact)
 	if err != nil {
 		c.logger.Errorf("failed to open package file: %s. Err: %s", deployArtifact, err.Error())
-		return "","Failure", err
+		return "", "Failure", err
 	}
 	defer file.Close()
 
@@ -99,7 +100,7 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 
 	if err != nil {
 		c.logger.Errorf("failed to upload stream: %s. Err: %s", deployArtifact, err.Error())
-		return "","Failure", err
+		return "", "Failure", err
 	}
 	defer stream.CloseSend()
 
@@ -107,14 +108,14 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 	req := &lcmservice.InstantiateRequest{
 
 		Data: &lcmservice.InstantiateRequest_HostIp{
-			HostIp:  hostIP,
+			HostIp: hostIP,
 		},
 	}
 
 	err = stream.Send(req)
 	if err != nil {
 		c.logger.Errorf("failed to send metadata information: ", deployArtifact)
-		return "","Failure", err
+		return "", "Failure", err
 	}
 
 	// Allocate a buffer with `chunkSize` as the capacity
@@ -132,11 +133,11 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 				continue
 			}
 			c.logger.Errorf("errored while copying from file to buf: ", err)
-			return "","Failure", err
+			return "", "Failure", err
 		}
 
-		req := &lcmservice.InstantiateRequest {
-			Data: &lcmservice.InstantiateRequest_Package {
+		req := &lcmservice.InstantiateRequest{
+			Data: &lcmservice.InstantiateRequest_Package{
 				Package: buf[:n],
 			},
 		}
@@ -145,14 +146,14 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 
 		if err != nil {
 			c.logger.Errorf("failed to send chunk via stream: ", err)
-			return "","Failure", err
+			return "", "Failure", err
 		}
 	}
 
 	res, err := stream.CloseAndRecv()
 	if err != nil {
 		c.logger.Errorf("failed to receive upstream status response: ", err)
-		return "","Failure", err
+		return "", "Failure", err
 	}
 	c.logger.Infof("Instantiation Completed with workloadId %s and status", res.GetWorkloadId(), res.GetStatus())
 	return res.GetWorkloadId(), res.GetStatus(), err
@@ -162,7 +163,7 @@ func (c *ClientGRPC) Instantiate(ctx context.Context, deployArtifact string, hos
 func (c *ClientGRPC) Query(ctx context.Context, hostIP string, workloadId string) (status string, error error) {
 
 	req := &lcmservice.QueryRequest{
-		HostIp: hostIP,
+		HostIp:     hostIP,
 		WorkloadId: workloadId,
 	}
 	resp, err := c.client.Query(ctx, req)
@@ -176,7 +177,7 @@ func (c *ClientGRPC) Query(ctx context.Context, hostIP string, workloadId string
 func (c *ClientGRPC) Terminate(ctx context.Context, hostIP string, workloadId string) (status string, error error) {
 
 	req := &lcmservice.TerminateRequest{
-		HostIp: hostIP,
+		HostIp:     hostIP,
 		WorkloadId: workloadId,
 	}
 	resp, err := c.client.Terminate(ctx, req)
