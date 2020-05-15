@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "776ecc23_f14de70f",
+        "filename": "ocd/cli/ealt/cmd/applcm.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-05-15T00:55:49Z",
+      "side": 1,
+      "message": "white space at the end of this line",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 1
+      },
+      "revId": "6bdb2a35fc3ae61b128e8d1dd011771b9b0c149e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
