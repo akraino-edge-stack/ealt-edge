@@ -13,8 +13,19 @@
 # limitations under the License.
 
 ---
+
+- hosts: infra-k8s
+  become: yes
+  tags:
+  - k8s
+  - infra
+  - mecm
+
+  roles:
+  - k8s
+
 - hosts: infra-k3s
-  become: true
+  become: yes
   tags:
   - k3s
   - infra
@@ -22,3 +33,36 @@
 
   roles:
   - k3s
+
+- hosts: infra-helm
+  become: yes
+  tags:
+  - helm
+
+  roles:
+  - helm
+
+- hosts: mecm
+  become: yes
+  tags:
+  - infra
+  - infra-mecm
+  - mecm
+
+  roles:
+  - helm
+  - grafana
+
+- hosts: mep
+  become: yes
+  tags:
+  - infra
+  - infra-mep
+  - mep
+
+  roles:
+  - k3s
+  - helm
+  - rabbitmq
+  - cAdvisor
+  - prometheus
