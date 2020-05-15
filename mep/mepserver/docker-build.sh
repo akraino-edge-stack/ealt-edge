@@ -14,4 +14,4 @@
 # limitations under the License.
 
 MEP_VERSION=latest
-docker build --no-cache -t mep:${MEP_VERSION} -f docker/Dockerfile .
+docker build --no-cache -t ealtedge/mep:${MEP_VERSION} -f docker/Dockerfile .
