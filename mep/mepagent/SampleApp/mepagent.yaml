@@ -12,24 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mepagent
   namespace: mep
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mepagent
-  replicas: 1 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
         app: mepagent
     spec:
       containers:
-      - name: mepagent
-        image: mepagent:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
+        -
+          image: "mepagent:latest"
+          imagePullPolicy: IfNotPresent
+          name: mepagent
+          ports:
+            -
+              containerPort: 80
