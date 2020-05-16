@@ -15,3 +15,4 @@
 
 kubectl create namespace mep
 kubectl create secret --namespace mep generic mepssl-secret --from-file=server.cer --from-file=server_key.pem --from-file=trust.cer
+kubectl create secret --namespace mep generic kongssl-secret --from-file=server.cer --from-file=server_key.pem --from-file=trust.cer

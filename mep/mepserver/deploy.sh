@@ -17,5 +17,5 @@
 
  kubectl apply -f mep-basic.yaml
  kubectl apply -f postgres-k8s.yaml
-# kubectl apply -f kong-k8s.yaml
+ kubectl apply -f kong-k8s.yaml
  kubectl apply -f mep-k8s.yaml

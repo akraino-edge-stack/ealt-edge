@@ -15,6 +15,6 @@
 
 
  kubectl delete -f mep-k8s.yaml
-# kubectl delete -f kong-k8s.yaml
+ kubectl delete -f kong-k8s.yaml
  kubectl delete -f postgres-k8s.yaml
  kubectl delete -f mep-basic.yaml
