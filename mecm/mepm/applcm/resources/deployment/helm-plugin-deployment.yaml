@@ -1,0 +1,68 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# yamllint disable
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: helm-plugin
+  name: helm-plugin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: helm-plugin
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: helm-plugin
+    spec:
+      containers:
+      - env:
+        - name: CERTIFICATE_PATH
+        - name: CHART_PATH
+          value: /go/release/charts/
+        - name: HELM_PLUGIN_PORT
+          value: "50051"
+        - name: KEY_PATH
+        - name: KUBECONFIG_DIR_PATH
+          value: /go/release/kubeconfig/
+        - name: LOGFILE_PATH
+          value: /go/release/logfile
+        - name: LOGGER_LEVEL
+          value: info
+        - name: RELEASE_NAMESPACE
+          value: default
+        image: ealtedge/helmplugin:latest
+        imagePullPolicy: ""
+        name: helmplugin
+        ports:
+        - containerPort: 50051
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
+
+# yamllint enable

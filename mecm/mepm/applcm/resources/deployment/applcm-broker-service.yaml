@@ -11,18 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# pvc
----
+
+# yamllint disable
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: Service
 metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
   labels:
-    pvc.service: my-db
-  name: my-db
+    io.kompose.service: applcm-broker
+  name: applcm-broker
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
+  type: NodePort
+  ports:
+  - name: "28081"
+    port: 8081
+    targetPort: 8081
+    nodePort: 30001
+  selector:
+    io.kompose.service: applcm-broker
+status:
+  loadBalancer: {}
+
+# yamllint enable
