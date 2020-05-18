@@ -64,6 +64,7 @@ spec:
       - name: my-db
         hostPath:
           path: /data
+          type: DirectoryOrCreate
 status: {}
 
 # yamllint enable

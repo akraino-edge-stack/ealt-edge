@@ -60,9 +60,16 @@ spec:
         ports:
         - containerPort: 50051
         resources: {}
+        volumeMounts:
+          - mountPath: /go/release/kubeconfig/
+            name: config-dir
       restartPolicy: Always
       serviceAccountName: ""
-      volumes: null
+      volumes:
+        - name: config-dir
+          hostPath:
+            path: /kubeconfig
+            type: DirectoryOrCreate
 status: {}
 
 # yamllint enable
