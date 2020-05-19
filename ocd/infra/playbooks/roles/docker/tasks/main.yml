@@ -13,57 +13,13 @@
 # limitations under the License.
 
 ---
+# tasks file for docker
+- name: Helm install
+  debug:
+    msg: installing helm
 
-- hosts: infra-k8s
-  become: yes
-  tags:
-  - k8s
-  - infra
-  - mecm
+- include: "install.yml"
+  when: operation == 'install'
 
-  roles:
-  - k8s
-
-- hosts: infra-k3s
-  become: yes
-  tags:
-  - k3s
-  - infra
-  - mep
-
-  roles:
-  - k3s
-
-- hosts: infra-helm
-  become: yes
-  tags:
-  - helm
-
-  roles:
-  - helm
-
-- hosts: mecm
-  become: yes
-  tags:
-  - infra
-  - infra-mecm
-  - mecm
-
-  roles:
-  - helm
-  - grafana
-
-- hosts: mep
-  become: yes
-  tags:
-  - infra
-  - infra-mep
-  - mep
-
-  roles:
-  - docker
-  - k3s
-  - helm
-  - rabbitmq
-  - cAdvisor
-  - prometheus
+- include: "uninstall.yml"
+  when: operation == 'uninstall'
