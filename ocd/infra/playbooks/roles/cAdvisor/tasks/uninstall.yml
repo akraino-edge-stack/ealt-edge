@@ -18,7 +18,15 @@
   shell:
     cmd: helm status cadvisor
   register: result
-  ignore_errors: 'True'
+  failed_when: false
+  no_log: True
+
+- debug:
+    msg: cAdvisor is not present
+  when: result.rc == 2
+
+- meta: end_play
+  when: result.rc == 2
 
 - name: "If cAdvisor present, then list helm ls"
   command: helm ls

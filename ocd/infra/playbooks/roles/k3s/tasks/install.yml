@@ -17,7 +17,15 @@
   shell:
     cmd: which k3s
   register: result
-  ignore_errors: true
+  failed_when: false
+  no_log: True
+
+- debug:
+    msg: k3s is already present
+  when: result.rc == 0
+
+- meta: end_play
+  when: result.rc == 0
 
 - debug: var=ansible_host
 
