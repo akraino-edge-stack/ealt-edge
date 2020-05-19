@@ -14,9 +14,18 @@
 
 ---
 # tasks file for k8s
-- name: debug msg
-  debug:
-    msg: installing k8s
+- name: Check whether k8s is already installed
+  command: which k8s
+  register: result
+  failed_when: false
+  no_log: True
+
+- debug:
+    msg: k8s is already present
+  when: result.rc == 0
+
+- meta: end_play
+  when: result.rc == 0
 
 - name: Install k8s
   shell:
