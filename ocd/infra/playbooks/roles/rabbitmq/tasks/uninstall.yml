@@ -17,7 +17,15 @@
   shell:
     cmd: kubectl get pods rabbitmq-0
   register: result
-  ignore_errors: true
+  failed_when: false
+  no_log: True
+
+- debug:
+   msg: Rabbitmq is not present
+  when: result.rc == 2
+
+- meta: end_play
+  when: result.rc == 2
 
 - name: Uninstalling rabbitmq
   shell:

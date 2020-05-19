@@ -17,7 +17,15 @@
   shell:
     cmd: helm status mep-prometheus
   register: result
-  ignore_errors: true
+  failed_when: false
+  no_log: True
+
+- debug:
+    msg: Prpmetheus is already present
+  when: result.rc == 0
+
+- meta: end_play
+  when: result.rc == 0
 
 - name: Install prometheus on x86_64
   shell:
