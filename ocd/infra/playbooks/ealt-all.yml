@@ -52,6 +52,9 @@
   roles:
   - helm
   - grafana
+  - kubeconfig
+  - mepconfig
+  - applcm
 
 - hosts: mep
   become: yes
@@ -61,9 +64,16 @@
   - mep
 
   roles:
-  - docker
   - k3s
   - helm
   - rabbitmq
-  - cAdvisor
   - prometheus
+  - kubeconfig
+
+- hosts: mepautomate
+  become: yes
+  tags:
+  - mepautomate
+
+  roles:
+  - mepserver
