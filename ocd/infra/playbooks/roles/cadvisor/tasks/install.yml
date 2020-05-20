@@ -13,52 +13,12 @@
 # limitations under the License.
 
 ---
+- name: copy deploy folder to mep node to install mepserver
+  copy:
+    src: dep.yaml
+    dest: /tmp/cadvisor/
 
-- hosts: mecm
-  become: yes
-  tags:
-  - infra
-  - infra-mecm
-
-  roles:
-  - grafana
-  - helm
-
-- hosts: mep
-  become: yes
-  tags:
-  - infra
-  - infra-mep
-
-  roles:
-  - rabbitmq
-  - cadvisor
-  - prometheus
-  - helm
-  - k3s
-
-- hosts: infra-helm
-  become: yes
-  tags:
-  - helm
-
-  roles:
-  - helm
-
-- hosts: infra-k8s
-  become: yes
-  tags:
-  - k8s
-  - infra
-
-  roles:
-  - k8s
-
-- hosts: infra-k3s
-  become: yes
-  tags:
-  - k3s
-  - infra
-
-  roles:
-  - k3s
+- name: Installation of  cadvisor
+  shell:
+    cmd: kubectl apply -f /tmp/cadvisor/dep.yaml
+  ignore_errors: 'True'

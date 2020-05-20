@@ -13,25 +13,14 @@
 # limitations under the License.
 
 ---
-
-- name: check if cadvisor is installed before deleting
+- name: check if cadvisor is installed before removing
   shell:
-    cmd: helm status cadvisor
+    cmd: kubectl get pods | grep cadvisor
   register: result
-  failed_when: false
-  no_log: True
+  ignore_errors: 'True'
 
-- debug:
-    msg: cAdvisor is not present
-  when: result.rc == 2
-
-- meta: end_play
-  when: result.rc == 2
-
-- name: "If cAdvisor present, then list helm ls"
-  command: helm ls
+- name: Uninstallation of cadvisor
+  shell:
+    cmd: kubectl delete -f /tmp/cadvisor/dep.yaml
   when: result is succeeded
-
-- name: "Uninstall cadvisor"
-  command: helm delete cadvisor
-  when: result is succeeded
+  ignore_errors: 'True'

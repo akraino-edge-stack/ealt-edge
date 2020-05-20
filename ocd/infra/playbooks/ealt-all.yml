@@ -69,6 +69,7 @@
   - rabbitmq
   - prometheus
   - kubeconfig
+  - cadvisor
 
 - hosts: mepautomate
   become: yes
