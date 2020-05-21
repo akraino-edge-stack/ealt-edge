@@ -17,14 +17,11 @@
   shell:
     cmd: which k3s
   register: result
-  failed_when: false
+  ignore_errors: yes
   no_log: True
 
 - debug:
     msg: k3s is not present
-  when: result.rc == 2
-
-- meta: end_play
   when: result.rc == 2
 
 - name: kill k3s

@@ -16,14 +16,11 @@
 - name: Check whether docker is installed before deleting
   command: docker version
   register: result
-  failed_when: false
+  ignore_errors: yes
   no_log: True
 
 - debug:
     msg: Docker is not present
-  when: result.rc == 2
-
-- meta: end_play
   when: result.rc == 2
 
 - name: "Uninstall docker engine"

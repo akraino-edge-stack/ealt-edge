@@ -16,14 +16,11 @@
 - name: check whether helm is already installed
   command: which helm
   register: result
-  failed_when: false
+  ignore_errors: yes
   no_log: True
 
 - debug:
     msg: Helm is already present
-  when: result.rc == 0
-
-- meta: end_play
   when: result.rc == 0
 
 - name: "Helm download command on x86_64"

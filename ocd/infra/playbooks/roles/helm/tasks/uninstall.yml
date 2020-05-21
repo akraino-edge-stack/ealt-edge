@@ -16,14 +16,11 @@
 - name: check whether helm is installed before deleting
   command: which helm
   register: result
-  failed_when: false
+  ignore_errors: yes
   no_log: True
 
 - debug:
    msg: Helm is not present
-  when: result.rc == 2
-
-- meta: end_play
   when: result.rc == 2
 
 - name: Helm Uninstall on x86_64

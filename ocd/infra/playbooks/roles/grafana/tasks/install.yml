@@ -17,14 +17,11 @@
   shell:
     cmd: helm status mec-grafana
   register: result
-  failed_when: false
+  ignore_errors: yes
   no_log: True
 
 - debug:
     msg: Grafana is already present
-  when: result.rc == 0
-
-- meta: end_play
   when: result.rc == 0
 
 - name: Install grafana on x86_64
