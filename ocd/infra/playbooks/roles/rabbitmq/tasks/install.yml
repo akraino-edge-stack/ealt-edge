@@ -21,8 +21,14 @@
   no_log: True
 
 - debug:
-    msg: Rabbitmq is already present
-  when: result.rc == 0
+    msg: rabbitmq is already present
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , rabbitmq not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
 
 - name: copy common folder to host for rabbitmg installation
   copy:

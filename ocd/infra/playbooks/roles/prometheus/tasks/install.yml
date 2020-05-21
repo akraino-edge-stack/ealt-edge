@@ -21,8 +21,14 @@
   no_log: True
 
 - debug:
-    msg: Prpmetheus is already present
-  when: result.rc == 0
+    msg: prometheus is already present
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , prometheus not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
 
 - name: Install prometheus on x86_64
   shell:

@@ -22,7 +22,13 @@
 
 - debug:
     msg: k3s is already present
-  when: result.rc == 0
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , k3s not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
 
 - debug: var=ansible_host
 

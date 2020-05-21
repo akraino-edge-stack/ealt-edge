@@ -22,7 +22,13 @@
 
 - debug:
     msg: k8s is already present
-  when: result.rc == 0
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , k8s not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
 
 - name: Install k8s
   shell:
