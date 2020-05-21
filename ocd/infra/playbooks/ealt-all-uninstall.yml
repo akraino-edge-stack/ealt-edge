@@ -24,6 +24,14 @@
   - grafana
   - helm
 
+- hosts: mepautomate
+  become: yes
+  tags:
+  - mepautomate
+
+  roles:
+  - mepserver
+
 - hosts: mep
   become: yes
   tags:
