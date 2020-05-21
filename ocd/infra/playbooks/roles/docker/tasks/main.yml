@@ -14,10 +14,6 @@
 
 ---
 # tasks file for docker
-- name: Helm install
-  debug:
-    msg: installing helm
-
 - include: "install.yml"
   when: operation == 'install'
 

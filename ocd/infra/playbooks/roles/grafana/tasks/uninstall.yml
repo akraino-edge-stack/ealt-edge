@@ -21,8 +21,12 @@
   no_log: True
 
 - debug:
-    msg: grafana is not present
-  when: result.rc == 2
+    msg: Uninstalling docker...
+  when: result.stdout != ""
+
+- debug:
+    msg: Ignore Uninstall Log , Grafana not installed
+  when: result.stdout == ""
 
 - name: Uninstall grafana
   shell:

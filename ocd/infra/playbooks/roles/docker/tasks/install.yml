@@ -21,7 +21,13 @@
 
 - debug:
     msg: Docker is already present
-  when: result.rc == 0
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , Docker not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
 
 - name: "Installing docker update"
   command: apt-get update -y
@@ -34,9 +40,11 @@
   command: apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 # yamllint disable rule:line-length
   ignore_errors: yes
+  when: result is failed and ansible_architecture == 'aarch64'
 
 - name: Add repository
   shell: curl -sL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  when: result is failed and ansible_architecture == 'aarch64'
 
 - name: "CA-Certificates"
 # yamllint disable rule:line-length
@@ -45,13 +53,16 @@
   ignore_errors: yes
   failed_when: false
   no_log: True
+  when: result is failed and ansible_architecture == 'aarch64'
 
 - name: "Update....."
   command: apt-get update -y
   ignore_errors: yes
   failed_when: false
   no_log: True
+  when: result is failed and ansible_architecture == 'aarch64'
 
 - name: "Installed docker"
   command: apt-get install -y docker-ce docker-ce-cli containerd.io
   ignore_errors: yes
+  when: result is failed and ansible_architecture == 'aarch64'

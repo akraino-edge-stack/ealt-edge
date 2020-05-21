@@ -20,8 +20,12 @@
   no_log: True
 
 - debug:
-   msg: Helm is not present
-  when: result.rc == 2
+    msg: Uninstalling helm...
+  when: result.stdout != ""
+
+- debug:
+    msg: Ignore Uninstall Log ,Helm not installed
+  when: result.stdout == ""
 
 - name: Helm Uninstall on x86_64
   command: rm -rf linux-amd64/helm

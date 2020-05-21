@@ -20,8 +20,14 @@
   no_log: True
 
 - debug:
-    msg: Helm is already present
-  when: result.rc == 0
+    msg: helm is already present
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , Helm not installed continue with Installation
+# yamllint disable rule:line-length 
+  when: result.stdout == ""
 
 - name: "Helm download command on x86_64"
   command: wget https://get.helm.sh/helm-v3.0.2-linux-amd64.tar.gz

@@ -21,8 +21,14 @@
   no_log: True
 
 - debug:
-    msg: Grafana is already present
-  when: result.rc == 0
+    msg: grafana is already present
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , Grafana not installed continue with Installation
+# yamllint disable rule:line-length 
+  when: result.stdout == ""
 
 - name: Install grafana on x86_64
   shell:
