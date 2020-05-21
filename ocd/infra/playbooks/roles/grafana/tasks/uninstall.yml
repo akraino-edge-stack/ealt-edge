@@ -13,21 +13,6 @@
 # limitations under the License.
 
 ---
-- name: check if grafana is installed before deleting
-  shell:
-    cmd: helm status mec-grafana
-  register: result
-  ignore_errors: yes
-  no_log: True
-
-- debug:
-    msg: Uninstalling docker...
-  when: result.stdout != ""
-
-- debug:
-    msg: Ignore Uninstall Log , Grafana not installed
-  when: result.stdout == ""
-
 - name: Uninstall grafana
   shell:
     cmd: helm uninstall mec-grafana
