@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[mecm]
-controller1 ansible_host="" ansible_user="" ansible_password=""
+---
+- name: Uninstalling mepserver
+  shell:
+    cmd: echo "Reseting the mepserver"
 
-[mep]
-edge1 ansible_host="" ansible_user="" ansible_password=""
+- name: Remove the Deployment of mepserver
+  shell:
+    cmd: kubectl delete namespace mep
+  ignore_errors: 'True'
 
-[infra-k8s]
-ocdhost ansible_host="" ansible_user="" ansible_password=""
 
-[infra-helm:children]
-mecm
-mep
+- name: Remove the Deployment of mepserver
+  shell:
+    cmd: kubectl delete -f /tmp/mepserver/deploy
+  ignore_errors: 'True'
 
-[infra-k3s:children]
-mep
-
-[mepautomate:children]
-mep

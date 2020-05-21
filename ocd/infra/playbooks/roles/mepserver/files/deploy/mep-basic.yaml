@@ -12,21 +12,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[mecm]
-controller1 ansible_host="" ansible_user="" ansible_password=""
 
-[mep]
-edge1 ansible_host="" ansible_user="" ansible_password=""
+# mep namespace
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mep
 
-[infra-k8s]
-ocdhost ansible_host="" ansible_user="" ansible_password=""
+# persitent volume
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-volume
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
 
-[infra-helm:children]
-mecm
-mep
-
-[infra-k3s:children]
-mep
-
-[mepautomate:children]
-mep
+# pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  namespace: mep
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
