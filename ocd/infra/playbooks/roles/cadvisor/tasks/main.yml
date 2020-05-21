@@ -16,10 +16,6 @@
 
 # tasks file for cAdvisor
 
-- name: Install cAdvisor
-  debug:
-    msg: installing cAdvisor
-
 - include: "install.yml"
   when: operation == 'install'
 

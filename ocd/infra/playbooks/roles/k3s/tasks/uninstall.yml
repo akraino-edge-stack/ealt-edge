@@ -13,21 +13,6 @@
 # limitations under the License.
 
 ---
-- name: check whether k3s is already installed
-  shell:
-    cmd: which k3s
-  register: result
-  ignore_errors: yes
-  no_log: True
-
-- debug:
-    msg: Uninstalling k3s...
-  when: result.stdout != ""
-
-- debug:
-    msg: Ignore Uninstall Log , K3s not installed
-  when: result.stdout == ""
-
 - name: kill k3s
   shell:
     cmd: k3s-killall.sh

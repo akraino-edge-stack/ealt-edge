@@ -13,23 +13,6 @@
 # limitations under the License.
 
 ---
-- name: check if grafana is already installed
-  shell:
-    cmd: helm status mec-grafana
-  register: result
-  ignore_errors: yes
-  no_log: True
-
-- debug:
-    msg: grafana is already present
-  when: result.stdout != ""
-
-- debug:
-# yamllint disable rule:line-length
-    msg: Ignore Uninstall Log , Grafana not installed continue with Installation
-# yamllint disable rule:line-length
-  when: result.stdout == ""
-
 - name: Install grafana on x86_64
   shell:
     cmd: helm install mec-grafana stable/grafana
