@@ -29,29 +29,29 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
-- name: "Uninstall docker engine"
+- name: "UNINSTALL: Uninstall docker engine"
   command: apt-get purge -y docker-engine
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'
 
-- name: "Uninstall docker"
+- name: "UNINSTALL: Uninstall docker"
   command: apt-get purge -y docker
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'
   #when: result is succeeded and ansible_architecture == 'x86_64'
 
-- name: "Uninstall docker.io"
+- name: "UNINSTALL: Uninstall docker.io"
   command: apt-get purge -y docker.io
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'
 
-- name: "Uninstall docker-ce"
+- name: "UNINSTALL: Uninstall docker-ce"
   command: apt-get purge -y docker-ce
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'
   #when: result is succeeded and ansible_architecture == 'aarch64'
 
-- name: "Uninstall docker"
+- name: "UNINSTALL: Uninstall docker"
   command: apt-get purge -y docker-ce-cli
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'

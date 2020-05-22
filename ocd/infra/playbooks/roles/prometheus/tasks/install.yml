@@ -30,18 +30,18 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
-- name: Install prometheus on x86_64
+- name: "INSTALL: Install prometheus on x86_64"
   shell:
     cmd: helm install mep-prometheus stable/prometheus --version v9.3.1
   when: result is failed and ansible_architecture == 'x86_64'
 
-- name: copy values.yaml to host
+- name: "INSTALL: copy values.yaml to host"
   copy:
     src: values.yaml
     dest: /tmp/prometheus/
   when: result is failed and ansible_architecture == 'aarch64'
 
-- name: Install prometheus on aarch64
+- name: "INSTALL: Install prometheus on aarch64"
   shell:
     cmd: 'helm install mep-prometheus
     stable/prometheus -f /tmp/prometheus/values.yaml --version v9.3.1'
