@@ -55,10 +55,18 @@
   register: ifName
   when: result is failed
 
+# yamllint disable rule:line-length
 - name: install k3s
   shell:
-    cmd: curl -sfL https://get.k3s.io | sh -
+    cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip={{ ansible_host }} --node-external-ip={{ ansible_host }} --bind-address={{ ansible_host }} --flannel-iface=eth0 --docker --no-deploy=servicelb --no-deploy=traefik --write-kubeconfig-mode 644 --kube-apiserver-arg="service-node-port-range=30000-36000"" sh -
   when: result is failed
+
+# yamllint disable rule:line-length
+
+#- name: install k3s
+# shell:
+#    cmd: curl -sfL https://get.k3s.io | sh -
+#  when: result is failed
 
 - name: create .kube dir
   shell:
