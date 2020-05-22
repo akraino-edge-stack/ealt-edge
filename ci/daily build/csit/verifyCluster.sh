@@ -37,34 +37,70 @@ spec:
 EOF
 
 CLUSTER_INFO=$(kubectl cluster-info)
-RUNNING_PODS_COUNT=$(kubectl get pods | grep -c -e STATUS -e Running)
+
+count=0
+total=2
+result_nginx="failure"
+result_pods="failure"
 
 if [[ $CLUSTER_INFO != "" ]]; then
    kubectl create -f ~/testk8s-kubernetes.yaml
+   count=$((count+1))
 else
    echo "No kubernetes cluster present"
 fi
 
-sleep 60
+sleep 20
 
 echo "Kubectl deployments........................................."
 kubectl get deployments
 
-echo "Kubectl pods in default namespace............................"
+echo "Test Case: Nginx-Deployment started"
+
+DEPLOY_CONDIT=$(kubectl get pods \
+              --field-selector=status.phase==Running \
+              | grep kubernets-deployment \
+              | grep -c Running)
+
+if [[ $DEPLOY_CONDIT == 1 ]]; then
+   result_nginx="success";
+   echo $result_nginx
+fi
+
+echo "Kubectl pods in default namespace................................."
 kubectl get pods
 
 echo "-------------------------------------------------------------------"
 echo "-------------------------------------------------------------------"
 
-sleep 60
+sleep 20
 
-echo "Checking for Pods not in running status in default namespace"
+echo "Test Case: Pods status check started"
 
-if [[ $RUNNING_PODS_COUNT > 0 ]]; then
-   kubectl get pods --field-selector=status.phase!=Running
+PODS_NOT_RUN_COUNT=$(kubectl get pods \
+                    --field-selector=status.phase!=Running \
+                    | grep -c STATUS)
+
+if [[ $PODS_NOT_RUN_COUNT > 0 ]]; then > /dev/null 2>&1
+   result_pods="failure";
+   count=$((count+1))
 else
-   echo "No Pods are presently running"
+   count=$((count+1))
+   result_pods="success";
+   echo $result_pods
 fi
 
+
 echo "-------------------------------------------------------------------"
+echo "|                        Total CSIT Tests: $count                      |"
+echo "|-----------------------------------------------------------------|"
+echo "|           TEST CASE NAME          |           RESULT            |"
+echo "|-----------------------------------------------------------------|"
+echo "|                                   |                             |"
+echo "|          Nginx-Deployment         |           $result_nginx           |"
+echo "|                                   |                             |"
+echo "|          Pods status check        |           $result_pods           |"
+echo "|                                   |                             |"
+echo "|-----------------------------------------------------------------|"
+echo "|              Executed Total CSIT Tests: $count                       |"
 echo "-------------------------------------------------------------------"
