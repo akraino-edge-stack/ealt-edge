@@ -69,7 +69,6 @@ spec:
         - name: config-dir
           hostPath:
             path: /kubeconfig
-            type: DirectoryOrCreate
 status: {}
 
 # yamllint enable
