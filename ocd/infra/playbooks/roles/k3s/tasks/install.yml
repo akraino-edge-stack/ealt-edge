@@ -32,48 +32,48 @@
 
 - debug: var=ansible_host
 
-- name: Disabling firewall for successfull k3s installation on CentOs
+- name: "INSTALL: Disabling firewall for successfull k3s installation on CentOs"
   shell:
     cmd: systemctl stop firewalld
   when: ansible_facts['distribution'] == "CentOS" and result is failed
 
-- name: install container-selinux
+- name: "INSTALL: install container-selinux"
   shell:
     cmd: yum install -y container-selinux selinux-policy-base
   when: ansible_facts['distribution'] == "CentOS" and result is failed
   ignore_errors: true
 
-- name: install k3s-selinux-0.1.1-rc1.el7.noarch.rpm
+- name: "INSTALL: install k3s-selinux-0.1.1-rc1.el7.noarch.rpm"
   shell:
     cmd: rpm -i https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
   when: ansible_facts['distribution'] == "CentOS" and result is failed
   ignore_errors: true
 
-- name: get interface name
+- name: "INSTALL: get interface name"
   shell:
     cmd: ip a |grep {{ ansible_host }} |awk '{print $NF}'
   register: ifName
   when: result is failed
 
 # yamllint disable rule:line-length
-- name: install k3s
+- name: "INSTALL: install k3s"
   shell:
     cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip={{ ansible_host }} --node-external-ip={{ ansible_host }} --bind-address={{ ansible_host }} --flannel-iface=eth0 --docker --no-deploy=servicelb --no-deploy=traefik --write-kubeconfig-mode 644 --kube-apiserver-arg="service-node-port-range=30000-36000"" sh -
   when: result is failed
 
 # yamllint disable rule:line-length
 
-#- name: install k3s
+#- name: "INSTALL: install k3s"
 # shell:
 #    cmd: curl -sfL https://get.k3s.io | sh -
 #  when: result is failed
 
-- name: create .kube dir
+- name: "INSTALL: create .kube dir"
   shell:
     cmd: mkdir -p $HOME/.kube/
   when: result is failed
 
-- name: copy kubeconfig
+- name: "INSTALL: copy kubeconfig"
   shell:
     cmd: cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
   when: result is failed
