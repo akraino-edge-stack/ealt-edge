@@ -13,18 +13,35 @@
 # limitations under the License.
 
 ---
-- name: Install grafana on x86_64
+- name: check if grafana is already installed
+  shell:
+    cmd: helm status mec-grafana
+  register: result
+  ignore_errors: yes
+  no_log: True
+
+- debug:
+    msg: grafana is already present
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , Grafana not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
+
+- name: "INSTALL: Install grafana on x86_64"
   shell:
     cmd: helm install mec-grafana stable/grafana
   when: result is failed and ansible_architecture == 'x86_64'
 
-- name: copy values.yaml to host
+- name: "INSTALL: copy values.yaml to host"
   copy:
     src: values.yaml
     dest: /tmp/grafana/
   when: result is failed and ansible_architecture == 'aarch64'
 
-- name: Install grafana on aarch64
+- name: "INSTALL: Install grafana on aarch64"
   shell:
     cmd: helm install mec-grafana stable/grafana -f /tmp/grafana/values.yaml
   when: result is failed and ansible_architecture == 'aarch64'

@@ -70,6 +70,7 @@
   - prometheus
   - kubeconfig
   - cadvisor
+  - docker
 
 - hosts: mepautomate
   become: yes

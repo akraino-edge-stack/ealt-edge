@@ -44,6 +44,7 @@
   - prometheus
   - helm
   - k3s
+  - docker
 
 - hosts: infra-helm
   become: yes
