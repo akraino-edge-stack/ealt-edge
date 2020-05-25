@@ -30,18 +30,18 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
-- name: "INSTALL: copy common folder to host for rabbitmg installation"
+- name: "INSTALL: copy common folder to host for rabbitmq installation"
   copy:
     src: common
     dest: /tmp/rabbitmq/
   when: result is failed
 
-- name: "INSTALL: Install common for rabbitmg installation"
+- name: "INSTALL: Install common for rabbitmq installation"
   shell:
     cmd: kubectl apply -f /tmp/rabbitmq/common
   when: result is failed
 
-- name: "INSTALL: copy statefulset_x86.yaml to host for rabbitmg installation"
+- name: "INSTALL: copy statefulset_x86.yaml to host for rabbitmq installation"
   copy:
     src: statefulset_x86.yaml
     dest: /tmp/rabbitmq/
@@ -52,7 +52,7 @@
     cmd: kubectl apply -f /tmp/rabbitmq/statefulset_x86.yaml
   when: result is failed and ansible_architecture == 'x86_64'
 
-- name: "INSTALL: copy statefulset_arm.yaml to host for rabbitmg installation"
+- name: "INSTALL: copy statefulset_arm.yaml to host for rabbitmq installation"
   copy:
     src: statefulset_arm.yaml
     dest: /tmp/rabbitmq/

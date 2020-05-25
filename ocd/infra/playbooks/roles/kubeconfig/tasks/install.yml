@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-# tasks file for k8s
+# tasks file for transferring kubeconfig files
 - name: debug msg
   debug:
     msg: transfering config file to OCD Host
@@ -23,11 +23,4 @@
   fetch:
     src: /root/.kube/config
     dest: /root/.kube/config-{{ ansible_host }}
-    flat: yes
-
-- name: Fetch the file from the edge nodes to ocd-host
-  run_once: yes
-  fetch:
-    src: /root/.kube/config
-    dest: /root/.kube/kubeconfig/{{ ansible_host }}
     flat: yes

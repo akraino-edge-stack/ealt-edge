@@ -13,13 +13,12 @@
 # limitations under the License.
 
 ---
-# tasks file for k8s
+# tasks file for transferring mep k3s cluster config file to mecm k8s
 - name: debug msg
   debug:
     msg: transfering MEP kubeconfig files to MECM Server
 
 - name: Transfer kubeconfig files from all MEP Nodes to MEP Server
-  run_once: yes
   copy:
     src: /root/.kube/kubeconfig
     dest: /

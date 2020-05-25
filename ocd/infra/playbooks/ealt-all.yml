@@ -32,6 +32,7 @@
   - mep
 
   roles:
+  - docker
   - k3s
 
 - hosts: infra-helm
@@ -53,7 +54,6 @@
   - helm
   - grafana
   - kubeconfig
-  - mepconfig
   - applcm
 
 - hosts: mep
@@ -64,13 +64,22 @@
   - mep
 
   roles:
-  - docker
-  - k3s
   - helm
   - rabbitmq
   - prometheus
   - kubeconfig
+  - mepkubeconfig
   - cadvisor
+
+- hosts: mecm
+  become: yes
+  tags:
+  - infra
+  - infra-mecm
+  - mecm
+
+  roles:
+  - mepconfig
 
 - hosts: mepautomate
   become: yes
