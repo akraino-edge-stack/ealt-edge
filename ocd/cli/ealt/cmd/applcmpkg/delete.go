@@ -25,12 +25,10 @@ import (
 func NewApplcmDeleteCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "delete",
-		Short: "Install Complete EALT Deployment Environment",
-		Long:  `Install Complete EALT Deployment Environment`,
+		Short: "Delete the application from the MEP Node.",
+		Long:  `Delete the application from the MEP Node.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var theFlags []string
-			theFlags[0] = cmd.Flag("appid").Value.String()
-
+			theFlags := []string{cmd.Flag("appid").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewApplcmDeleteCommand")
 			if err != nil {
 				return err

@@ -19,7 +19,6 @@ package adapter
 import (
 	"bytes"
 	"ealt/cmd/common"
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -37,20 +36,20 @@ var client = http.Client{}
 
 func httpEndPointBuider(uri string) string {
 
-	return "http://" + strings.TrimSpace(MECMClusterIP) + strings.TrimSpace(APPLCMPort) + uri
+	return "http://" + strings.TrimSpace(MECMClusterIP) + ":" + strings.TrimSpace(APPLCMPort) + uri
 
 }
 
 func HttpDeleteRequestBuilder(uri string, body []byte) {
 
 	uri = httpEndPointBuider(uri)
+	fmt.Println("Request URL :\t" + uri)
 	request, err := http.NewRequest(http.MethodDelete, uri, bytes.NewBuffer(body))
 	request.Header.Set("Content-Type", "application/json")
 
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -63,22 +62,23 @@ func HttpDeleteRequestBuilder(uri string, body []byte) {
 		log.Fatalln(err)
 	}
 
-	fmt.Println(string(output))
+	fmt.Println("Response Data: \n" + string(output))
 
 }
 
 func HttpPostRequestBuilder(uri string, body []byte) error {
 
 	uri = httpEndPointBuider(uri)
+	fmt.Println("Request URL :\t" + uri)
+	fmt.Println("Request Body :\t" + string(body) + "\n")
 	request, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(body))
 	request.Header.Set("Content-Type", "application/json")
 
-	fmt.Println(request)
+	//fmt.Println(request)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -91,25 +91,39 @@ func HttpPostRequestBuilder(uri string, body []byte) error {
 		log.Fatalln(err)
 	}
 
-	fmt.Println(string(output))
+	fmt.Println("Response Data: \n\n" + string(output))
 	return nil
 }
 
 func HttpMultiPartPostRequestBuilder(uri string, body []byte, file string) error {
 
 	filepath := getFilePathWithName(file)
+	fmt.Println("File Path :" + filepath)
 	uri = httpEndPointBuider(uri)
-
+	fmt.Println("Request URL :\t" + uri)
 	request, err := fileUploadRequest(uri, "file", filepath)
-
-	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	var result map[string]interface{}
-	json.NewDecoder(response.Body).Decode(&result)
-	fmt.Println(result)
+	response, err := client.Do(request)
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		body := &bytes.Buffer{}
+		_, err := body.ReadFrom(response.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		response.Body.Close()
+		fmt.Println(response.StatusCode)
+		fmt.Println(response.Header)
+
+		// fmt.Println(body)
+		// var result map[string]interface{}
+		// json.NewDecoder(response.Body).Decode(&result)
+		// fmt.Println(result)
+	}
 
 	return nil
 }
@@ -151,6 +165,7 @@ func fileUploadRequest(uri string, paramName, filepath string) (*http.Request, e
 	if err != nil {
 		log.Fatalln(err)
 	}
-	request.Header.Set("Content-Type", "multipart/form-data")
+	request.Header.Add("Content-Type", multiPartWriter.FormDataContentType())
+	//request.Header.Set("Content-Type", "multipart/form-data")
 	return request, err
 }

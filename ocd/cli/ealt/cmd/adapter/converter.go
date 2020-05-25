@@ -18,6 +18,7 @@ package adapter
 
 import (
 	"ealt/cmd/common"
+	model "ealt/cmd/model"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -33,13 +34,12 @@ func BuilderRequest(valueArgs []string, command string) error {
 		//Onboard Command
 		//ealtedge/mepm/app_pkgm/v1/app_packages/
 		//read the file from the system.
-		URIString = common.AppmUri
+		URIString = common.AppmUriCreate
 		var packageName string
 		var body []byte
 		body = jsonEmptyBodyFormat()
 		packageName = strings.TrimSpace(valueArgs[0])
 		HttpMultiPartPostRequestBuilder(URIString, body, packageName)
-		fmt.Println(packageName)
 
 	case "NewAppDeleteCommand":
 		//The Delete Application Package URI
@@ -47,27 +47,23 @@ func BuilderRequest(valueArgs []string, command string) error {
 		var body []byte
 		URIString = common.AppmUri + strings.TrimSpace(valueArgs[0])
 		body = jsonEmptyBodyFormat()
-		fmt.Println(URIString)
 		HttpDeleteRequestBuilder(URIString, body)
-
-		fmt.Println(URIString)
 
 	case "NewApplcmCreateCommand":
 		//appLCM application Creation URI
 		//ealtedge/mepm/app_lcm/v1/app_instances
 		var body []byte
 
-		URIString = common.ApplcmUri
-		body, err := json.Marshal(map[string]string{
-			"appDId":                strings.TrimSpace(valueArgs[0]),
-			"appInstancename":       strings.TrimSpace(valueArgs[1]),
-			"appInstanceDescriptor": strings.TrimSpace(valueArgs[2]),
-		})
+		URIString = common.ApplcmUriCreate
+		//Assigning the AppLcm Create Command Line Flags to the Json Paylod.
+		payload := model.CreateApplicationReq{AppDID: strings.TrimSpace(valueArgs[0]),
+			AppInstancename:       strings.TrimSpace(valueArgs[1]),
+			AppInstanceDescriptor: strings.TrimSpace(valueArgs[2])}
+		body, err := json.Marshal(payload)
 
 		if err != nil {
 			log.Fatalln(err)
 		}
-		fmt.Println(URIString)
 		HttpPostRequestBuilder(URIString, body)
 
 	case "NewApplcmDeleteCommand":
@@ -75,8 +71,9 @@ func BuilderRequest(valueArgs []string, command string) error {
 		///ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}
 		var body []byte
 		URIString = common.ApplcmUri + strings.TrimSpace(valueArgs[0])
+
+		//Empty body for Delete Command.
 		body = jsonEmptyBodyFormat()
-		fmt.Println(URIString)
 		HttpDeleteRequestBuilder(URIString, body)
 
 	case "NewApplcmStartCommand":
@@ -85,8 +82,15 @@ func BuilderRequest(valueArgs []string, command string) error {
 		var body []byte
 
 		URIString = common.ApplcmUri + strings.TrimSpace(valueArgs[0]) + common.InstantiateUri
-		body = jsonEmptyBodyFormat()
-		fmt.Println(URIString)
+
+		selectedMECHostInfo := model.SelectedMECHostInfo{HostName: strings.TrimSpace(valueArgs[1]),
+			HostId: strings.TrimSpace(valueArgs[2])}
+		//Payload
+		payload := model.InstantiateApplicationReq{SelectedMECHostInfo: selectedMECHostInfo}
+		body, err := json.Marshal(payload)
+		if err != nil {
+			fmt.Println(err)
+		}
 		HttpPostRequestBuilder(URIString, body)
 
 	case "NewApplcmTerminateCommand":
@@ -95,11 +99,8 @@ func BuilderRequest(valueArgs []string, command string) error {
 		var body []byte
 		URIString = common.ApplcmUri + strings.TrimSpace(valueArgs[0]) + common.TerminateUri
 		body = jsonEmptyBodyFormat()
-		fmt.Println(URIString)
 		HttpPostRequestBuilder(URIString, body)
-
 	}
-
 	return nil
 }
 

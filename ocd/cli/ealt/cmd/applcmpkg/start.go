@@ -17,7 +17,6 @@ package applcmpkg
 
 import (
 	"ealt/cmd/adapter"
-	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -29,9 +28,9 @@ func NewApplcmStartCommand() *cobra.Command {
 		Short: "To start the application instance on MEP Node",
 		Long:  `To start the application instance on MEP Node`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			theFlags := []string{cmd.Flag("appid").Value.String()}
-			//theFlags[0] = cmd.Flag("appid").Value.String()
-			fmt.Println(theFlags[0])
+			theFlags := []string{cmd.Flag("appid").Value.String(),
+				cmd.Flag("hostname").Value.String(),
+				cmd.Flag("hostip").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewApplcmStartCommand")
 			if err != nil {
 				return err
@@ -40,6 +39,10 @@ func NewApplcmStartCommand() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be started")
+	cmd.Flags().StringP("hostname", "n", "", "Host Name where the App has to be instantiated")
+	cmd.Flags().StringP("hostip", "o", "", "Host IP / MEP Node IP")
 	cmd.MarkFlagRequired("appid")
+	cmd.MarkFlagRequired("hostname")
+	cmd.MarkFlagRequired("hostip")
 	return cmd
 }

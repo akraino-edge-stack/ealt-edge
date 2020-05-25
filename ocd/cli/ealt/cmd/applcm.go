@@ -16,8 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	applcmCmds "ealt/cmd/applcmpkg"
 
 	"github.com/spf13/cobra"
@@ -34,9 +32,6 @@ var applcmCmd = &cobra.Command{
 	2. Start
 	3. Delete
 	4. Stop.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("applcm called")
-	},
 }
 
 func init() {

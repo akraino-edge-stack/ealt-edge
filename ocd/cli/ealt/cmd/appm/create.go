@@ -28,8 +28,7 @@ func NewAppCreateCommand() *cobra.Command {
 		Short: "To create the application on MEP Node",
 		Long:  `To create the application on MEP Node`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var theFlags []string
-			theFlags[0] = cmd.Flag("packagefile").Value.String()
+			theFlags := []string{cmd.Flag("packagefile").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewAppCreateCommand")
 			if err != nil {
 				return err

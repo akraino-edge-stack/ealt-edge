@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Huawei Technologies Co., Ltd.
+Copyright © 2020 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,17 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package model
 
-package common
+type InstantiateApplicationReq struct {
+	SelectedMECHostInfo SelectedMECHostInfo `json:"selectedMECHostInfo"`
+}
 
-const (
-	AppmUri         = "/ealtedge/mepm/app_pkgm/v1/app_packages/"
-	AppmUriCreate   = "/ealtedge/mepm/app_pkgm/v1/app_packages"
-	ApplcmUri       = "/ealtedge/mepm/app_lcm/v1/app_instances/"
-	ApplcmUriCreate = "/ealtedge/mepm/app_lcm/v1/app_instances"
-
-	InstantiateUri = "/instantiate"
-	TerminateUri   = "/terminate"
-
-	PATHSLASH = "/"
-)
+type SelectedMECHostInfo struct {
+	HostName string `json:"hostName"`
+	HostId   string `json:"hostId"`
+}
+type CreateApplicationReq struct {
+	AppDID                string `json:"appDId"`
+	AppInstancename       string `json:"appInstancename"`
+	AppInstanceDescriptor string `json:"appInstanceDescriptor"`
+}

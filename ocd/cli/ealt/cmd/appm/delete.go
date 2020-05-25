@@ -25,11 +25,10 @@ import (
 func NewAppDeleteCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "delete",
-		Short: "Install Complete EALT Deployment Environment",
-		Long:  `Install Complete EALT Deployment Environment`,
+		Short: "Remove the Application Package from the MECM Host.",
+		Long:  `Remove the Application Package from the MECM Host.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var theFlags []string
-			theFlags[0] = cmd.Flag("pkgid").Value.String()
+			theFlags := []string{cmd.Flag("packageid").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewAppDeleteCommand")
 			if err != nil {
 				return err
