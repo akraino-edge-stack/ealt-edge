@@ -25,11 +25,10 @@ import (
 func NewApplcmTerminateCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "kill",
-		Short: "To kill the application ",
-		Long:  `Install Complete EALT Deployment Environment`,
+		Short: "To terminate the application instance.",
+		Long:  `To terminate the application instance  on MEP Node.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var theFlags []string
-			theFlags[0] = cmd.Flag("appid").Value.String()
+			theFlags := []string{cmd.Flag("appid").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewApplcmTerminateCommand")
 			if err != nil {
 				return err
@@ -37,9 +36,7 @@ func NewApplcmTerminateCommand() *cobra.Command {
 			return nil
 		},
 	}
-
 	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be terminated")
 	cmd.MarkFlagRequired("appid")
-
 	return cmd
 }

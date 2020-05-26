@@ -16,8 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	applcmCmds "ealt/cmd/applcmpkg"
 
 	"github.com/spf13/cobra"
@@ -31,12 +29,10 @@ var applcmCmd = &cobra.Command{
 	some API which can be used to manage the Applicaton running on the MEP Node
 	The command have following options :
 	1. Create
-	2. Start
-	3. Delete
-	4. Stop.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("applcm called")
-	},
+	2. Info
+	3. Start
+	4. Delete
+	5. Stop.`,
 }
 
 func init() {
@@ -45,6 +41,7 @@ func init() {
 	applcmCmd.AddCommand(applcmCmds.NewApplcmStartCommand())
 	applcmCmd.AddCommand(applcmCmds.NewApplcmDeleteCommand())
 	applcmCmd.AddCommand(applcmCmds.NewApplcmTerminateCommand())
+	applcmCmd.AddCommand(applcmCmds.NewApplcmInfoCommand())
 
 	rootCmd.AddCommand(applcmCmd)
 

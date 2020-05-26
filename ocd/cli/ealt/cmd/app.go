@@ -16,8 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	appCmds "ealt/cmd/appm"
 
 	"github.com/spf13/cobra"
@@ -28,15 +26,13 @@ var appCmd = &cobra.Command{
 	Use:   "app",
 	Short: "The command is used for Application Management in the EALT Edge System.",
 	Long: `The command is used for Application Management in the EALT Edge System.
-	It has multiple options like create , delete`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("app called")
-	},
+	It has options: create , info and delete`,
 }
 
 func init() {
 	appCmd.AddCommand(appCmds.NewAppCreateCommand())
 	appCmd.AddCommand(appCmds.NewAppDeleteCommand())
+	appCmd.AddCommand(appCmds.NewAppInfoCommand())
 
 	rootCmd.AddCommand(appCmd)
 }
