@@ -19,7 +19,6 @@
     msg: transfering config file to OCD Host
 
 - name: Fetch the file from the controller and edge nodes to ocd-host
-  run_once: yes
   fetch:
     src: /root/.kube/config
     dest: /root/.kube/config-{{ ansible_host }}

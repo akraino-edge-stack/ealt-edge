@@ -32,6 +32,9 @@
 
 - debug: var=ansible_host
 
+- debug:
+    msg: K3 Installation started on {{ ansible_facts['distribution'] }} MEP Node
+
 - name: "INSTALL: Disabling firewall for successfull k3s installation on CentOs"
   shell:
     cmd: systemctl stop firewalld

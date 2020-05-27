@@ -19,7 +19,6 @@
     msg: transfering mep config file to OCD Host
 
 - name: Fetch the file from the mep edge nodes to ocd-host
-  run_once: yes
   fetch:
     src: /root/.kube/config
     dest: /root/.kube/kubeconfig/{{ ansible_host }}
