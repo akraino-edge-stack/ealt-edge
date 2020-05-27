@@ -66,3 +66,35 @@
   command: apt-get install -y docker-ce docker-ce-cli containerd.io
   ignore_errors: yes
   when: result is failed and ansible_architecture == 'aarch64'
+
+- debug:
+    msg: "CentOS commands start"
+
+- name: "INSTALL:Installing docker "
+  command: yum install -y yum-utils
+  when: ansible_facts['distribution'] == "CentOS" and result is failed
+  ignore_errors: yes
+  no_log: true
+
+- name: "INSTALL: Add repo"
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  when: ansible_facts['distribution'] == "CentOS" and result is failed
+  #ignore_error: yes
+  no_log: true
+
+- name: "INSTALL: install containerd.io"
+  command: yum -y install docker-ce-19.03.8 docker-ce-cli-19.03.8 containerd.io
+  when: ansible_facts['distribution'] == "CentOS" and result is failed
+  ignore_errors: yes
+  no_log: true
+
+- name: "Start Docker:"
+  command: systemctl start docker
+  when: ansible_facts['distribution'] == "CentOS" and result is failed
+  ignore_errors: yes
+  #no_log: true
+
+- name: "Start Docker: enable"
+  command: systemctl enable docker
+  when: ansible_facts['distribution'] == "CentOS" and result is failed
+  ignore_errors: yes
