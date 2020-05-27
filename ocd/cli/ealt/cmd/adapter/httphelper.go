@@ -19,6 +19,7 @@ package adapter
 import (
 	"bytes"
 	"ealt/cmd/common"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -40,11 +41,13 @@ func httpEndPointBuider(uri string) string {
 
 }
 
-func HttpDeleteRequestBuilder(uri string, body []byte) {
+//Function to build the Get Requests for Application Package
+//Management and Application Life Cycle Management.
+func HttpGetRequestBuilder(uri string, body []byte) {
 
 	uri = httpEndPointBuider(uri)
 	fmt.Println("Request URL :\t" + uri)
-	request, err := http.NewRequest(http.MethodDelete, uri, bytes.NewBuffer(body))
+	request, err := http.NewRequest(http.MethodGet, uri, bytes.NewBuffer(body))
 	request.Header.Set("Content-Type", "application/json")
 
 	if err != nil {
@@ -61,9 +64,31 @@ func HttpDeleteRequestBuilder(uri string, body []byte) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	fmt.Println("Response Data: \n" + string(output))
+}
 
+//HTTP DELETE Message Builder
+func HttpDeleteRequestBuilder(uri string, body []byte) {
+
+	uri = httpEndPointBuider(uri)
+	fmt.Println("Request URL :\t" + uri)
+	request, err := http.NewRequest(http.MethodDelete, uri, bytes.NewBuffer(body))
+	request.Header.Set("Content-Type", "application/json")
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	response, err := client.Do(request)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
+	output, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Response Data: \n" + string(output))
 }
 
 func HttpPostRequestBuilder(uri string, body []byte) error {
@@ -73,8 +98,6 @@ func HttpPostRequestBuilder(uri string, body []byte) error {
 	fmt.Println("Request Body :\t" + string(body) + "\n")
 	request, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(body))
 	request.Header.Set("Content-Type", "application/json")
-
-	//fmt.Println(request)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -101,7 +124,7 @@ func HttpMultiPartPostRequestBuilder(uri string, body []byte, file string) error
 	fmt.Println("File Path :" + filepath)
 	uri = httpEndPointBuider(uri)
 	fmt.Println("Request URL :\t" + uri)
-	request, err := fileUploadRequest(uri, "file", filepath)
+	request, err := fileUploadRequest(uri, "file", filepath, file)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -116,15 +139,15 @@ func HttpMultiPartPostRequestBuilder(uri string, body []byte, file string) error
 			log.Fatal(err)
 		}
 		response.Body.Close()
-		fmt.Println(response.StatusCode)
-		fmt.Println(response.Header)
 
-		// fmt.Println(body)
-		// var result map[string]interface{}
-		// json.NewDecoder(response.Body).Decode(&result)
-		// fmt.Println(result)
+		fmt.Println("Response Body:")
+
+		fmt.Println(body)
+		var result map[string]interface{}
+		json.NewDecoder(response.Body).Decode(&result)
+
+		fmt.Println("ID has to be send in Create Application Instance Request")
 	}
-
 	return nil
 }
 
@@ -133,7 +156,7 @@ func getFilePathWithName(file string) string {
 	return ONBOARDPACKAGEPATH + common.PATHSLASH + file
 }
 
-func fileUploadRequest(uri string, paramName, filepath string) (*http.Request, error) {
+func fileUploadRequest(uri string, paramName, filepath, filename string) (*http.Request, error) {
 
 	file, err := os.Open(filepath)
 	if err != nil {
@@ -144,10 +167,11 @@ func fileUploadRequest(uri string, paramName, filepath string) (*http.Request, e
 	defer file.Close()
 
 	//Buffer to store the request body as bytes
-	var requestBody bytes.Buffer
-	multiPartWriter := multipart.NewWriter(&requestBody)
+	//var requestBody bytes.Buffer
+	requestBody := &bytes.Buffer{}
+	multiPartWriter := multipart.NewWriter(requestBody)
 
-	fileWriter, err := multiPartWriter.CreateFormFile("file_field", filepath)
+	fileWriter, err := multiPartWriter.CreateFormFile(paramName, filename)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -160,12 +184,17 @@ func fileUploadRequest(uri string, paramName, filepath string) (*http.Request, e
 
 	//Close multiwriter
 	multiPartWriter.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	request, err := http.NewRequest(http.MethodPost, uri, &requestBody)
+	request, err := http.NewRequest(http.MethodPost, uri, requestBody)
+	request.Header.Set("Content-Type", multiPartWriter.FormDataContentType())
+	//request.Header.Set("Content-Type", "multipart/form-data")
+
 	if err != nil {
 		log.Fatalln(err)
 	}
-	request.Header.Add("Content-Type", multiPartWriter.FormDataContentType())
-	//request.Header.Set("Content-Type", "multipart/form-data")
+
 	return request, err
 }

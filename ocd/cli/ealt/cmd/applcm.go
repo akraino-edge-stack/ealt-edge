@@ -29,9 +29,10 @@ var applcmCmd = &cobra.Command{
 	some API which can be used to manage the Applicaton running on the MEP Node
 	The command have following options :
 	1. Create
-	2. Start
-	3. Delete
-	4. Stop.`,
+	2. Info
+	3. Start
+	4. Delete
+	5. Stop.`,
 }
 
 func init() {
@@ -40,6 +41,7 @@ func init() {
 	applcmCmd.AddCommand(applcmCmds.NewApplcmStartCommand())
 	applcmCmd.AddCommand(applcmCmds.NewApplcmDeleteCommand())
 	applcmCmd.AddCommand(applcmCmds.NewApplcmTerminateCommand())
+	applcmCmd.AddCommand(applcmCmds.NewApplcmInfoCommand())
 
 	rootCmd.AddCommand(applcmCmd)
 

@@ -41,6 +41,13 @@ func BuilderRequest(valueArgs []string, command string) error {
 		packageName = strings.TrimSpace(valueArgs[0])
 		HttpMultiPartPostRequestBuilder(URIString, body, packageName)
 
+	case "NewAppInfoCommand":
+		URIString = common.AppmUri
+		var body []byte
+		URIString = common.AppmUri + strings.TrimSpace(valueArgs[0])
+		body = jsonEmptyBodyFormat()
+		HttpGetRequestBuilder(URIString, body)
+
 	case "NewAppDeleteCommand":
 		//The Delete Application Package URI
 		//ealtedge/mepm/app_pkgm/v1/app_packages/{{ID}}
@@ -65,6 +72,16 @@ func BuilderRequest(valueArgs []string, command string) error {
 			log.Fatalln(err)
 		}
 		HttpPostRequestBuilder(URIString, body)
+
+	case "NewApplcmInfoCommand":
+		//appLCM Get Application URI
+		///ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}
+		var body []byte
+		URIString = common.ApplcmUri + strings.TrimSpace(valueArgs[0])
+
+		//Empty body for Delete Command.
+		body = jsonEmptyBodyFormat()
+		HttpGetRequestBuilder(URIString, body)
 
 	case "NewApplcmDeleteCommand":
 		//appLCM Delete Application URI

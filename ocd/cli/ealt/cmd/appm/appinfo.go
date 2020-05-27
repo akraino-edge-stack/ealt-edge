@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package applcmpkg
+package appm
 
 import (
 	"ealt/cmd/adapter"
@@ -22,14 +22,14 @@ import (
 )
 
 // allCmd represents the all command
-func NewApplcmDeleteCommand() *cobra.Command {
+func NewAppInfoCommand() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:   "delete",
-		Short: "Delete the application from the MEP Node.",
-		Long:  `Delete the application from the MEP Node.`,
+		Use:   "info",
+		Short: "Get Information on the Onbarded Application.",
+		Long:  `Get Information on the Onbarded Application.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			theFlags := []string{cmd.Flag("appid").Value.String()}
-			err := adapter.BuilderRequest(theFlags, "NewApplcmDeleteCommand")
+			theFlags := []string{cmd.Flag("packageid").Value.String()}
+			err := adapter.BuilderRequest(theFlags, "NewAppInfoCommand")
 			if err != nil {
 				return err
 			}
@@ -37,7 +37,8 @@ func NewApplcmDeleteCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be Deleted!!")
-	cmd.MarkFlagRequired("appid")
+	cmd.Flags().StringP("packageid", "i", "", "Application Package ID which is onbarded")
+	cmd.MarkFlagRequired("packageid")
+
 	return cmd
 }

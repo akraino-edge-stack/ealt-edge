@@ -22,14 +22,14 @@ import (
 )
 
 // allCmd represents the all command
-func NewApplcmDeleteCommand() *cobra.Command {
+func NewApplcmInfoCommand() *cobra.Command {
 	var cmd = &cobra.Command{
-		Use:   "delete",
-		Short: "Delete the application from the MEP Node.",
-		Long:  `Delete the application from the MEP Node.`,
+		Use:   "info",
+		Short: "Get the Application Instance Details..",
+		Long:  `The command display the details of the Application Instance running on the MEP Host.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			theFlags := []string{cmd.Flag("appid").Value.String()}
-			err := adapter.BuilderRequest(theFlags, "NewApplcmDeleteCommand")
+			err := adapter.BuilderRequest(theFlags, "NewApplcmInfoCommand")
 			if err != nil {
 				return err
 			}
@@ -37,7 +37,7 @@ func NewApplcmDeleteCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringP("appid", "i", "", "Application Instance ID to be Deleted!!")
+	cmd.Flags().StringP("appid", "i", "", "Application Instance ID for which details are to be fetched")
 	cmd.MarkFlagRequired("appid")
 	return cmd
 }

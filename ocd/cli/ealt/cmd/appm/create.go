@@ -36,7 +36,7 @@ func NewAppCreateCommand() *cobra.Command {
 			return nil
 		},
 	}
-	cmd.Flags().StringP("packagefile", "f", "", "Application Package File to be onboarded to MEP")
+	cmd.Flags().StringP("packagefile", "f", "", "Application Package File to be onboarded.")
 	cmd.MarkFlagRequired("packagefile")
 	return cmd
 }

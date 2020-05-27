@@ -25,8 +25,8 @@ import (
 func NewApplcmTerminateCommand() *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:   "kill",
-		Short: "To terminate the application instance id.",
-		Long:  `To terminate the application instance id on MEP Node.`,
+		Short: "To terminate the application instance.",
+		Long:  `To terminate the application instance  on MEP Node.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			theFlags := []string{cmd.Flag("appid").Value.String()}
 			err := adapter.BuilderRequest(theFlags, "NewApplcmTerminateCommand")
