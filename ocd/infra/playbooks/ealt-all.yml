@@ -88,3 +88,11 @@
 
   roles:
   - mepserver
+
+- hosts: certsmanager
+  become: yes
+  tags:
+  - certsmanager
+
+  roles:
+  - certmanager

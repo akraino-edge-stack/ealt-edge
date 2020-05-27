@@ -24,6 +24,14 @@
   - grafana
   - helm
 
+- hosts: certsmanager
+  become: yes
+  tags:
+  - certsmanager
+
+  roles:
+  - certmanager
+
 - hosts: mepautomate
   become: yes
   tags:

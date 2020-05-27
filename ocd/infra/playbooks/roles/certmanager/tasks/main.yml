@@ -12,24 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[mecm]
-controller1 ansible_host="" ansible_user="" ansible_password=""
+---
 
-[mep]
-edge1 ansible_host="" ansible_user="" ansible_password=""
+# tasks file for cert-manager
 
-[infra-k8s]
-ocdhost ansible_host="" ansible_user="" ansible_password=""
+- include: "install.yml"
+  static: false
+  when: operation == 'install'
 
-[infra-helm:children]
-mecm
-mep
-
-[infra-k3s:children]
-mep
-
-[mepautomate:children]
-mep
-
-[certsmanager:children]
-mep
+- include: "uninstall.yml"
+  static: false
+  when: operation == 'uninstall'

@@ -12,24 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[mecm]
-controller1 ansible_host="" ansible_user="" ansible_password=""
+---
+- name: check whether cert-manager applied or not
+  shell:
+    cmd: kubectl get pods -n cert-manager
+  register: result
+  ignore_errors: yes
+  no_log: True
 
-[mep]
-edge1 ansible_host="" ansible_user="" ansible_password=""
+- debug:
+    msg: Removing cert-manager pods...
+  when: result.stdout != ""
 
-[infra-k8s]
-ocdhost ansible_host="" ansible_user="" ansible_password=""
-
-[infra-helm:children]
-mecm
-mep
-
-[infra-k3s:children]
-mep
-
-[mepautomate:children]
-mep
-
-[certsmanager:children]
-mep
+- name: Uninstallation of cert-manager
+  shell:
+# yamllint disable rule:line-length
+    cmd: kubectl delete -f https://github.com/jetstack/cert-manager/releases/download/v0.15.0/cert-manager.yaml
+  ignore_errors: 'True'
+  when: result.stdout != ""
