@@ -12,33 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[mecm]
-controller1 ansible_host="" ansible_user="" ansible_password=""
+---
+# tasks file for Vault
+- include: "install.yml"
+  static: false
+  when: operation == 'install'
 
-[mep]
-edge1 ansible_host="" ansible_user="" ansible_password=""
-
-[infra-k8s]
-ocdhost ansible_host="" ansible_user="" ansible_password=""
-
-[infra-helm:children]
-mecm
-mep
-
-[mep-centos]
-edge2 ansible_host="" ansible_user="" ansible_password=""
-
-[infra-k3s:children]
-mep
-
-[mepautomate:children]
-mep
-
-[platform-applcm:children]
-mecm
-
-[platform-vault:children]
-mep-centos
-
-[certsmanager:children]
-mep
+#- include: "uninstall.yml"
+  #when: operation == 'uninstall'

@@ -89,6 +89,15 @@
   roles:
   - mepserver
 
+- hosts: mep-centos
+  become: yes
+  tags:
+  - infra
+  - mep
+
+  roles:
+  - vault
+
 - hosts: certsmanager
   become: yes
   tags:

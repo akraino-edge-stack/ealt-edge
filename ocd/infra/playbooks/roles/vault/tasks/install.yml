@@ -1,0 +1,31 @@
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: "INSTALL: Add Vault repo"
+# yamllint disable rule:line-length
+  command: helm repo add hashicorp https://helm.releases.hashicorp.com
+# yamllint disable rule:line-length
+
+- name: "INSTALL: Vault "
+  command: helm install vault hashicorp/vault
+
+
+- name: "Installing ...Vault "
+  command: sleep 10
+
+- name: "Initialize Vault POD and Unseal Key"
+  shell:
+# yamllint disable rule:line-length
+    cmd: kubectl exec -ti vault-0 -- vault operator unseal $(kubectl exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1 -format="" | grep -i "unseal key 1" | awk  '{print $4}')
+# yamllint enable rule:line-length
