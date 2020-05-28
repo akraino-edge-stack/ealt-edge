@@ -12,20 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# yamllint disable
+
+# persistent volume
+---
+kind: PersistentVolume
 apiVersion: v1
-kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  name: postgres-pv-volume
   labels:
-    io.kompose.service: my-db
-  name: my-db
+    type: local
+    app: postgres
 spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteMany
+  hostPath:
+    path: "/data"
+
+# pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  namespace: default
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
-status: {}
-
-# yamllint enable
+      storage: 5Gi

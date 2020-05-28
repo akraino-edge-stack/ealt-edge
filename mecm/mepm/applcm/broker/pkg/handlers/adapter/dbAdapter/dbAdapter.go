@@ -17,14 +17,20 @@ package dbAdapter
 
 import (
 	"broker/pkg/handlers/model"
-	"os"
-
+	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
-// DB name
-const DbName = "applcmDB"
+var (
+	username = os.Getenv("POSTGRES_USER")
+	password = os.Getenv("POSTGRES_PASSWORD")
+	dbName = os.Getenv("POSTGRES_DATABASE")
+	dbHost = os.Getenv("DBHOST")
+
+)
 
 // Database adapter
 type DbAdapter struct {
@@ -40,19 +46,14 @@ func NewDbAdapter(logger *logrus.Logger) *DbAdapter {
 func (adapter *DbAdapter) CreateDatabase() {
 	adapter.logger.Infof("creating Database...")
 
-	usrpswd := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD")
-	host := "@tcp(" + "dbhost" + ":3306)/"
+	dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password) //Build connection string
 
-	db, err := gorm.Open("mysql", usrpswd+host)
+	conn, err := gorm.Open("postgres", dbUri)
 	if err != nil {
-		adapter.logger.Fatalf("Database connect error", err.Error())
+		fmt.Print(err)
 	}
 
-	db.Exec("CREATE DATABASE  " + DbName)
-	db.Exec("USE applcmDB")
-	gorm.DefaultCallback.Create().Remove("mysql:set_identity_insert")
-
-	adapter.logger.Infof("Migrating models...")
+	db := conn
 	db.AutoMigrate(&model.AppPackageInfo{})
 	db.AutoMigrate(&model.AppInstanceInfo{})
 	adapter.db = db

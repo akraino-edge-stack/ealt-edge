@@ -9,21 +9,20 @@ volumes:
   my-db:
 
 services:
-  db:
+  mecmdb:
     network_mode: bridge
-    image: mysql:5.7
+    image: postgres:9.6
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: 'password'
+      POSTGRES_DB: 'mecmdb'
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_ROOT_PASSWORD: 'password'
     ports:
-      - '3306:3306'
+      - '5432:5432'
     expose:
-      - '3306'
+      - '5432'
     volumes:
-      - my-db:/var/lib/mysql
+      - my-db:/var/lib/postgresql/data
     logging:
       driver: "json-file"
       options:
@@ -34,18 +33,19 @@ services:
     network_mode: bridge
     image: ealtedge/applcm-broker:latest
     depends_on:
-      - db
+      - mecmdb
       - helm-plugin
     links:
-      - db:dbhost
+      - mecmdb:mecmdb
       - helm-plugin:helmplugin
     restart: always
     container_name: applcm-broker
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      POSTGRES_DATABASE: 'mecmdb'
+      DBHOST: 'mecmdb'
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_ROOT_PASSWORD: 'password'
       HELM_PLUGIN_PORT: '50051'
       KUBERNETES_PLUGIN_PORT: '50052'
       LOGFILE_PATH: "/go/release/logfile"
