@@ -50,13 +50,15 @@ spec:
           value: /go/release/logfile
         - name: LOGGER_LEVEL
           value: info
-        - name: MYSQL_DATABASE
-          value: db
-        - name: MYSQL_PASSWORD
+        - name: POSTGRES_DATABASE
+          value: mecmdb
+        - name: DBHOST
+          value: mecmdb
+        - name: POSTGRES_PASSWORD
           value: password
-        - name: MYSQL_ROOT_PASSWORD
+        - name: POSTGRES_ROOT_PASSWORD
           value: password
-        - name: MYSQL_USER
+        - name: POSTGRES_USER
           value: root
         - name: PACKAGE_ARTIFACT_PATH
           value: /Artifacts/Deployment/
