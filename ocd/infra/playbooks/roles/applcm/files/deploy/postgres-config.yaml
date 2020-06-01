@@ -12,38 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-# persistent volume
+# configmap
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: postgres-pv-volume
-  labels:
-    type: local
-    app: postgres
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/data"
-
-# pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgres-pv-claim
-  namespace: default
+  name: postgres-config
   labels:
     app: postgres
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
+data:
+  POSTGRES_DB: mecmdb
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: password
