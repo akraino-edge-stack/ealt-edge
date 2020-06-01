@@ -53,6 +53,8 @@ services:
       ADDRESS: "0.0.0.0:8081"
       PACKAGE_PATH: "/go/release/application/packages/"
       PACKAGE_ARTIFACT_PATH: "/Artifacts/Deployment/"
+      CERTIFICATE_PATH: ""
+      KEY_PATH: ""
     ports:
       - '28081:8081'
     expose:
