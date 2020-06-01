@@ -16,6 +16,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -55,10 +56,20 @@ func (hdlr *Handlers) Initialize(logger *logrus.Logger) {
 	hdlr.impl = newHandlerImpl(hdlr.logger)
 }
 
+func HelloServer(w http.ResponseWriter, req *http.Request) {
+	log.Printf("******FirstCall*******")
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte("This is an example server.\n"))
+}
+
 // Run on it's router
 func (hdlr *Handlers) Run(host string) {
 	hdlr.logger.Infof("Server is running on port %s", host)
-	err := http.ListenAndServe(host, hdlr.router)
+	http.HandleFunc("/", HelloServer)
+	log.Printf("About to listen on 8081. go to https://0.0.0.0/")
+	err := http.ListenAndServeTLS(host, "server-cert.pem", "srv-key.pem", hdlr.router)
+	//err := http.ListenAndServe(host, hdlr.router)
+	hdlr.logger.Infof("Failed %s", err)
 	if err != nil {
 		hdlr.logger.Fatalf("Server couldn't run on port %s", host)
 	}
