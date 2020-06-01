@@ -12,38 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-# persistent volume
+# postgres-service
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: Service
 metadata:
-  name: postgres-pv-volume
-  labels:
-    type: local
-    app: postgres
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/data"
-
-# pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgres-pv-claim
+  name: mecmdb
   namespace: default
   labels:
     app: postgres
 spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
+  selector:
+    app: postgres-db
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
