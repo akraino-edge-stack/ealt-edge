@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1e89afb_c47f63b2",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-06-01T16:02:26Z",
+      "side": 1,
+      "message": "kindly use logrus instead, shouldn\u0027t introduce two logging framework",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 5
+      },
+      "revId": "612df37f106e76265630854031683c919c2ab9e4",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b032312a_b5c701a1",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-06-01T16:02:26Z",
+      "side": 1,
+      "message": "we shouldn\u0027t be exposing root end point, this method is not required.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 1
+      },
+      "revId": "612df37f106e76265630854031683c919c2ab9e4",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5fdb26e_6eacf437",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-06-01T16:02:26Z",
+      "side": 1,
+      "message": "we shouldn\u0027t be exposing root end point, this method is not required.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 34
+      },
+      "revId": "612df37f106e76265630854031683c919c2ab9e4",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60b84f88_7fc9d303",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-06-01T16:02:26Z",
+      "side": 1,
+      "message": "shouldn\u0027t be hardcoded in code.",
+      "range": {
+        "startLine": 69,
+        "startChar": 37,
+        "endLine": 69,
+        "endChar": 69
+      },
+      "revId": "612df37f106e76265630854031683c919c2ab9e4",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "039c4c52_16ad93ee",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-06-01T16:02:26Z",
+      "side": 1,
+      "message": "do we need to log error, if yes it should be done when err is not nil",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 36
+      },
+      "revId": "612df37f106e76265630854031683c919c2ab9e4",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
