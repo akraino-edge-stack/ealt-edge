@@ -20,33 +20,19 @@
 
 - name: Install applcm - pvc
   shell:
-    cmd: kubectl apply -f /tmp/applcm/deploy/my-db-persistentvolumeclaim.yaml
+    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-db-pvc.yaml
 
 - name: Install applcm - db
   shell:
-    cmd: kubectl apply -f /tmp/applcm/deploy/db-deployment.yaml
-
-- name: Install applcm - db-service
-  shell:
-    cmd: kubectl apply -f /tmp/applcm/deploy/db-service.yaml
-
+    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-k8s.yaml
 
 - name: Install applcm - db-init-config
   shell:
 # yamllint disable rule:line-length
-    cmd: kubectl exec -it $(kubectl get pod -l io.kompose.service=db | awk 'FNR==2 {print $1}') -- /bin/bash < /tmp/applcm/deploy/init.sh
+    cmd: sleep 10;
   ignore_errors: yes
   failed_when: false
   no_log: True
-
-- name: Install applcm - db-init-config
-  shell:
-# yamllint disable rule:line-length
-    cmd: kubectl exec -it $(kubectl get pod -l io.kompose.service=db | awk 'FNR==2 {print $1}') -- /bin/bash < /tmp/applcm/deploy/config.sh
-  ignore_errors: yes
-  failed_when: false
-  no_log: True
-
 
 - name: Install applcm - helmplugin
   shell:
