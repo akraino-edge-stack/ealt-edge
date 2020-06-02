@@ -56,3 +56,12 @@
   ignore_errors: yes
   when: result is succeeded and ansible_architecture == 'aarch64'
   #when: result is succeeded
+
+- debug:
+    msg: "CentOS commands start"
+
+- name: "UNINSTALL:Uninstalled docker "
+  shell:
+    cmd: yes | yum remove docker-ce docker-ce-cli containerd.io
+  ignore_errors: yes
+  no_log: true
