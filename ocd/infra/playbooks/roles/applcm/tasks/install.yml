@@ -18,13 +18,21 @@
     src: deploy
     dest: /tmp/applcm/
 
+- name: Install applcm postgres-configmap
+  shell:
+    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-config.yaml
+
 - name: Install applcm - pvc
   shell:
-    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-db-pvc.yaml
+    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-storage.yaml
 
 - name: Install applcm - db
   shell:
     cmd: kubectl apply -f /tmp/applcm/deploy/postgres-k8s.yaml
+
+- name: Install applcm - postgres-service
+  shell:
+    cmd: kubectl apply -f /tmp/applcm/deploy/postgres-service.yaml
 
 - name: Install applcm - db-init-config
   shell:
