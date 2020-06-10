@@ -13,11 +13,19 @@
 # limitations under the License.
 
 ---
-# tasks file for k8s
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
+# Uninstall file for k8s
+- name: Check whether k8s is already installed
+  command: kubectl version
+  register: result
+  ignore_errors: yes
+  no_log: True
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- debug:
+    msg: k8s is already present
+  when: result.stdout != ""
+
+- name: Remove k8s
+  shell:
+    cmd: yes | ansible-playbook -i inventory/mycluster/inventory.ini reset.yml
+    chdir: /root/kubespray/
+  when: result.stdout != ""
