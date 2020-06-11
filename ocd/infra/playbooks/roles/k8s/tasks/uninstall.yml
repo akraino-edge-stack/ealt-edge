@@ -26,6 +26,6 @@
 
 - name: Remove k8s
   shell:
-    cmd: yes | ansible-playbook -i inventory/mycluster/inventory.ini reset.yml
+    cmd: yes | ansible-playbook -i inventory/mycluster/hosts.yaml reset.yml
     chdir: /root/kubespray/
   when: result.stdout != ""
