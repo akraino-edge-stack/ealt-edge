@@ -22,6 +22,30 @@
       "revId": "0cecd508d479635d905cf1adfd0568273b4fa85d",
       "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4a5f6d7_2d055fce",
+        "filename": "mecm/mepm/applcm/k8shelm/cmd/helm/main_test.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 338
+      },
+      "writtenOn": "2020-06-11T07:44:48Z",
+      "side": 1,
+      "message": "These are testing 3rd party libraries which are being used in this class",
+      "parentUuid": "b8f1d302_4c9edbae",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 1
+      },
+      "revId": "0cecd508d479635d905cf1adfd0568273b4fa85d",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
     }
   ]
 }
