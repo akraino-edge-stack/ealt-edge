@@ -53,13 +53,13 @@ spec:
         - name: POSTGRES_DATABASE
           value: mecmdb
         - name: DBHOST
-          value: mecmdb
+          value: postgres-db
         - name: POSTGRES_PASSWORD
-          value: password
+          value: mecm
         - name: POSTGRES_ROOT_PASSWORD
-          value: password
+          value: mecm
         - name: POSTGRES_USER
-          value: root
+          value: mecm
         - name: PACKAGE_ARTIFACT_PATH
           value: /Artifacts/Deployment/
         - name: PACKAGE_PATH

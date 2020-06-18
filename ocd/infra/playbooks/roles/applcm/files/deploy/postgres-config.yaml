@@ -22,5 +22,5 @@ metadata:
     app: postgres
 data:
   POSTGRES_DB: mecmdb
-  POSTGRES_USER: root
-  POSTGRES_PASSWORD: password
+  POSTGRES_USER: mecm
+  POSTGRES_PASSWORD: mecm
