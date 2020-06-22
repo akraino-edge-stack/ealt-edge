@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d6823e2a_1fa916b2",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-06-22T07:58:21Z",
+      "side": 1,
+      "message": "You can change the value to 1",
+      "revId": "47ccad79c8c1385499eeea10f0fbf0c9c3eecc25",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83f0a0f6_88c77ebe",
+        "filename": "mecm/mepm/applcm/broker/pkg/handlers/handlers.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-06-22T07:58:21Z",
+      "side": 1,
+      "message": "Suggestion : Can modify the flag to EALTSSLMode, can have values 0 and 1\n0 -- Disable\n1 -- Enable",
+      "range": {
+        "startLine": 64,
+        "startChar": 27,
+        "endLine": 64,
+        "endChar": 37
+      },
+      "revId": "47ccad79c8c1385499eeea10f0fbf0c9c3eecc25",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
