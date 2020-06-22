@@ -25,5 +25,7 @@ const (
 	InstantiateUri = "/instantiate"
 	TerminateUri   = "/terminate"
 
-	PATHSLASH = "/"
+	PATHSLASH       = "/"
+	ApplicationJson = "application/json"
+	ContentType     = "Content-Type"
 )

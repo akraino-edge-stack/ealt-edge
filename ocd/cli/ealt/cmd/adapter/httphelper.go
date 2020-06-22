@@ -33,12 +33,14 @@ import (
 var MECMClusterIP = os.Getenv("MECMClusterIP")
 var APPLCMPort = os.Getenv("MECMClusterPort")
 var ONBOARDPACKAGEPATH = os.Getenv("ONBOARDPACKAGEPATH")
-var client = http.Client{}
+var sslmode = os.Getenv("EALTSSLMode")
 
 func httpEndPointBuider(uri string) string {
-
-	return "http://" + strings.TrimSpace(MECMClusterIP) + ":" + strings.TrimSpace(APPLCMPort) + uri
-
+	localURI := strings.TrimSpace(MECMClusterIP) + ":" + strings.TrimSpace(APPLCMPort) + uri
+	if sslmode == "1" {
+		return "https://" + localURI
+	}
+	return "http://" + localURI
 }
 
 //Function to build the Get Requests for Application Package
@@ -48,11 +50,11 @@ func HttpGetRequestBuilder(uri string, body []byte) {
 	uri = httpEndPointBuider(uri)
 	fmt.Println("Request URL :\t" + uri)
 	request, err := http.NewRequest(http.MethodGet, uri, bytes.NewBuffer(body))
-	request.Header.Set("Content-Type", "application/json")
-
+	request.Header.Set(common.ContentType, common.ApplicationJson)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	client := GetHttpClient()
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -73,11 +75,12 @@ func HttpDeleteRequestBuilder(uri string, body []byte) {
 	uri = httpEndPointBuider(uri)
 	fmt.Println("Request URL :\t" + uri)
 	request, err := http.NewRequest(http.MethodDelete, uri, bytes.NewBuffer(body))
-	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set(common.ContentType, common.ApplicationJson)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
+	client := GetHttpClient()
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -97,11 +100,12 @@ func HttpPostRequestBuilder(uri string, body []byte) error {
 	fmt.Println("Request URL :\t" + uri)
 	fmt.Println("Request Body :\t" + string(body) + "\n")
 	request, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(body))
-	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set(common.ContentType, common.ApplicationJson)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
+	client := GetHttpClient()
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -128,7 +132,7 @@ func HttpMultiPartPostRequestBuilder(uri string, body []byte, file string) error
 	if err != nil {
 		log.Fatalln(err)
 	}
-
+	client := GetHttpClient()
 	response, err := client.Do(request)
 	if err != nil {
 		log.Fatalln(err)
@@ -189,7 +193,7 @@ func fileUploadRequest(uri string, paramName, filepath, filename string) (*http.
 	}
 
 	request, err := http.NewRequest(http.MethodPost, uri, requestBody)
-	request.Header.Set("Content-Type", multiPartWriter.FormDataContentType())
+	request.Header.Set(common.ContentType, multiPartWriter.FormDataContentType())
 	//request.Header.Set("Content-Type", "multipart/form-data")
 
 	if err != nil {
