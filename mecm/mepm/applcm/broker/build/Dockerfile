@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.13.4-alpine3.10
+FROM golang:1.13.4-alpine3.10 as builder
 
 ENV GOPROXY https://goproxy.io
 ENV GO111MODULE on
+ENV HOME=/go/release
 
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
+
+RUN mkdir -p $HOME
 
 WORKDIR /go/cache
 
@@ -26,17 +29,43 @@ ADD go.mod .
 ADD go.sum .
 RUN go mod download
 
-WORKDIR /go/release
+WORKDIR $HOME
 RUN mkdir -p /go/release/application/packages
 
 ADD . .
 
 RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o app cmd/broker/main.go
 
-RUN cp app start.sh /
+FROM golang:1.13.4-alpine3.10
+
+RUN mkdir -p /go/release
+
+ENV HOME=/go/release
+ENV APP_HOME=/go/release
+ENV UID=166
+ENV GID=166
+ENV USER_NAME=ealtuser
+ENV GROUP_NAME=ealtgroup
+
+RUN apk update &&\
+    apk add shadow &&\
+    groupadd -r -g $GID $GROUP_NAME &&\
+    useradd -r -u $UID -g $GID -d $HOME -s /sbin/nologin -c "Docker image user" $USER_NAME &&\
+    chown -R $USER_NAME:$GROUP_NAME $HOME
+
+WORKDIR $APP_HOME
+
+USER $USER_NAME
+
+COPY --chown=ealtuser:ealtgroup --from=builder $HOME/app $APP_HOME
+COPY --chown=ealtuser:ealtgroup --from=builder $HOME/start.sh $APP_HOME
+
+RUN mkdir -p /go/release/application/packages
+
+RUN chmod 750 $HOME &&\
+    chmod 550 $HOME/app &&\
+    chmod 550 $HOME/start.sh
 
 EXPOSE 8081
 
-CMD ["/start.sh"]
-
-
+ENTRYPOINT ["./app"]
