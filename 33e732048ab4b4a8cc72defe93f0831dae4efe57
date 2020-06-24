@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4814acc2_49273fa2",
+        "filename": "mecm/mepm/applcm/broker/build/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 159
+      },
+      "writtenOn": "2020-06-24T04:21:39Z",
+      "side": 1,
+      "message": "Suggestion: Check if we can keep the username and group as ealt or ealtedge.",
+      "revId": "33e732048ab4b4a8cc72defe93f0831dae4efe57",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
