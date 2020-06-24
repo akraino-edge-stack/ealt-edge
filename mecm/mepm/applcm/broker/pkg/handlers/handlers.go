@@ -33,6 +33,8 @@ const (
 	DeleteAppInstanceIdentifier = "/ealtedge/mepm/app_lcm/v1/app_instances/{appInstanceId}"
 	OnboardPackage              = "/ealtedge/mepm/app_pkgm/v1/app_packages"
 	QueryOnboardPackage         = "/ealtedge/mepm/app_pkgm/v1/app_packages/{appPkgId}"
+	// Https flag value true
+	HTTPSFlagValue = "true"
 )
 
 var (
@@ -58,8 +60,13 @@ func (hdlr *Handlers) Initialize(logger *logrus.Logger) {
 // Run on it's router
 func (hdlr *Handlers) Run(host string) {
 	hdlr.logger.Infof("Server is running on port %s", host)
-	err := http.ListenAndServeTLS(host, os.Getenv("CERTIFICATE_PATH"), os.Getenv("KEY_PATH"), hdlr.router)
-	//err := http.ListenAndServe(host, hdlr.router)
+	var err error
+	var httpflag = os.Getenv("HTTPS_FLAG")
+	if httpflag == HTTPSFlagValue {
+		err = http.ListenAndServeTLS(host, os.Getenv("CERTIFICATE_PATH"), os.Getenv("KEY_PATH"), hdlr.router)
+	} else {
+		err = http.ListenAndServe(host, hdlr.router)
+	}
 	if err != nil {
 		hdlr.logger.Fatalf("Server couldn't run on port %s", host)
 	}
