@@ -64,15 +64,26 @@ spec:
           value: /Artifacts/Deployment/
         - name: PACKAGE_PATH
           value: /go/release/application/packages/
+        - name: CERTIFICATE_PATH
+          value: /go/release/certificates/server-cert.pem
+        - name: KEY_PATH
+          value: /go/release/certificates/srv-key.pem
         image: ealtedge/applcm-broker:latest
         imagePullPolicy: ""
         name: applcm-broker
         ports:
         - containerPort: 8081
         resources: {}
+        volumeMounts:
+          - mountPath: /go/release/certificates/
+            name: server-cert
       restartPolicy: Always
       serviceAccountName: ""
-      volumes: null
+      volumes:
+        - name: server-cert
+          hostPath:
+            path: /ealttlscert
+
 status: {}
 
 # yamllint enable
