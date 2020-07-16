@@ -12,27 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+# mep pod
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: mepagent
   namespace: mep
+  labels:
+    app: mepagent
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mepagent
-  template:
-    metadata:
-      labels:
-        app: mepagent
-    spec:
-      containers:
-        -
-          image: "mepagent:latest"
-          imagePullPolicy: IfNotPresent
-          name: mepagent
-          ports:
-            -
-              containerPort: 80
+  containers:
+    - image: khemendra/mepagent:latest
+      imagePullPolicy: Always
+      name: mepagent-pod
+      env:
+        - name: CA_CERT_DOMAIN_NAME
+          value: "www.ealtedge.com"
+        - name: SSL_ROOT
+          value: "/etc/mepagent_ssl/ca.crt"
+        - name: APP_SSL_MODE
+          value: "0"
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: mepagentssl
+          mountPath: "/etc/mepagent_ssl"
+          readOnly: true
+  volumes:
+    - name: mepagentssl
+      secret:
+        secretName: default-vault-certificate
+
