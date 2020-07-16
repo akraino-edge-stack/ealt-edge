@@ -14,8 +14,10 @@
 
 ---
 appInstanceId: id12345
-mepServerIP: 192.168.0.101
-mepServerPORT: 30088
+mepGWIP: 192.168.0.102
+httpGWPORT: 31082
+httpsGWPORT: 30126
+mepGWROUTES: /mp1
 serviceInfoPosts:
   - serName: ExampleService
     serInstanceId:

@@ -17,11 +17,8 @@
 package service
 
 import (
-	"errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"net/http"
-	"strings"
 	"github.com/akraino-edge-stack/ealt-edge/mep/mepagent/pkg/model"
 )
 
@@ -42,21 +39,18 @@ func GetConf(path string) (model.AppInstanceInfo, error) {
 	return info, nil
 }
 
-// register to mep
-func RegisterToMep(param string, url string) (string, error) {
-	response, err := http.Post(url, "application/json", strings.NewReader(param))
+func GetAppConf(FilePath string) (model.AppConf, error) {
+	var AppInfo model.AppConf
+	yamlFile, err := ioutil.ReadFile(FilePath)
 	if err != nil {
-		return "", err
+		return AppInfo, err
 	}
 
-	if response.StatusCode != http.StatusCreated {
-		return "", errors.New("created failed")
-	}
-	defer response.Body.Close()
-	body, err2 := ioutil.ReadAll(response.Body)
-	if err2 != nil {
-		return "", err2
+	err1 := yaml.UnmarshalStrict(yamlFile, &AppInfo)
+	if err1 != nil {
+		return AppInfo, err
 	}
 
-	return string(body), nil
+	return AppInfo, nil
+
 }

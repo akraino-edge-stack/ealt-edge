@@ -19,11 +19,15 @@ package service
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"strconv"
 	"time"
 )
 
 func SvcReg(confPath string) (string, error) {
+    var urlProto string
+	var gwPORT string
+
 	conf, err := GetConf(confPath)
 	if err != nil {
 		log.Println(err.Error())
@@ -32,9 +36,21 @@ func SvcReg(confPath string) (string, error) {
 
 	appInstanceId := conf.AppInstanceId
 	serviceInfos := conf.ServiceInfoPosts
-	mepServerIP := conf.MepServerIP
-	mepServerPORT := conf.MepServerPORT
-	url := "http://" + mepServerIP + ":" + mepServerPORT + "/mep/mec_service_mgmt/v1/applications/" + appInstanceId + "/services"
+	gwRoutes := conf.MepGWROUTES
+	gwIP := conf.MepGWIP
+
+	sslMode := os.Getenv("APP_SSL_MODE")
+	//if ssl mode is enabled, then config tls
+	if sslMode == "0" {
+		gwPORT = conf.HttpGWPORT
+		urlProto = "http://"
+	} else {
+		gwPORT = conf.HttpsGWPORT
+		urlProto = "https://"
+	}
+
+	url := urlProto + gwIP + ":" + gwPORT + gwRoutes + "/mep/mec_service_mgmt/v1/applications/" + appInstanceId + "/services"
+	log.Println("Register url is" + url)
 
     for _, serviceInfo := range serviceInfos {
 		data, e := json.Marshal(serviceInfo)
