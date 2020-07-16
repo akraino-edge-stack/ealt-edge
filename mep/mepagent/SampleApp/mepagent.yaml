@@ -24,7 +24,7 @@ metadata:
     app: mepagent
 spec:
   containers:
-    - image: khemendra/mepagent:latest
+    - image: ealtedge/mepagent:latest
       imagePullPolicy: Always
       name: mepagent-pod
       env:
@@ -43,4 +43,4 @@ spec:
   volumes:
     - name: mepagentssl
       secret:
-        secretName: default-vault-certificate
+        secretName: mepagent-ssl

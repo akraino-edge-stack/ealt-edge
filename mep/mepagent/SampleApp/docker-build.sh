@@ -14,5 +14,4 @@
 # limitations under the License.
 
 MEP_VERSION=latest
-docker build --no-cache -t khemendra/mepagent:${MEP_VERSION} -f docker/Dockerfile .
-docker push khemendra/mepagent:${MEP_VERSION}
+docker build --no-cache -t ealtedge/mepagent:${MEP_VERSION} -f docker/Dockerfile .
