@@ -14,19 +14,8 @@
  *  limitations under the License.
  */
 
-package main
+package model
 
-import (
-	"github.com/akraino-edge-stack/ealt-edge/mep/mepagent/pkg/service"
-	"time"
-)
-
-func main() {
-	_, _ = service.SvcReg("./conf/app_instance_info.yaml")
-	Heart()
+type AppConf struct {
+	SslCipherSuite string `yaml:"sslCiphers" json:"sslCiphers"`
 }
-
-func Heart() {
-	time.Sleep(time.Hour)
-}
-

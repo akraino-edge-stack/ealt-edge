@@ -19,8 +19,10 @@ package model
 
 type AppInstanceInfo struct {
 	AppInstanceId                            string                                    `yaml:"appInstanceId" json:"appInstanceId"`
-	MepServerIP                              string                                    `yaml:"mepServerIP" json:"mepServerIP"`
-	MepServerPORT                            string                                    `yaml:"mepServerPORT" json:"mepServerPORT"`
+	MepGWIP                                  string                                    `yaml:"mepGWIP" json:"mepGWIP"`
+	HttpGWPORT                               string                                    `yaml:"httpGWPORT" json:"httpGWPORT"`
+	HttpsGWPORT                              string                                    `yaml:"httpsGWPORT" json:"httpsGWPORT"`
+	MepGWROUTES                              string                                    `yaml:"mepGWROUTES" json:"mepGWROUTES"`
 	ServiceInfoPosts                         []ServiceInfoPost                         `yaml:"serviceInfoPosts" json:"serviceInfoPosts"`
 	SerAvailabilityNotificationSubscriptions []SerAvailabilityNotificationSubscription `yaml:"serAvailabilityNotificationSubscriptions" json:"serAvailabilityNotificationSubscriptions"`
 }
