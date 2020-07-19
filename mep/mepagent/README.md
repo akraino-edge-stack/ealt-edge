@@ -35,12 +35,18 @@ Code is devided in 2 part.
 	MEP support mp1 interfaces as per ETSI compliant.
 	
 	* Steps
-	- configure MEP GW IP and port
+	- configure MEP GW IP and port in path meagent/SampleApp/conf/app_instance_info.yaml
 		- based on deplyment mode(development/production) provide HTTP/HTTPS port
 		- kong API GW run as K8s service, check corresponding port and config accordingly
 		- Kong has admin and proxy port. 
 		- use proxy port and configure
-	- mep-k8s.yaml
+	- Build go applicaion with below cmd:
+		- #cd mepagent/SampleApp
+		- #CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' src/main/main.go
+	- Build docker and push to docker
+		- #sudo ./docker-build.sh
+	- Deploy Application
+		- In mep-k8s.yaml
 		- enable/disable ssl which is env. variable in k8s yaml file
 		- APP_SSL_MODE "1" to enable ssl.
 		- By default app run in normal mode.
