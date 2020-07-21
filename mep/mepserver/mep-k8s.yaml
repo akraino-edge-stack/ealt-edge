@@ -35,14 +35,14 @@ spec:
           value: "/etc/mepssl"
         - name: MEP_SSL_MODE
           value: "0"
-      volumeMounts:
-        - name: mepssl
-          mountPath: "/etc/mepssl"
-          readOnly: true
-  volumes:
-    - name: mepssl
-      secret:
-        secretName: mepssl-secret
+      #volumeMounts:
+        #- name: mepssl
+          #mountPath: "/etc/mepssl"
+          #readOnly: true
+  #volumes:
+    #- name: mepssl
+      #secret:
+        #secretName: mepssl-secret
 
 
 # mep service

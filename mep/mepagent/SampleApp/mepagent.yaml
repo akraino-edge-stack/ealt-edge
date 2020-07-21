@@ -31,16 +31,16 @@ spec:
         - name: CA_CERT_DOMAIN_NAME
           value: "www.ealtedge.com"
         - name: SSL_ROOT
-          value: "/etc/mepagent_ssl/ca.crt"
+          value: "/etc/mepagent_ssl/trust.cer"
         - name: APP_SSL_MODE
           value: "0"
       ports:
         - containerPort: 80
-      volumeMounts:
-        - name: mepagentssl
-          mountPath: "/etc/mepagent_ssl"
-          readOnly: true
-  volumes:
-    - name: mepagentssl
-      secret:
-        secretName: mepagent-ssl
+      #volumeMounts:
+        #- name: mepagentssl
+          #mountPath: "/etc/mepagent_ssl"
+          #readOnly: true
+  #volumes:
+    #- name: mepagentssl
+      #secret:
+        #secretName: mepagentssl_secret

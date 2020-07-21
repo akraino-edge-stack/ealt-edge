@@ -15,8 +15,8 @@
 ---
 appInstanceId: id12345
 mepGWIP: 192.168.0.102
-httpGWPORT: 31082
-httpsGWPORT: 30126
+httpGWPORT: 30010
+httpsGWPORT: 30011
 mepGWROUTES: /mp1
 serviceInfoPosts:
   - serName: ExampleService

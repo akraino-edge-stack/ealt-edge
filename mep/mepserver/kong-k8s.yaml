@@ -88,14 +88,14 @@ spec:
             - containerPort: 8444
               name: admin-api-ssl
               protocol: TCP
-          volumeMounts:
-            - name: kongssl
-              mountPath: "/run/kongssl"
-              readOnly: true
-      volumes:
-        - name: kongssl
-          secret:
-            secretName: kongssl-secret
+          #volumeMounts:
+            #- name: kongssl
+              #mountPath: "/run/kongssl"
+              #readOnly: true
+      #volumes:
+        #- name: kongssl
+          #secret:
+            #secretName: kongssl-secret
 
 
 # kong service
@@ -112,9 +112,13 @@ spec:
   ports:
     - port: 8000
       name: proxy
+      nodePort: 30010
     - port: 8443
       name: proxy-ssl
+      nodePort: 30011
     - port: 8001
       name: admin-api
+      nodePort: 30012
     - port: 8444
       name: admin-api-ssl
+      nodePort: 30013
