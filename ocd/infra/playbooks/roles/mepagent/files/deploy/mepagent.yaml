@@ -18,48 +18,29 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: mep
+  name: mepagent
   namespace: mep
   labels:
-    app: mep
+    app: mepagent
 spec:
   containers:
-    - image: ealtedge/mep:latest
-      imagePullPolicy: IfNotPresent
-      name: mep-pod
-      ports:
-        - containerPort: 8088
-        - containerPort: 8443
+    - image: ealtedge/mepagent:latest
+      imagePullPolicy: Always
+      name: mepagent-pod
       env:
+        - name: CA_CERT_DOMAIN_NAME
+          value: "www.ealtedge.org"
         - name: SSL_ROOT
-          value: "/etc/mepssl"
-        - name: MEP_SSL_MODE
+          value: "/etc/mepagent_ssl/trust.cer"
+        - name: APP_SSL_MODE
           value: "0"
+      ports:
+        - containerPort: 80
       #volumeMounts:
-        #- name: mepssl
-          #mountPath: "/etc/mepssl"
+        #- name: mepagentssl
+          #mountPath: "/etc/mepagent_ssl"
           #readOnly: true
   #volumes:
-    #- name: mepssl
+    #- name: mepagentssl
       #secret:
-        #secretName: mepssl-secret
-
-
-# mep service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mep-service
-  namespace: mep
-spec:
-  selector:
-    app: mep
-  type: NodePort
-  ports:
-    - port: 8088
-      name: mep-port
-      nodePort: 30088
-    - port: 8443
-      name: mep-https-port
-      nodePort: 30443
+        #secretName: mepagentssl-secret
