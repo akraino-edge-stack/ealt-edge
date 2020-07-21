@@ -29,7 +29,7 @@ spec:
       name: mepagent-pod
       env:
         - name: CA_CERT_DOMAIN_NAME
-          value: "www.ealtedge.com"
+          value: "www.ealtedge.org"
         - name: SSL_ROOT
           value: "/etc/mepagent_ssl/trust.cer"
         - name: APP_SSL_MODE
@@ -43,4 +43,4 @@ spec:
   #volumes:
     #- name: mepagentssl
       #secret:
-        #secretName: mepagentssl_secret
+        #secretName: mepagentssl-secret
