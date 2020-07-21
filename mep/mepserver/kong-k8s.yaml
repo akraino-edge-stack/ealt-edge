@@ -72,9 +72,9 @@ spec:
             - name: KONG_PROXY_ERROR_LOG
               value: /dev/stderr
             #- name: KONG_SSL_CERT
-              #value: /run/kongssl/tls.crt
+              #value: /run/kongssl/server.cer
             #- name: KONG_SSL_CERT_KEY
-              #value: /run/kongssl/tls.key
+              #value: /run/kongssl/server_key.pem
           ports:
             - containerPort: 8000
               name: proxy

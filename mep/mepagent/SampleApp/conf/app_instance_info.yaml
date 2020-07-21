@@ -14,7 +14,7 @@
 
 ---
 appInstanceId: id12345
-mepGWIP: 192.168.0.102
+mepGWIP: 159.138.22.15
 httpGWPORT: 30010
 httpsGWPORT: 30011
 mepGWROUTES: /mp1
