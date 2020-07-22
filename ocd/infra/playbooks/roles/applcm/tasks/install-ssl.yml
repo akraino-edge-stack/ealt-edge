@@ -18,6 +18,53 @@
     src: deploy
     dest: /tmp/applcm/
 
+- name: modifying configuration to support https
+  shell:
+     cmd: cp applcm-broker-deployment.yaml applcm-broker-deployment-ssl.yaml
+     chdir: /tmp/applcm/deploy/
+
+- name: modify configuraiton to support https
+  shell:
+    cmd: chmod +x applcmScript.sh && ./applcmScript.sh
+    chdir: /tmp/applcm/deploy/
+
+- name: Generate Certificates
+  shell:
+# yamllint disable rule:line-length
+    cmd: openssl genrsa -out ca.key 2048
+    chdir: /tmp/applcm/deploy/
+
+- name: Generate Certificate - Step 2
+  shell:
+    cmd: openssl req -new -key ca.key -subj /C=CN/ST=Peking/L=Beijing/O=ealtedge/CN=www.ealtedge.org -out ca.csr
+    chdir: /tmp/applcm/deploy/
+
+- name: Generate Root Certificate
+  shell:
+    cmd: openssl x509 -req -days 365 -in ca.csr -extensions v3_req -signkey ca.key -out trust.cer
+    chdir: /tmp/applcm/deploy/
+
+- name: Generate Server Key
+  shell:
+    cmd: openssl genrsa -out server_key.pem 2048
+    chdir: /tmp/applcm/deploy/
+
+
+- name: Generate Server CSR
+  shell:
+    cmd: openssl req -new -key server_key.pem -subj /C=CN/ST=Beijing/L=Beijing/O=ealtedge/CN=www.ealtedge.org -out tls.csr
+    chdir: /tmp/applcm/deploy/
+
+- name: Generate Server Certificate
+  shell:
+    cmd: openssl x509 -req -in tls.csr -extensions v3_req -CA trust.cer -CAkey ca.key -CAcreateserial -out server.cer
+    chdir: /tmp/applcm/deploy/
+
+- name: Create applcm-secret
+  shell:
+# yamllint disable rule:line-length
+    cmd: kubectl create secret --namespace default generic applcm-secret --from-file=/tmp/applcm/deploy/server.cer --from-file=/tmp/applcm/deploy/server_key.pem --from-file=/tmp/applcm/deploy/trust.cer
+
 - name: Install applcm postgres-configmap
   shell:
     cmd: kubectl apply -f /tmp/applcm/deploy/postgres-config.yaml
@@ -66,7 +113,7 @@
 
 - name: Install applcm - broker
   shell:
-    cmd: kubectl apply -f /tmp/applcm/deploy/applcm-broker-deployment.yaml
+    cmd: kubectl apply -f /tmp/applcm/deploy/applcm-broker-deployment-ssl.yaml
 
 - name: Install applcm - broker
   shell:

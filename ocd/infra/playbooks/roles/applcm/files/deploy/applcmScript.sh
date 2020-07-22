@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-- include: "install.yml"
-  when:  operation == 'install' and mode == 'dev'
-
-
-- include: "install-ssl.yml"
-  when: operation == 'install' and mode == 'prod'
-
-  #- include: "uninstall.yml"
-  #when: operation == 'uninstall'
+#Server is running on https port
+sed -i 's/value: false/value: true/g' applcm-broker-deployment.yaml
+sed -i 's/#volumeMounts/ volumeMounts/g' applcm-broker-deployment.yaml
+sed -i 's/#- mountPath/ - mountPath/g' applcm-broker-deployment.yaml
+sed -i 's/#name/ name/g' applcm-broker-deployment.yaml
+sed -i 's/#volumes/ volumes/g' applcm-broker-deployment.yaml
+sed -i 's/#- name/ - name/g' applcm-broker-deployment.yaml
+sed -i 's/#secret/ secret/g' applcm-broker-deployment.yaml
+sed -i 's/#secretName/ secretName/g' applcm-broker-deployment.yaml
