@@ -65,7 +65,7 @@ spec:
         - name: PACKAGE_PATH
           value: /go/release/application/packages/
         - name: APLCM_SSL_MODE
-        - value: false
+          value: false
         - name: CERTIFICATE_PATH
           value: /go/release/certificates/server.cer
         - name: KEY_PATH
