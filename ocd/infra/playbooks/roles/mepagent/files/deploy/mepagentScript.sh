@@ -1,5 +1,5 @@
 # Copyright 2020 Huawei Technologies Co., Ltd.
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-- include: "install.yml"
-  when: operation == 'install' and mode == 'dev'
-
-- include: "install-ssl.yml"
-  when: operation == 'install' and mode == 'prod'
+#- name: Server is running on http port"
+sed -i 's/value: \"0\"/value: \"1"/g' mepagent.yaml
+sed -i 's/#volumeMounts/ volumeMounts/g' mepagent.yaml
+sed -i 's/#- name/ - name/g' mepagent.yaml
+sed -i 's/#mountPath/ mountPath/g' mepagent.yaml
+sed -i 's/#readOnly/ readOnly/g' mepagent.yaml
+sed -i 's/#volumes/ volumes/g' mepagent.yaml
+sed -i 's/#- name/ - name/g' mepagent.yaml
+sed -i 's/#secret/ secret/g' mepagent.yaml
+sed -i 's/#secretName/ secretName/g' mepagent.yaml
