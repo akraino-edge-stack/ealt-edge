@@ -14,4 +14,7 @@
 
 ---
 - include: "install.yml"
-  when: operation == 'install'
+  when: operation == 'install' and mode == 'dev'
+
+- include: "install-ssl.yml"
+  when: operation == 'install' and mode == 'prod'
