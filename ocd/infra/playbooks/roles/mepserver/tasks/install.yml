@@ -38,3 +38,12 @@
 - name: Apply postgres-k8s.yaml
   shell:
     cmd: kubectl apply -f /tmp/mepserver/deploy/postgres-k8s.yaml
+
+- name: -----Configuring Kong API Gateway-----
+  shell:
+    cmd: sleep 30
+
+- name: Configuring Kong API Gateway
+  shell:
+    cmd: chmod +x kongconfig.sh && ./kongconfig.sh
+    chdir: /tmp/mepserver/deploy/
