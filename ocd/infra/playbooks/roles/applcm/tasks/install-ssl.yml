@@ -20,8 +20,8 @@
 
 - name: modifying configuration to support https
   shell:
-     cmd: cp applcm-broker-deployment.yaml applcm-broker-deployment-ssl.yaml
-     chdir: /tmp/applcm/deploy/
+    cmd: cp applcm-broker-deployment.yaml applcm-broker-deployment-ssl.yaml
+    chdir: /tmp/applcm/deploy/
 
 - name: modify configuraiton to support https
   shell:
