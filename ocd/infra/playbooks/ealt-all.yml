@@ -88,6 +88,7 @@
 
   roles:
   - mepserver
+  - mepagent
 
 - hosts: mep-centos
   become: yes
