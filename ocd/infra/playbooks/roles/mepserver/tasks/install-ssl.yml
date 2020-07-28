@@ -30,7 +30,7 @@
 
 - name: modifying configuration to support https
   shell:
-    cmd: cp mep-k8s.yaml kong-k8s-ssl.yaml
+    cmd: cp kong-k8s.yaml kong-k8s-ssl.yaml
     chdir: /tmp/mepserver/deploy/
 
 - name: modify configuraiton to support https
@@ -41,6 +41,37 @@
 - name: modify configuraiton to support https
   shell:
     cmd: chmod +x kongScript.sh && ./kongScript.sh
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate Certificates
+  shell:
+# yamllint disable rule:line-length
+    cmd: openssl genrsa -out ca.key 2048
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate Certificate - Step 2
+  shell:
+    cmd: openssl req -new -key ca.key -subj /C=CN/ST=Peking/L=Beijing/O=ealtedge/CN=www.ealtedge.org -out ca.csr
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate Root Certificate
+  shell:
+    cmd: openssl x509 -req -days 365 -in ca.csr -extensions v3_req -signkey ca.key -out trust.cer
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate TLS certificate and TLS Key
+  shell:
+    cmd: openssl genrsa -out server_key.pem 2048
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate TLS Certificate and TLS Key
+  shell:
+    cmd: openssl req -new -key server_key.pem -subj /C=CN/ST=Beijing/L=Beijing/O=ealtedge/CN=www.ealtedge.org -out tls.csr
+    chdir: /tmp/mepserver/deploy/
+
+- name: Generate TLS Certificate and TLS Key
+  shell:
+    cmd: openssl x509 -req -in tls.csr -extensions v3_req -CA trust.cer -CAkey ca.key -CAcreateserial -out server.cer
     chdir: /tmp/mepserver/deploy/
 
 - name: Create mepssl-secret
@@ -68,12 +99,3 @@
 - name: Apply postgres-k8s.yaml
   shell:
     cmd: kubectl apply -f /tmp/mepserver/deploy/postgres-k8s.yaml
-
-- name: -----Configuring Kong API Gateway-----
-  shell:
-    cmd: sleep 30
-
-- name: Configuring Kong API Gateway
-  shell:
-    cmd: chmod +x kongconfig.sh && ./kongconfig.sh
-    chdir: /tmp/mepserver/deploy/

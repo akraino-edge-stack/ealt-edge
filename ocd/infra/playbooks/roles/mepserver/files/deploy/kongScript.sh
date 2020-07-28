@@ -13,15 +13,15 @@
 # limitations under the License.
 
 #Server is running on https port
-sed -i 's/#- name/ - name/g' kong-k8s.yaml
-sed -i 's/#value/ value/g' kong-k8s.yaml
+sed -i 's/#- name/- name/g' kong-k8s-ssl.yaml
+sed -i 's/#value/value/g' kong-k8s-ssl.yaml
 
 
-sed -i 's/#volumeMounts/ volumeMounts/g' kong-k8s.yaml
-sed -i 's/#- name/ - name/g' kong-k8s.yaml
-sed -i 's/#mountPath/ mountPath/g' kong-k8s.yaml
-sed -i 's/#readOnly/ readOnly/g' kong-k8s.yaml
-sed -i 's/#volumes/ volumes/g' kong-k8s.yaml
-sed -i 's/#- name/ - name/g' kong-k8s.yaml
-sed -i 's/#secret/ secret/g' kong-k8s.yaml
-sed -i 's/#secretName/ secretName/g' kong-k8s.yaml
+sed -i 's/#volumeMounts/volumeMounts/g' kong-k8s-ssl.yaml
+sed -i 's/#- name/- name/g' kong-k8s-ssl.yaml
+sed -i 's/#mountPath/mountPath/g' kong-k8s-ssl.yaml
+sed -i 's/#readOnly/readOnly/g' kong-k8s-ssl.yaml
+sed -i 's/#volumes/volumes/g' kong-k8s-ssl.yaml
+sed -i 's/#- name/- name/g' kong-k8s-ssl.yaml
+sed -i 's/#secret/secret/g' kong-k8s-ssl.yaml
+sed -i 's/#secretName/secretName/g' kong-k8s-ssl.yaml

@@ -13,11 +13,11 @@
 # limitations under the License.
 
 #Server is running on https port
-sed -i 's/value: false/value: true/g' applcm-broker-deployment.yaml
-sed -i 's/#volumeMounts/ volumeMounts/g' applcm-broker-deployment.yaml
-sed -i 's/#- mountPath/ - mountPath/g' applcm-broker-deployment.yaml
-sed -i 's/#name/ name/g' applcm-broker-deployment.yaml
-sed -i 's/#volumes/ volumes/g' applcm-broker-deployment.yaml
-sed -i 's/#- name/ - name/g' applcm-broker-deployment.yaml
-sed -i 's/#secret/ secret/g' applcm-broker-deployment.yaml
-sed -i 's/#secretName/ secretName/g' applcm-broker-deployment.yaml
+sed -i 's/value: \"false\"/value: \"true"/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#volumeMounts/volumeMounts/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#- mountPath/ - mountPath/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#name/ name/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#volumes/volumes/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#- name/ - name/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#secret/ secret/g' applcm-broker-deployment-ssl.yaml
+sed -i 's/#secretName/ secretName/g' applcm-broker-deployment-ssl.yaml
