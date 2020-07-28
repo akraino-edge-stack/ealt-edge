@@ -13,12 +13,12 @@
 # limitations under the License.
 
 #- name: Server is running on http port"
-sed -i 's/value: \"0\"/value: \"1"/g' mep-k8s.yaml
-sed -i 's/#volumeMounts/ volumeMounts/g' mep-k8s.yaml
-sed -i 's/#- name/ - name/g' mep-k8s.yaml
-sed -i 's/#mountPath/ mountPath/g' mep-k8s.yaml
-sed -i 's/#readOnly/ readOnly/g' mep-k8s.yaml
-sed -i 's/#volumes/ volumes/g' mep-k8s.yaml
-sed -i 's/#- name/ - name/g' mep-k8s.yaml
-sed -i 's/#secret/ secret/g' mep-k8s.yaml
-sed -i 's/#secretName/ secretName/g' mep-k8s.yaml
+sed -i 's/value: \"0\"/value: \"1"/g' mep-k8s-ssl.yaml
+sed -i 's/#volumeMounts/volumeMounts/g' mep-k8s-ssl.yaml
+sed -i 's/#- name/- name/g' mep-k8s-ssl.yaml
+sed -i 's/#mountPath/mountPath/g' mep-k8s-ssl.yaml
+sed -i 's/#readOnly/readOnly/g' mep-k8s-ssl.yaml
+sed -i 's/#volumes/volumes/g' mep-k8s-ssl.yaml
+sed -i 's/#- name/- name/g' mep-k8s-ssl.yaml
+sed -i 's/#secret/secret/g' mep-k8s-ssl.yaml
+sed -i 's/#secretName/secretName/g' mep-k8s-ssl.yaml

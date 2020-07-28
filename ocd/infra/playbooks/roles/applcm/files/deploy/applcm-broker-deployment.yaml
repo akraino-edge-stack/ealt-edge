@@ -64,8 +64,8 @@ spec:
           value: /Artifacts/Deployment/
         - name: PACKAGE_PATH
           value: /go/release/application/packages/
-        - name: APLCM_SSL_MODE
-          value: false
+        - name: HTTPS_FLAG
+          value: "true"
         - name: CERTIFICATE_PATH
           value: /go/release/certificates/server.cer
         - name: KEY_PATH
@@ -78,7 +78,7 @@ spec:
         resources: {}
         #volumeMounts:
           #- mountPath: /go/release/certificates/
-          #  name: server-cert
+            #name: server-cert
       restartPolicy: Always
       serviceAccountName: ""
       #volumes:
