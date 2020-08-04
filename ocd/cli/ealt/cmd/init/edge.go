@@ -17,6 +17,7 @@ package init
 
 import (
 	"fmt"
+	"strings"
 
 	setup "ealt/cmd/setup"
 
@@ -30,12 +31,19 @@ func NewEdgeCommand() *cobra.Command {
 		Long:  `Command to Install Edge Node only For Example : ealt init edge`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			fmt.Println("Installation of Edge components")
-			err := setup.EaltInstall("edge")
+			setupModeFlag := strings.ToLower(cmd.Flag("mode").Value.String())
+			var err error
+			if setupModeFlag == "dev" {
+				err = setup.EaltInstall("edge")
+			} else if setupModeFlag == "prod" {
+				err = setup.EaltInstall("ssledge")
+			}
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 	}
+	cmd.Flags().StringP("mode", "m", "dev", "Deployment Mode")
 	return cmd
 }

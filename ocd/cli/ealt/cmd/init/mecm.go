@@ -17,6 +17,7 @@ package init
 
 import (
 	"ealt/cmd/setup"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -28,12 +29,19 @@ func NewMecmCommand() *cobra.Command {
 		Short: "Command to install MECM Controller",
 		Long:  `Command to Install MECM Controller Node`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			err := setup.EaltInstall("mecm")
+			setupModeFlag := strings.ToLower(cmd.Flag("mode").Value.String())
+			var err error
+			if setupModeFlag == "dev" {
+				err = setup.EaltInstall("mecm")
+			} else if setupModeFlag == "prod" {
+				err = setup.EaltInstall("sslmecm")
+			}
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 	}
+	cmd.Flags().StringP("mode", "m", "dev", "Deployment Mode")
 	return cmd
 }

@@ -19,17 +19,26 @@ import (
 	"fmt"
 )
 
+//Function : Commands for all installation components.
+//Depending on the option respective command will be executed.
 func EaltInstall(component string) error {
 	var strEaltSetup string
 	switch component {
 	case "all":
-		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --extra-vars \"operation=install\"")
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --extra-vars \"operation=install mode=dev\"")
+	// Production Mode : SSL Mode Installation Command.
+	case "sslall":
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --extra-vars \"operation=install mode=prod\"")
 	case "infra":
 		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"infra\" --extra-vars \"operation=install\"")
-	case "manager":
-		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mecm\" --extra-vars \"operation=install\"")
+	case "mecm":
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mecm\" --extra-vars \"operation=install mode=dev\"")
+	case "sslmecm":
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mecm\" --extra-vars \"operation=install mode=prod\"")
 	case "edge":
-		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mep\" --extra-vars \"operation=install\"")
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mep\" --extra-vars \"operation=install mode=dev\"")
+	case "ssledge":
+		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"mep\" --extra-vars \"operation=install mode=prod\"")
 	case "k8s":
 		strEaltSetup = fmt.Sprintf("ansible-playbook ealt-all.yml -i ealt-inventory.ini --tags \"k8s\" --extra-vars \"operation=install\"")
 	case "k3s":
@@ -59,7 +68,7 @@ func EaltReset(component string) error {
 	case "edge":
 		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"mep\" --extra-vars \"operation=uninstall\"")
 	case "k8s":
-		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"k8s\" --extra-vars \"operation=uninstall\"")
+		strEaltReset = fmt.Sprintf("cd ~/kubespray && yes | ansible-playbook -i inventory/mycluster/hosts.yaml --user root reset.yml")
 	case "k3s":
 		strEaltReset = fmt.Sprintf("ansible-playbook ealt-all-uninstall.yml -i ealt-inventory.ini --tags \"k3s\" --extra-vars \"operation=uninstall\"")
 	default:

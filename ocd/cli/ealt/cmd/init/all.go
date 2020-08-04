@@ -17,6 +17,7 @@ package init
 
 import (
 	setup "ealt/cmd/setup"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -28,12 +29,21 @@ func NewAllCommand() *cobra.Command {
 		Short: "Install Complete EALT Deployment Environment",
 		Long:  `Install Complete EALT Deployment Environment`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			err := setup.EaltInstall("all")
+			setupModeFlag := strings.ToLower(cmd.Flag("mode").Value.String())
+			var err error
+			if setupModeFlag == "dev" {
+				err = setup.EaltInstall("all")
+			} else if setupModeFlag == "prod" {
+				err = setup.EaltInstall("secure")
+			}
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 	}
+	cmd.Flags().StringP("mode", "m", "dev", "Deployment Mode")
+	//cmd.MarkFlagRequired("mode")
+
 	return cmd
 }
