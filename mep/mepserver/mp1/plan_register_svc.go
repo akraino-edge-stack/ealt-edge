@@ -163,6 +163,7 @@ type RegisterServiceInst struct {
 	HttpRsp       interface{}         `json:"httpRsp,out"`
 }
 
+//request service registry handling
 func (t *RegisterServiceInst) OnRequest(data string) workspace.TaskCode {
 	serviceInfo, ok := t.RestBody.(*models.ServiceInfo)
 	if !ok {
@@ -173,6 +174,8 @@ func (t *RegisterServiceInst) OnRequest(data string) workspace.TaskCode {
 	serviceInfo.ToRegisterInstance(req)
 	req.Instance.ServiceId = t.ServiceId
 	req.Instance.Properties["appInstanceId"] = t.AppInstanceId
+
+	//Call service comb for instance register
 	resp, err := core.InstanceAPI.Register(t.Ctx, req)
 	if err != nil {
 		log.Errorf(err, "RegisterInstance fail: %s", t.ServiceId)
