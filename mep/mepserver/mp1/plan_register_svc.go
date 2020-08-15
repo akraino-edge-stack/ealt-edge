@@ -44,6 +44,7 @@ type DecodeRestReq struct {
 	RestBody      interface{}     `json:"restBody,out"`
 }
 
+//service request handler
 func (t *DecodeRestReq) OnRequest(data string) workspace.TaskCode {
 	t.GetParam(t.R)
 	err := t.ParseBody(t.R)
