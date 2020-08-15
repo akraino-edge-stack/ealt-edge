@@ -44,6 +44,7 @@ type SubscribeIst struct {
 	HttpRsp       interface{}         `json:"httpRsp,out"`
 }
 
+//service subscription request
 func (t *SubscribeIst) OnRequest(data string) workspace.TaskCode {
 
 	mp1SubscribeInfo, ok := t.RestBody.(*models.SerAvailabilityNotificationSubscription)
@@ -63,7 +64,7 @@ func (t *SubscribeIst) OnRequest(data string) workspace.TaskCode {
 	}
 	opts := []registry.PluginOp{
 		registry.OpPut(registry.WithStrKey("/cse-sr/etsi/subscribe/"+appInstanceId+"/"+subscribeId),
-			registry.WithValue(subscribeJSON)),
+			           registry.WithValue(subscribeJSON)),
 	}
 	_, resultErr := backend.Registry().TxnWithCmp(context.Background(), opts, nil, nil)
 	if resultErr != nil {
