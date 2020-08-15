@@ -98,6 +98,7 @@ func (m *Mp1Service) URLPatterns() []rest.Route {
 	}
 }
 
+//application subscription
 func doAppSubscribe(w http.ResponseWriter, r *http.Request) {
 
 	workPlan := NewWorkSpace(w, r)
@@ -142,6 +143,7 @@ func delOneAppSubscribe(w http.ResponseWriter, r *http.Request) {
 	workspace.WkRun(workPlan)
 }
 
+//service registery request
 func serviceRegister(w http.ResponseWriter, r *http.Request) {
 	log.Info("Register service start...")
 
