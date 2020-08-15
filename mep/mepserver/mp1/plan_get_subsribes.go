@@ -47,6 +47,7 @@ func (t *GetSubscribes) OnRequest(data string) workspace.TaskCode {
 	opts := []registry.PluginOp{
 		registry.OpGet(registry.WithStrKey("/cse-sr/etsi/subscribe/"+appInstanceId), registry.WithPrefix()),
 	}
+
 	resp, err := backend.Registry().TxnWithCmp(context.Background(), opts, nil, nil)
 	if err != nil {
 		log.Errorf(err, "get subscription from etcd failed")
@@ -63,6 +64,7 @@ func (t *GetSubscribes) OnRequest(data string) workspace.TaskCode {
 		t.SetFirstErrorCode(SubscriptionNotFound, "get subscription failed, subscription not exist")
 		return workspace.TaskFinish
 	}
+
 	subs := make([]*models.SerAvailabilityNotificationSubscription, 0, len(values))
 	for _, val := range values {
 		sub := &models.SerAvailabilityNotificationSubscription{}
@@ -73,6 +75,7 @@ func (t *GetSubscribes) OnRequest(data string) workspace.TaskCode {
 		}
 		subs = append(subs, sub)
 	}
+
 	t.HttpRsp = subs
 	return workspace.TaskFinish
 }
