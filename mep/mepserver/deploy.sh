@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#Create secret for mep server and kong
 ./create_mep_secret.sh
 
+#deploy PGDB, mep server and Kong services
  kubectl apply -f mep-basic.yaml
  kubectl apply -f postgres-k8s.yaml
  kubectl apply -f kong-k8s.yaml
