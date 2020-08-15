@@ -31,6 +31,7 @@ import (
 	meputil "mepserver/mp1/util"
 )
 
+// This type represents the general information of a MEC service info for registry/discovery
 type ServiceInfo struct {
 	SerInstanceId     string        `json:"serInstanceId,omitempty"`
 	SerName           string        `json:"serName"`
@@ -193,6 +194,7 @@ func (s *ServiceInfo) serCategoryFromProperties(properties map[string]string) {
 	s.SerCategory.Version = properties["serCategory/version"]
 }
 
+//Parse service endpoint info
 func (s *ServiceInfo) fromEndpoints(uris []string, epType string) {
 	if epType == "uris" {
 		s.TransportInfo.Endpoint.Uris = uris
@@ -219,6 +221,7 @@ func (s *ServiceInfo) fromEndpoints(uris []string, epType string) {
 	}
 }
 
+//Parse service transport info
 func (s *ServiceInfo) transportInfoFromProperties(properties map[string]string) {
 	if properties == nil {
 		return
