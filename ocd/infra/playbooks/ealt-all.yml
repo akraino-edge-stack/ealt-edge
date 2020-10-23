@@ -106,3 +106,28 @@
 
   roles:
   - certmanager
+
+- hosts: mecm
+  become: yes
+  tags:
+  - mecm
+
+  roles:
+  - eg_certs
+  - eg_node_service_center
+  - eg_user-mgmt
+  - eg_mecm-meo
+  - eg_mecm-fe
+  - eg_appstore
+  - eg_developer
+
+- hosts: mep
+  become: yes
+  tags:
+  - mep
+
+  roles:
+  - eg_certs
+  - eg_mep
+  - eg_mecm-mepm
+  # yamllint disable rule:new-line-at-end-of-file
