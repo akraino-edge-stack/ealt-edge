@@ -106,3 +106,12 @@
 
   roles:
   - certmanager
+
+- hosts: mecm
+  become: yes
+  tags:
+  - mecm
+
+  roles:
+  - eg_certs
+  - eg_service-center
