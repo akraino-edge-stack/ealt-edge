@@ -1,0 +1,6 @@
+- name: Uninstall user management
+  command: helm uninstall user-mgmt-edgegallery
+
+- name: Uninstall user mngmt jwt 
+  command: kubectl delete secret user-mgmt-jwt-secret
+
