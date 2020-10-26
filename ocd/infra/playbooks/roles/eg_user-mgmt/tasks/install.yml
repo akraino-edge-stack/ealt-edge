@@ -1,0 +1,23 @@
+- name: Doing deployment setup eg_user-mgm for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_user-mgmt/
+
+- name: Import vars
+  include_vars:
+  # yamllint disable rule:line-length
+    file: /root/edgeakraino/jenkins/work/workspace/ealt-edge-deploy-virtual-daily-master/ocd/infra/playbooks/config.yml
+  # yamllint disable rule:line-length
+    name: vardata
+
+- name: Generating certificates for usermanagment
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic user-mgmt-jwt-secret --from-file=publicKey=/tmp/.mep_tmp_cer/mepserver_encryptedtls.key --from-file=encryptedPrivateKey=/tmp/eg_user-mgmt/deploy/conf/keys/encrypted_rsa_private_key.pem --from-literal=encryptPassword={{ vardata.firstvar.name}}
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Pull helm chart eg_user-mgm
+  # yamllint disable rule:line-length
+  command: helm install user-mgmt-edgegallery edgegallery/usermgmt --set global.oauth2.clients.appstore.clientUrl=https://{{ vardata.authServer.name}}:30091,global.oauth2.clients.developer.clientUrl=https://{{ vardata.authServer.name}}:30092,global.oauth2.clients.mecm.clientUrl=https://{{ vardata.authServer.name}}:30093, --set jwt.secretName=user-mgmt-jwt-secret --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  # yamllint disable rule:new-line-at-end-of-file
