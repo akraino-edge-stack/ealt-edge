@@ -79,3 +79,27 @@
 
   roles:
   - k3s
+
+- hosts: mecm
+  become: yes
+  tags:
+  - mecm
+
+  roles:
+  - eg_certs
+  - eg_mecm-fe
+  - eg_mecm-meo
+  - eg_appstore
+  - eg_developer
+  - eg_user-mgmt
+  - eg_node_service_center
+
+- hosts: mep
+  become: yes
+  tags:
+  - mep
+
+  roles:
+  - eg_certs
+  - eg_mep
+  - eg_mecm-mepm
