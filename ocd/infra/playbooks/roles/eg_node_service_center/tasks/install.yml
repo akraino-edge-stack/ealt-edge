@@ -1,0 +1,18 @@
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_node_service_center/
+
+- name: Import vars
+  include_vars:
+      file: /root/edgeakraino/jenkins/work/workspace/ealt-edge-deploy-virtual-daily-master/ocd/infra/playbooks/config.yml
+      name: vardata
+
+- name: Setting pull image path
+  command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name }} --docker-password={{ vardata.swrpass.name}}
+  args:
+    chdir: /tmp/eg_node_service_center/deploy/
+
+- name: Pull helm chart service center
+  command: helm install service-center-edgegallery edgegallery/servicecenter --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+
