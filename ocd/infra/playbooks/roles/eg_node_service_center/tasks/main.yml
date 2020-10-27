@@ -1,0 +1,5 @@
+---
+# tasks file for service-center
+- include: "install.yml"
+  static: false
+  when: operation == 'install'
