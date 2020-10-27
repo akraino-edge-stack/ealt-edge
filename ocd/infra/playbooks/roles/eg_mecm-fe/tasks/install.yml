@@ -1,0 +1,11 @@
+- name: Import vars
+  include_vars:
+  # yamllint disable rule:line-length
+      file: /root/edgeakraino/jenkins/work/workspace/ealt-edge-deploy-virtual-daily-master/ocd/infra/playbooks/config.yml
+  # yamllint disable rule:line-length
+      name: vardata
+
+- name: Pulling repo mecm-fe
+  # yamllint disable rule:line-length
+  command: helm install mecm-fe-edgegallery edgegallery/mecm-fe --set global.oauth2.authServerAddress=https://{{vardata.authServer.name}}:30067 --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  # yamllint disable rule:line-length
