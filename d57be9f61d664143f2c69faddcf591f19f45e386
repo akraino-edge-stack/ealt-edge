@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "acc53aa6_7eceac96",
+        "filename": "ocd/infra/playbooks/ealt-all.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:03:06Z",
+      "side": 1,
+      "message": "host is \"center/cloud\"",
+      "range": {
+        "startLine": 110,
+        "startChar": 9,
+        "endLine": 110,
+        "endChar": 13
+      },
+      "revId": "d57be9f61d664143f2c69faddcf591f19f45e386",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86b155d0_6ba51efa",
+        "filename": "ocd/infra/playbooks/ealt-all.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:03:06Z",
+      "side": 1,
+      "message": "should be service-center, its not from edge gallery, rather edge gallery uses it as a upstream",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 26
+      },
+      "revId": "d57be9f61d664143f2c69faddcf591f19f45e386",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71f2f686_0699c338",
+        "filename": "ocd/infra/playbooks/ealt-all.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:03:06Z",
+      "side": 1,
+      "message": "host is edge",
+      "range": {
+        "startLine": 124,
+        "startChar": 9,
+        "endLine": 124,
+        "endChar": 12
+      },
+      "revId": "d57be9f61d664143f2c69faddcf591f19f45e386",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
