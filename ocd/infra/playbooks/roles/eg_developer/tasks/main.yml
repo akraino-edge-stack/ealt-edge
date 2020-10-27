@@ -1,0 +1,5 @@
+---
+# tasks file for eg_developer
+- include: "install.yml"
+  static: false
+  when: operation == 'install'
