@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "add301b3_483856ad",
+        "filename": "ocd/infra/playbooks/ealt-all-uninstall.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:05:29Z",
+      "side": 1,
+      "message": "should be \"center\"",
+      "revId": "733e6bc8bd7956ea1fa8efa9afff23c19cb753ef",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5ed1f8d_9fcd8c4d",
+        "filename": "ocd/infra/playbooks/ealt-all-uninstall.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:05:29Z",
+      "side": 1,
+      "message": "service_center",
+      "revId": "733e6bc8bd7956ea1fa8efa9afff23c19cb753ef",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e87db464_88fd1d69",
+        "filename": "ocd/infra/playbooks/ealt-all-uninstall.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:05:29Z",
+      "side": 1,
+      "message": "edge",
+      "revId": "733e6bc8bd7956ea1fa8efa9afff23c19cb753ef",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
