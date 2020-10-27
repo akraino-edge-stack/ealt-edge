@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0d35aee_532face4",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-27T06:07:04Z",
+      "side": 1,
+      "message": "value to this file should be taken from command line during CI execution, shouldn\u0027t be committed as part of code",
+      "revId": "b5c93eb26e8a23d164c458c26528890103df962b",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
