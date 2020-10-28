@@ -15,11 +15,6 @@
 #
 
 ---
-# tasks file for eg_mecm-fe
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Uninstall mecm fe
+  command: helm uninstall mecm-fe-edgegallery
