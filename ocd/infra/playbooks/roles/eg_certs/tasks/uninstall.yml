@@ -16,12 +16,27 @@
 
 ---
 
-# tasks file for eg_certs
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
+- name: Remove ca key
+  command: rm ca.key
+  args:
+    chdir: /tmp/.mep_tmp_cer/
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Remove ca csr 
+  command: rm ca.csr
+  args:
+    chdir: /tmp/.mep_tmp_cer/
 
+- name: Remove ca crl
+  command: rm ca.crl
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Remove Mep server tls
+  command: rm mepserver_tls.csr
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Remove Jwt private key
+  command: rm jwt_privatekey
+  args:
+    chdir: /tmp/.mep_tmp_cer/
