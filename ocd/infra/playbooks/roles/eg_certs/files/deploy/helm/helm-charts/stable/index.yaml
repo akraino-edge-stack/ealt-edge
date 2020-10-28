@@ -1,0 +1,93 @@
+apiVersion: v1
+entries:
+  grafana:
+    - apiVersion: v1
+      appVersion: 7.1.1
+      created: "2020-10-05T15:01:54.290752923+08:00"
+      # yamllint disable rule:line-length
+      description: The leading tool for querying and visualizing time series and metrics.
+      # yamllint disable rule:line-length
+      digest: 15058e59b6176268d47f7ca0824121403480f57a07ec90ca733a3a13f0e43bbd
+      home: https://grafana.net
+      icon: https://raw.githubusercontent.com/grafana/grafana/master/public/img/logo_transparent_400x.png
+      kubeVersion: ^1.8.0-0
+      maintainers:
+        - email: zanhsieh@gmail.com
+          name: zanhsieh
+        - email: rluckie@cisco.com
+          name: rtluckie
+        - email: maor.friedman@redhat.com
+          name: maorfr
+        name: grafana
+          sources:
+          - https://github.com/grafana/grafana
+      urls:
+      - grafana-5.5.5.tgz
+      version: 5.5.5
+    nfs-client-provisioner:
+    - apiVersion: v1
+      appVersion: 3.1.0
+      created: "2020-10-05T15:01:54.291562259+08:00"
+      description: nfs-client is an automatic provisioner that used your *already configured*
+        NFS server, automatically creating Persistent Volumes.
+      digest: 20fd7e3ca893656cf1e36d0f76451984bf4e3f937384e7f3de5d6a8eaf0e5b7d
+      home: https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client
+      keywords:
+      - nfs
+      - storage
+      maintainers:
+      - email: bart@verwilst.be
+        name: verwilst
+      name: nfs-client-provisioner
+      sources:
+      - https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client
+      urls:
+      - nfs-client-provisioner-1.2.8.tgz
+      version: 1.2.8
+    nginx-ingress:
+    - apiVersion: v1
+      appVersion: v0.34.1
+      created: "2020-10-05T15:01:54.295640917+08:00"
+      description: An nginx Ingress controller that uses ConfigMap to store the nginx
+        configuration.
+      digest: 47a3250b7916423642e5ce4fd04c279b9d59a54f545e683f32b79d54b9b1f8e3
+      home: https://github.com/kubernetes/ingress-nginx
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+      keywords:
+      - ingress
+      - nginx
+      kubeVersion: '>=1.10.0-0'
+      maintainers:
+      - name: ChiefAlexander
+      - email: Trevor.G.Wood@gmail.com
+        name: taharah
+      name: nginx-ingress
+      sources:
+      - https://github.com/kubernetes/ingress-nginx
+      urls:
+      - nginx-ingress-1.41.2.tgz
+      version: 1.41.2
+  prometheus:
+    - apiVersion: v1
+      appVersion: 2.13.1
+      created: "2020-10-05T15:01:54.300717742+08:00"
+      description: Prometheus is a monitoring system and time series database.
+      digest: 7112be1e36d049dd5de426953d5719c8e2f382cbe5f661ccd1b28273463c3227
+      home: https://prometheus.io/
+      icon: https://raw.githubusercontent.com/prometheus/prometheus.github.io/master/assets/prometheus_logo-cb55bb5c346.png
+      maintainers:
+      - email: mgoodness@gmail.com
+        name: mgoodness
+      - email: gianrubio@gmail.com
+        name: gianrubio
+      name: prometheus
+      sources:
+      - https://github.com/prometheus/alertmanager
+      - https://github.com/prometheus/prometheus
+      - https://github.com/prometheus/pushgateway
+      - https://github.com/prometheus/node_exporter
+      - https://github.com/kubernetes/kube-state-metrics
+      urls:
+      - prometheus-9.3.1.tgz
+      version: 9.3.1
+generated: "2020-10-05T15:01:54.287952014+08:00"
