@@ -18,4 +18,9 @@
 
 # tasks file for eg_mep
 - include: "install.yml"
+  static: false
   when: operation == 'install'
+
+- include: "uninstall.yml"
+  static: false
+  when: operation == 'uninstall'
