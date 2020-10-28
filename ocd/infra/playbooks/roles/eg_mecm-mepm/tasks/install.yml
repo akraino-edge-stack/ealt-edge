@@ -1,0 +1,60 @@
+#
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: Doing deployment eg_mecm-mepm  setup for edge gallery eg_mecm-mepm
+  copy:
+    src: deploy
+    dest: /tmp/eg_mecm-mepm/
+
+- name: Import vars
+  include_vars:
+    file: ../../../config.yml
+    name: vardata
+
+- name: Generates certificate one eg_mecm-mepm
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic mecm-mepm-jwt-public-secret --from-file=publicKey=/tmp/.mep_tmp_cer/mepserver_encryptedtls.key
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Generates certificate one eg_mecm-mepm
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic mecm-mepm-ssl-secret --from-file=server_tls.key=/tmp/.mep_tmp_cer/mepserver_tls.key --from-file=server_tls.crt=/tmp/.mep_tmp_cer/mepserver_tls.crt --from-file=ca.crt=/tmp/.mep_tmp_cer/ca.crt
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Generates certificate one eg_mecm-mepm
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.firstvar.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.firstvar.name}} --from-literal=postgresk8sPluginPassword={{ vardata.firstvar.name}}
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/.mep_tmp_cer/
+
+- name: Generates certificate one eg_mecm-mepm
+  command: kubectl apply -f /tmp/eg_mecm-mepm/deploy/conf/manifest/mepm/mepm-service-account.yaml
+  args:
+    chdir: /tmp/eg_mecm-mepm/deploy/
+
+- name: Repo pulling for mecm-mepm
+  # yamllint disable rule:line-length
+  command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/eg_mecm-mepm/deploy/
