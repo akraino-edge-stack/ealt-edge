@@ -1,0 +1,83 @@
+apiVersion: v1
+entries:
+  appstore:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.121046371+08:00"
+      description: A Helm chart for Kubernetes
+      digest: 67395e3ef32e7186762a3ea64537da2b7744b99c600b626b1748db3346bbbde1
+      name: appstore
+      urls:
+        - appstore-1.0.1.tgz
+      version: 1.0.1
+  developer:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.121995167+08:00"
+      description: A Helm chart for Kubernetes
+      digest: 6c15482264e2c3f58dfd2efd12d31b8451e407f4cfe34fd8f13009b6e69df105
+      name: developer
+      urls:
+        - developer-1.0.1.tgz
+      version: 1.0.1
+  mecm-fe:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.122668602+08:00"
+      description: A Helm chart for Kubernetes
+      digest: efda295e0881868229cf1868de969844e1c03aaf0b091c0a789f9c19b20837e6
+      name: mecm-fe
+      urls:
+        - mecm-fe-1.0.1.tgz
+      version: 1.0.1
+  mecm-meo:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.124234173+08:00"
+      description: A Helm chart for Kubernetes
+      digest: ef439ba1904a733126cdd67ef93e6a2d7e9c61d657d2ed289003df847e181d8b
+      name: mecm-meo
+      urls:
+        - mecm-meo-1.0.1.tgz
+      version: 1.0.1
+  mecm-mepm:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.125097439+08:00"
+      description: A Helm chart for Kubernetes
+      digest: f8842d4da59bf036b618c097a5fdaf6fe6076f00d396220c4774dc3f68f47857
+      name: mecm-mepm
+      urls:
+        - mecm-mepm-1.0.1.tgz
+      version: 1.0.1
+  mep:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.126265737+08:00"
+      description: Mep deployments
+      digest: 4cbd8fd1e5dad2365c2a4885c283a8173d3b7db4857c5a31be0f0ec4ef96ed9f
+      name: mep
+      urls:
+        - mep-1.0.1.tgz
+      version: 1.0.1
+  servicecenter:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.12676008+08:00"
+      description: A Helm chart for Kubernetes
+      digest: 10b0095017f70c3545f81f1c96a701576190cec10f8ce109e3d30b44592637b0
+      name: servicecenter
+      urls:
+        - servicecenter-1.0.1.tgz
+      version: 1.0.1
+  usermgmt:
+    - apiVersion: v1
+      appVersion: "0.9"
+      created: "2020-10-05T15:01:09.127714187+08:00"
+      description: A Helm chart for Kubernetes
+      digest: 04564ced43e60d74ac9ebe702e3f62721685d2cc79230db9b6df49b30435d0e6
+      name: usermgmt
+      urls:
+        - usermgmt-1.0.1.tgz
+      version: 1.0.1
+generated: "2020-10-05T15:01:09.120023364+08:00"
