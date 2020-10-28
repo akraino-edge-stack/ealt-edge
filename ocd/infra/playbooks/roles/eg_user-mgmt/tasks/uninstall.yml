@@ -16,11 +16,8 @@
 
 ---
 
-# tasks file for eg_user-mgmt
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
+- name: Uninstall user management
+  command: helm uninstall user-mgmt-edgegallery
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Uninstall user mngmt jwt
+  command: kubectl delete secret user-mgmt-jwt-secret
