@@ -16,11 +16,5 @@
 
 ---
 
-# tasks file for eg_appstore
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
-
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Unisntall appstore
+  command: helm uninstall appstore-edgegallery
