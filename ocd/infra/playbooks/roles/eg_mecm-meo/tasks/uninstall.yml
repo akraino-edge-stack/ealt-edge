@@ -15,11 +15,9 @@
 #
 
 ---
-# tasks file for eg_mecm-meo
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Uninstall mecm meo
+  command: helm uninstall mecm-meo-edgegallery
+
+- name: Uninstall sercets
+  command: kubectl delete secret mecm-ssl-secret edgegallery-mecm-secret
