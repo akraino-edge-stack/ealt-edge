@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c27171f3_24f7bc48",
+        "filename": "ocd/infra/playbooks/roles/eg_mep/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-28T09:16:58Z",
+      "side": 1,
+      "message": "Hardcoded IP should be removed",
+      "revId": "dc4b9673f2bee2a1296be7f1d0c52596bdca2416",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5032fd04_b3b890d5",
+        "filename": "ocd/infra/playbooks/roles/eg_mep/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-28T09:16:58Z",
+      "side": 1,
+      "message": "Hardcoded IP should be removed",
+      "revId": "dc4b9673f2bee2a1296be7f1d0c52596bdca2416",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
