@@ -120,14 +120,14 @@
     msg: Setup_interfaces execution start
 
 - name: Link eg mep macvlan
-  command: ip link add eg-mp1 link eth0 type macvlan mode bridge
+  command: ip link add eg-mp1 link {{ vardata.interface1.name}} type macvlan mode bridge
   args:
     chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg mep macvlan
-  command: ip addr add 200.1.1.2/24 dev eg-mp1
+  command: ip addr add {{ vardata.ipaddregmep1.name}} dev eg-mp1
   args:
     chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
@@ -141,14 +141,14 @@
   no_log: True
 
 - name: Link eg eg mm5 with eth1
-  command: ip link add eg-mm5 link eth1 type macvlan mode bridge
+  command: ip link add eg-mm5 link {{ vardata.interface2.name}} type macvlan mode bridge
   args:
     chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg eg mm5 ip addr
-  command: ip addr add 100.1.1.2/24 dev eg-mm5
+  command: ip addr add {{ vardata.ipaddregmep5.name}} dev eg-mm5
   args:
     chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
@@ -173,7 +173,7 @@
 
 - name: Edge gallery mep installation pull chart
   # yamllint disable rule:line-length
-  command: helm install mep-edgegallery edgegallery/mep --set networkIsolation.phyInterface.mp1=eth1 --set networkIsolation.phyInterface.mm5=eth2 --set ssl.secretName=mep-ssl
+  command: helm install mep-edgegallery edgegallery/mep --set networkIsolation.phyInterface.mp1={{ vardata.interface1.name}} --set networkIsolation.phyInterface.mm5={{ vardata.interface2.name}} --set ssl.secretName=mep-ssl
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mep/deploy/
