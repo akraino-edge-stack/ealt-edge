@@ -15,11 +15,6 @@
 #
 
 ---
-# tasks file for eg_developer
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- name: Uninstall developer
+  command: helm uninstall developer-edgegallery
