@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50521c27_ecda45f1",
+        "filename": "ocd/infra/playbooks/roles/eg_certs/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-28T12:56:06Z",
+      "side": 1,
+      "message": "password to be removed",
+      "revId": "0a422ce1f922772c62df7e05d24cb19fb199d397",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51e67e1c_44875d7b",
+        "filename": "ocd/infra/playbooks/roles/eg_certs/tasks/install.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-10-28T12:56:06Z",
+      "side": 1,
+      "message": "No hardcoded passwords.",
+      "revId": "0a422ce1f922772c62df7e05d24cb19fb199d397",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
