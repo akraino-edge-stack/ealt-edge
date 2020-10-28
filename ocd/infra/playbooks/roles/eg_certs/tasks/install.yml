@@ -16,6 +16,11 @@
 
 ---
 
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_certs/
+
 - name: Remove old dir
   command: rm -rf /tmp/.mep_tmp_cer
   args:
