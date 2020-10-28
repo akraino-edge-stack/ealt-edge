@@ -16,11 +16,6 @@
 
 ---
 
-- name: Doing deployment eg_mecm-mepm  setup for edge gallery eg_mecm-mepm
-  copy:
-    src: deploy
-    dest: /tmp/eg_mecm-mepm/
-
 - name: Import vars
   include_vars:
     file: ../../../config.yml
@@ -42,19 +37,19 @@
 
 - name: Generates certificate one eg_mecm-mepm
   # yamllint disable rule:line-length
-  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.firstvar.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.firstvar.name}} --from-literal=postgresk8sPluginPassword={{ vardata.firstvar.name}}
+  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_certs/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.firstvar.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.firstvar.name}} --from-literal=postgresk8sPluginPassword={{ vardata.firstvar.name}}
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/.mep_tmp_cer/
 
 - name: Generates certificate one eg_mecm-mepm
-  command: kubectl apply -f /tmp/eg_mecm-mepm/deploy/conf/manifest/mepm/mepm-service-account.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/manifest/mepm/mepm-service-account.yaml
   args:
-    chdir: /tmp/eg_mecm-mepm/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Repo pulling for mecm-mepm
   # yamllint disable rule:line-length
   command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mecm-mepm/deploy/
+    chdir: /tmp/eg_certs/deploy/

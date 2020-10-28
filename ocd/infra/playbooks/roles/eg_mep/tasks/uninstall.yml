@@ -43,26 +43,26 @@
 
 - name: Delete network isolation multus eg sp controller
   # yamllint disable rule:line-length
-  command: kubectl delete -f /tmp/eg_mep/deploy/edge/network-isolation/eg-sp-controller.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/edge/network-isolation/eg-sp-controller.yaml
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation multus eg sp rbac
   # yamllint disable rule:line-length
-  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-rbac.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/edge/network-isolation/eg-sp-rbac.yaml
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation multus
-  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/network-isolation/multus.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/edge/network-isolation/multus.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
@@ -109,25 +109,25 @@
   no_log: True
 
 - name: Uninstall dns metallb config mep
-  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/config-map.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/edge/metallb/config-map.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete dns metallb
-  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/metallb.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/edge/metallb/metallb.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete dns metallb namespace
   # yamllint disable rule:line-length
-  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/namespace.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/edge/metallb/namespace.yaml
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 

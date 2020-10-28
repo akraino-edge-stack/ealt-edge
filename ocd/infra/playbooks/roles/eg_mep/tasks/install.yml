@@ -16,11 +16,6 @@
 
 ---
 
-- name: Doing deployment setup for edge gallery
-  copy:
-    src: deploy
-    dest: /tmp/eg_mep/
-
 - name: Import vars
   include_vars:
     file: ../../../config.yml
@@ -31,17 +26,17 @@
   command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Copy macvln
   command: cp -r /tmp/remote-platform/cni/macvlan /opt/cni/bin/
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Setup local-host
   command: cp -r /tmp/remote-platform/cni/host-local /opt/cni/bin/
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Create mep namespace
   command: kubectl create ns mep
@@ -73,48 +68,48 @@
     msg: Deploy_dns_metallb execution start
 
 - name: Eg_Mep deployment execution of namesapce
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/metallb/namespace.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/metallb/namespace.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Eg_Mep deployment execution of metallb
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/metallb/metallb.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/metallb/metallb.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Eg_Mep deployment create secret
   command: kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Eg_Mep deployment execution of config-mep
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/metallb/config-map.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/metallb/config-map.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - debug:
     msg: Deploy_network_isolation_multus execution start
 
 - name: Running multus yaml files
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/network-isolation/multus.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/network-isolation/multus.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Running eg-sp-rbac yaml files
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-rbac.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/network-isolation/eg-sp-rbac.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - name: Replacing image
   replace:
-    path: /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-controller.yaml
+    path: /tmp/eg_certs/deploy/conf/edge/network-isolation/eg-sp-controller.yaml
     regexp: 'edgegallery/edgegallery-secondary-ep-controller:latest'
     replace: "swr.ap-southeast-1.myhuaweicloud.com/edgegallery/edgegallery-secondary-ep-controller:latest"
 
 - name: Running eg-sp-controller yaml files
-  command: kubectl apply -f /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-controller.yaml
+  command: kubectl apply -f /tmp/eg_certs/deploy/conf/edge/network-isolation/eg-sp-controller.yaml
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
 
 - debug:
     msg: Setup_interfaces execution start
@@ -122,49 +117,49 @@
 - name: Link eg mep macvlan
   command: ip link add eg-mp1 link {{ vardata.interface1.name}} type macvlan mode bridge
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg mep macvlan
   command: ip addr add {{ vardata.ipaddregmep1.name}} dev eg-mp1
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg me1 up
   command: ip link set dev eg-mp1 up
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg eg mm5 with eth1
   command: ip link add eg-mm5 link {{ vardata.interface2.name}} type macvlan mode bridge
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg eg mm5 ip addr
   command: ip addr add {{ vardata.ipaddregmep5.name}} dev eg-mm5
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Link eg eg mm5 set dev
   command: ip link set dev eg-mm5 up
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete mep name space
   command: kubectl delete ns mep
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True
 
@@ -176,6 +171,6 @@
   command: helm install mep-edgegallery edgegallery/mep --set networkIsolation.phyInterface.mp1={{ vardata.interface1.name}} --set networkIsolation.phyInterface.mm5={{ vardata.interface2.name}} --set ssl.secretName=mep-ssl
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mep/deploy/
+    chdir: /tmp/eg_certs/deploy/
   ignore_errors: yes
   no_log: True

@@ -26,7 +26,7 @@
 
 - name: Delete mepm service
   # yamllint disable rule:line-length
-  command: kubectl delete -f /tmp/eg_mecm-mepm/deploy/conf/manifest/mepm/mepm-service-account.yaml
+  command: kubectl delete -f /tmp/eg_certs/deploy/conf/manifest/mepm/mepm-service-account.yaml
   # yamllint disable rule:line-length
   args:
-    chdir: /tmp/eg_mecm-mepm/deploy/
+    chdir: /tmp/eg_certs/deploy/
