@@ -1,0 +1,4 @@
+---
+# tasks file for eg_mep
+- include: "install.yml"
+  when: operation == 'install'
