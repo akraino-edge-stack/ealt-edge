@@ -17,12 +17,11 @@
 - hosts: infra-k8s
   become: yes
   tags:
-  - k8s
-  - infra
-  - mecm
+  - center
+  - edge
 
   roles:
-  - k8s
+  - eg_addrepo
 
 - hosts: infra-k3s
   become: yes
