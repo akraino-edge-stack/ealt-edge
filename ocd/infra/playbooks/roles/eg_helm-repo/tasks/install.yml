@@ -1,0 +1,57 @@
+#
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_helm-repo/
+
+- name: Import vars
+  include_vars:
+    file: ../../../config.yml
+    name: vardata
+
+- name: Adding helm repo edgegallery
+  command: helm repo index edgegallery/
+  args:
+    chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
+
+- name: Adding helm repo stable
+  command: helm repo index stable/
+  args:
+    chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
+
+- name: Adding helm repo
+  # yamllint disable rule:line-length
+  command: docker run --name helm-repo -v /tmp/eg_helm-repo/deploy/helm/helm-charts/:/usr/share/nginx/html:ro  -d -p 8080:80  nginx:stable
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
+
+- name: Add repo in adgegallery private IP
+  command: helm repo add edgegallery http://{{ vardata.helmrepoip.name}}:8080/edgegallery
+  args:
+    chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
+
+- name: Add stable repo in given IP
+  command: helm repo add stable http://{{ vardata.helmrepoip.name}}:8080/stable
+  args:
+    chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
+
+- debug:
+    msg: "Helm repo added successfully"
