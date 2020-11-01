@@ -15,25 +15,7 @@
 #
 
 ---
-
-- name: Doing deployment setup for service-center
-  copy:
-    src: deploy
-    dest: /tmp/service_center/
-
-- name: Import config file
-  include_vars:
-    file: ../../../config.yml
-    name: vardata
-
-- name: Setting pull image path
-  # yamllint disable rule:line-length
-  command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
-  # yamllint disable rule:line-length
-  args:
-    chdir: /tmp/service_center/deploy/
-
-- name: Pull helm chart service center
+- name: Pull helm chart service center and image
   # yamllint disable rule:line-length
   command: helm install service-center-edgegallery edgegallery/servicecenter --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
   # yamllint disable rule:line-length
