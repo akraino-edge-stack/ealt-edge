@@ -1,0 +1,35 @@
+#
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: Import config file
+  include_vars:
+      file: ../../../config.yml
+      name: vardata
+
+- synchronize:
+      src: /tmp/.mep_tmp_cer
+      dest: /tmp/
+
+- name: Docker login
+  # yamllint disable rule:line-length
+  command: docker login -u {{ vardata.dockerusername.name}} -p {{ vardata.dockerpass.name}} swr.ap-southeast-1.myhuaweicloud.com
+  # yamllint disable rule:line-length
+
+- name: Setting pull image swr path
+  # yamllint disable rule:line-length
+  command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
