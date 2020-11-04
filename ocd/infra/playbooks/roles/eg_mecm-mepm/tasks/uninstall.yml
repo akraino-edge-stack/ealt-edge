@@ -24,9 +24,7 @@
   command: kubectl delete secret mecm-mepm-jwt-public-secret mecm-mepm-ssl-secret edgegallery-mepm-secret
   # yamllint disable rule:line-length
 
-- name: Delete mepm service
+- name: Delete mep-service-account
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mecm-mepm/deploy/conf/manifest/mepm/mepm-service-account.yaml
   # yamllint disable rule:line-length
-  args:
-    chdir: /tmp/eg_mecm-mepm/deploy/
