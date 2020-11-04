@@ -21,37 +21,37 @@
     src: deploy
     dest: /tmp/eg_helm-repo/
 
-- name: Import vars
+- name: Import config file
   include_vars:
     file: ../../../config.yml
     name: vardata
 
-- name: Adding helm repo edgegallery
+- name: Helm repo index edgegallery
   command: helm repo index edgegallery/
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
-- name: Adding helm repo stable
+- name: Helm repo index stable
   command: helm repo index stable/
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
-- name: Adding helm repo
+- name: Creating helm repo
   # yamllint disable rule:line-length
-  command: docker run --name helm-repo -v /tmp/eg_helm-repo/deploy/helm/helm-charts/:/usr/share/nginx/html:ro  -d -p 8080:80  nginx:stable
-  # yamllint disable rule:line-length
+  command: docker run --name helm-repo -v /tmp/eg_helm-repo/deploy/helm/helm-charts/:/usr/share/nginx/html:ro -d -p 8080:80 nginx:stable
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
-- name: Add repo in adgegallery private IP
-  command: helm repo add edgegallery http://{{ vardata.helmrepoip.name}}:8080/edgegallery
+- name: Helm repo add edgegallery
+  # yamllint disable rule:line-length
+  command: helm repo add edgegallery http://{{ vardata.private_repo_ip.name}}:8080/edgegallery
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
-- name: Add stable repo in given IP
-  command: helm repo add stable http://{{ vardata.helmrepoip.name}}:8080/stable
+- name: Helm repo add stable
+  command: helm repo add stable http://{{ vardata.private_repo_ip.name}}:8080/stable
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
 - debug:
-    msg: "Helm repo added successfully"
+    msg: "Helm repo created"

@@ -18,21 +18,10 @@
 
 - name: Import config file
   include_vars:
-    file: ../../../config.yml
-    name: vardata
+      file: ../../../config.yml
+      name: vardata
 
-- name: Certificate copy
-  debug:
-    msg: Copy certificate from ocd to center and edge
-
-- synchronize:
-    src: /tmp/ssl-eg-keys-certs
-    dest: /tmp/
-
-- name: Docker login
+- name: Generate secret
   # yamllint disable rule:line-length
-  command: docker login -u {{ vardata.dockerusr.name}} -p {{ vardata.dockerpass.name}} swr.ap-southeast-1.myhuaweicloud.com
-
-- name: Create docker-registry secret
+  command: kubectl create secret generic edgegallery-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-literal=keystorePassword={{ vardata.secret_keystorepass.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-file=trust.cer=/tmp/ssl-eg-keys-certs/ca.crt --from-file=server.cer=/tmp/ssl-eg-keys-certs/tls.crt --from-file=server_key.pem=/tmp/ssl-eg-keys-certs/encryptedtls.key --from-literal=cert_pwd={{ vardata.secret_cert_pass.name}}
   # yamllint disable rule:line-length
-  command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
