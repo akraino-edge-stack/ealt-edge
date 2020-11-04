@@ -18,11 +18,9 @@
 
 - name: Import vars
   include_vars:
-  # yamllint disable rule:line-length
       file: ../../../config.yml
-  # yamllint disable rule:line-length
       name: vardata
 
-- name: Pull helm chart appstore
+- name: Helm install appstore
   # yamllint disable rule:line-length
-  command: helm install -- wait appstore-edgegallery edgegallery/appstore --set global.oauth2.authServerAddress=https://{{vardata.centernodeip.name}}:30067 --set images.appstoreFe.tag={{vardata.appstorefeimagetag.name}} --set images.appstoreBe.tag={{vardata.appstorebeimagetag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install --wait appstore-edgegallery edgegallery/appstore --set global.oauth2.authServerAddress=https://{{vardata.appstore_centernodeip.name}}:30067 --set images.appstoreFe.tag={{vardata.appstore_fe_image_tag.name}} --set images.appstoreBe.tag={{vardata.appstore_be_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret

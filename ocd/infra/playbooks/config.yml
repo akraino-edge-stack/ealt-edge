@@ -13,29 +13,117 @@
 # limitations under the License.
 ---
 
-firstvar:
-  name:
 swrusr:
   name:
 swrpass:
   name:
-sUserName:
+cert_validity_in_days:
+  name: 365
+mecm_meo_db_password:
   name:
-sPass:
+mecm_mepm_db_password:
   name:
-authServer:
+dockerusr:
   name:
-authServerMecm:
+dockerpass:
   name:
-adminpwd:
+secret_keystorepass:
   name:
-kongpgpwd:
+secret_cert_pass:
   name:
-interface1:
+private_repo_ip:
   name:
-interface2:
+mep_pg_admin_pwd:
   name:
-ipaddregmep1:
+mep_kong_pg_pwd:
   name:
-ipaddregmep5:
+mep_cert_pwd:
   name:
+system_interfaceeth1:
+  name:
+system_interfaceeth2:
+  name:
+mep_ip_addr_macvlan_eg_mep1:
+  name:
+mep_ip_addr_mm5_eg_mm5:
+  name:
+mep_image_tag:
+  name:
+mep_mepauth_image_tag:
+  name:
+mep_dns_image_tag:
+  name:
+generate_cert_pass:
+  name:
+mecm_mepm_postgresPassword:
+  name:
+mecm_mepm_postgresLcmCntlrPassword:
+  name:
+mecm_mepm_postgresk8sPluginPassword:
+  name:
+mecm_mepm_lcmcontroller_image_tag:
+  name:
+mecm_mepm_k8splugin_image_tag:
+  name:
+mecm_mepm_postgres_image_tag:
+  name:
+user_mgmt_encryptpass:
+  name:
+user_mgmt_oauth_appstore_client_ip:
+  name:
+user_mgmt_oauth_developer_client_ip:
+  name:
+user_mgmt_oauth_mecm_client_ip:
+  name:
+user_mgmt_image_tag:
+  name:
+mecm_meo_keystorePassword:
+  name:
+mecm_meo_truststorePassword:
+  name:
+mecm_meo_postgresPassword:
+  name:
+mecm_meo_postgresApmPassword:
+  name:
+mecm_meo_postgresAppoPassword:
+  name:
+mecm_meo_postgresInventoryPassword:
+  name:
+mecm_meo_edgeRepoUserName:
+  name:
+mecm_meo_edgeRepoPassword:
+  name:
+mecm_meo_image_tag:
+  name:
+mecm_meo_appo_image_tag:
+  name:
+mecm_meo_apm_image_tag:
+  name:
+mecm_meo_postgres_tag:
+  name:
+mecm_fe_centernodeip:
+  name:
+mecm_fe_image_tag:
+  name:
+appstore_centernodeip:
+  name:
+appstore_fe_image_tag:
+  name:
+appstore_be_image_tag:
+  name:
+developer_centernodeip:
+  name:
+developer_fe_image_tag:
+  name:
+developer_be_image_tag:
+  name:
+developer_centernode_port:
+  name: 30067
+mecm_fe_centernodeport:
+  name: 30067
+user_mgmt_oauth_appstore_client_port:
+  name: 30091
+user_mgmt_oauth_developer_client_port:
+  name: 30092
+user_mgmt_oauth_mecm_client_port:
+  name: 30093

@@ -1,4 +1,3 @@
-#
 # Copyright 2020 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +14,9 @@
 #
 
 ---
-# tasks file for eg_certs
-- include: "install.yml"
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  when: operation == 'uninstall'
+- name: Docker stop helm repo
+  command: docker stop helm-repo
+
+- name: Docker rm helm repo
+  command: docker rm helm-repo

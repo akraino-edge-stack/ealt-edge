@@ -15,9 +15,8 @@
 #
 
 ---
-# tasks file for eg_certs
-- include: "install.yml"
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  when: operation == 'uninstall'
+- name: Remove generated certificates
+  command: rm -rf /tmp/ssl-eg-keys-certs
+  args:
+    chdir: /tmp/

@@ -15,9 +15,6 @@
 #
 
 ---
-# tasks file for eg_certs
-- include: "install.yml"
-  when: operation == 'install'
 
-- include: "uninstall.yml"
-  when: operation == 'uninstall'
+- name: Delete edgegallery ssl secret
+  command: kubectl delete secret edgegallery-ssl-secret
