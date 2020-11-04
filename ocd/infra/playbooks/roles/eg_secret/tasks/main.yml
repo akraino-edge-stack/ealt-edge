@@ -15,9 +15,12 @@
 #
 
 ---
-# tasks file for eg_certs
+
+# tasks file for eg_secret
 - include: "install.yml"
+  static: false
   when: operation == 'install'
 
 - include: "uninstall.yml"
+  static: false
   when: operation == 'uninstall'

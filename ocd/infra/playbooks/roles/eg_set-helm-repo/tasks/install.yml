@@ -18,12 +18,13 @@
 
 - name: Import config file
   include_vars:
-    file: ../../../config.yml
-    name: vardata
+      file: ../../../config.yml
+      name: vardata
 
-- name: Add adgegallery repo in private IP
+- name: Add repo in adgegallery IP
   # yamllint disable rule:line-length
-  command: helm repo add edgegallery http://{{ vardata.helmrepoip.name}}:8080/edgegallery
+  command: helm repo add edgegallery http://{{ vardata.private_repo_ip.name}}:8080/edgegallery
 
 - name: Add stable repo in private IP
-  command: helm repo add stable http://{{ vardata.helmrepoip.name}}:8080/stable
+  # yamllint disable rule:line-length
+  command: helm repo add stable http://{{ vardata.private_repo_ip.name}}:8080/stable

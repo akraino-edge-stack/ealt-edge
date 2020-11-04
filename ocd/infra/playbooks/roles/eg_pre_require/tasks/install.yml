@@ -18,18 +18,21 @@
 
 - name: Import config file
   include_vars:
-      file: ../../../config.yml
-      name: vardata
+    file: ../../../config.yml
+    name: vardata
+
+- name: Certificate copy
+  debug:
+    msg: Copy certificate from ocd to center and edge
 
 - synchronize:
-      src: /tmp/.mep_tmp_cer
-      dest: /tmp/
+    src: /tmp/ssl-eg-keys-certs
+    dest: /tmp/
 
 - name: Docker login
   # yamllint disable rule:line-length
-  command: docker login -u {{ vardata.dockerusername.name}} -p {{ vardata.dockerpass.name}} swr.ap-southeast-1.myhuaweicloud.com
-  # yamllint disable rule:line-length
+  command: docker login -u {{ vardata.dockerusr.name}} -p {{ vardata.dockerpass.name}} swr.ap-southeast-1.myhuaweicloud.com
 
-- name: Setting pull image swr path
+- name: Swr login
   # yamllint disable rule:line-length
   command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
