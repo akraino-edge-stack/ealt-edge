@@ -1,0 +1,763 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ccc67674_e57bd8e7",
+        "filename": "ocd/infra/playbooks/roles/eg_appstore/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "please cross check whether line-length is required for this.",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "255b1383_1972aae0",
+        "filename": "ocd/infra/playbooks/roles/eg_appstore/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "Can be renamed to helm install appstore or install appstore. please check the naming of uninstall also",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66b1b64f_8a07b990",
+        "filename": "ocd/infra/playbooks/roles/eg_appstore/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "space is not required here.",
+      "range": {
+        "startLine": 28,
+        "startChar": 26,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94072b60_35619747",
+        "filename": "ocd/infra/playbooks/roles/eg_certs/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "please ensure that tmp/ssl-eg-keys-certs is created",
+      "range": {
+        "startLine": 26,
+        "startChar": 90,
+        "endLine": 26,
+        "endChar": 112
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d536c017_441de335",
+        "filename": "ocd/infra/playbooks/roles/eg_developer/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "this may not be required. please cross check",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "968e50a4_c53b63d9",
+        "filename": "ocd/infra/playbooks/roles/eg_developer/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "port number can also be config file",
+      "range": {
+        "startLine": 28,
+        "startChar": 161,
+        "endLine": 28,
+        "endChar": 166
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2617918_48fd771c",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "I would suggest to rename it to \"helm repo index edgegallery\"",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 21
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb371a7d_4674a03a",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "I would suggest to rename it to \"helm repo index stable\"",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 28
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffd0d352_0b7f2f34",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "I would suggest to rename it to \"Running helm repo\" or \"Creating helm repo\"",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40f70758_25c60292",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "Suggest to rename it to \"helm repo add edgegallery\" or Add edgegallery helm charts to helm repo",
+      "range": {
+        "startLine": 45,
+        "startChar": 8,
+        "endLine": 45,
+        "endChar": 34
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e331193_b50f4d4f",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "Suggest to rename it to \"helm repo add stable\" or Add stable helm charts to helm repo",
+      "range": {
+        "startLine": 51,
+        "startChar": 8,
+        "endLine": 51,
+        "endChar": 35
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c87b089_fa4008ae",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 57,
+        "startChar": 26,
+        "endLine": 57,
+        "endChar": 38
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74feaa31_50145bb2",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "created",
+      "range": {
+        "startLine": 57,
+        "startChar": 20,
+        "endLine": 57,
+        "endChar": 25
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0eb97b16_5985ff60",
+        "filename": "ocd/infra/playbooks/roles/eg_helm-repo/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "This might not be useful",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 21
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6a2913a_1c6830eb",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-fe/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "suggest to rename it to \"install mecm-fe\"",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 44
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc78ba0d_b244ef41",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-fe/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "port number can from config file",
+      "range": {
+        "startLine": 26,
+        "startChar": 155,
+        "endLine": 26,
+        "endChar": 160
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59ecbb87_6d8e712c",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-meo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "suggest to rename it helm install",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 45
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2163b94_f8f1e533",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-meo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "we can add space here and follow same style in all the roles",
+      "range": {
+        "startLine": 49,
+        "startChar": 342,
+        "endLine": 49,
+        "endChar": 344
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d33f63b_b5bc3b00",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "Replacing password",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 23
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "414cbfaa_d07ba598",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "create mecm-mepm-ssl-secret secret",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 46
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecb24c33_0b45aee3",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "create edgegallery-mepm-secret secret",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 46
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b538a7fb_09eee78b",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "create mepm service account",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 46
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecb4fdf4_7ee9f922",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "install mecm-mepm",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 34
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2f0c3ce_a3c189ae",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "copyright is required",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 11
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e15a8ac_1c7700c1",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-mepm/tasks/uninstall.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "delete mecm-mepm secret",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52bd5ba9_2787b96f",
+        "filename": "ocd/infra/playbooks/roles/eg_mep/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "copyright is missing",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 8
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91e40ed3_03f4c57e",
+        "filename": "ocd/infra/playbooks/roles/eg_pre_require/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "create docker-registry secret",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 17
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22039f99_f545e2db",
+        "filename": "ocd/infra/playbooks/roles/eg_secret/tasks/uninstall.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 19,
+        "startChar": 15,
+        "endLine": 19,
+        "endChar": 26
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "267c8d60_d0bdb467",
+        "filename": "ocd/infra/playbooks/roles/eg_set-helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "suggest to change it to \"helm repo add edgegallery\"",
+      "range": {
+        "startLine": 24,
+        "startChar": 20,
+        "endLine": 24,
+        "endChar": 31
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42141d17_ee1a2e67",
+        "filename": "ocd/infra/playbooks/roles/eg_set-helm-repo/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "suggest to change it to \"helm repo add stable\"",
+      "range": {
+        "startLine": 28,
+        "startChar": 8,
+        "endLine": 28,
+        "endChar": 37
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ca52d4e_f025691b",
+        "filename": "ocd/infra/playbooks/roles/eg_user-mgmt/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "install user-mgmt",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 42
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97643ccf_c12d8133",
+        "filename": "ocd/infra/playbooks/roles/eg_user-mgmt/tasks/install.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "port numbers can be from config",
+      "range": {
+        "startLine": 31,
+        "startChar": 182,
+        "endLine": 31,
+        "endChar": 187
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e35f033_69797f0b",
+        "filename": "ocd/infra/playbooks/roles/eg_user-mgmt/tasks/main.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-05T06:03:14Z",
+      "side": 1,
+      "message": "copyright is missing",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 2
+      },
+      "revId": "51918908c5f0af4861086ed804edad16ebd36608",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
