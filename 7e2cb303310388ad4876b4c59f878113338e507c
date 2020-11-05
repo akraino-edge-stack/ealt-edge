@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b40bd9fa_5fe8e3a8",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 0,
+      "message": "This file should have seperate section of mandatory and optional parameters",
+      "revId": "7e2cb303310388ad4876b4c59f878113338e507c",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4e5dd3a_db3a2209",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 0,
+      "message": "proper sectioning with comments are needed for user to understand the purpose of variable.",
+      "revId": "7e2cb303310388ad4876b4c59f878113338e507c",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}

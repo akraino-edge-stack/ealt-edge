@@ -1,0 +1,502 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1765b789_7004648b",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 22
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3427db3d_1549aada",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42b2955f_21d358f1",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3172100a_cca1b786",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 16
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90c3e229_4a82b938",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d4f42a3_3bb723a7",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0222d9ec_c27c34ff",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "should be renamed to edge_management_interface and it should have default value.",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63d8b904_7b5fb450",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "should be renamed to edge_dataplane_interface and it should have default value.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0d70ee2_488c8b26",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "naming is confusing, please check",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bb865dd_e073e7c1",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35b58a3b_1aae0211",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 36
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13861d51_1f9047a9",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86983d90_2aed83d1",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7367dfe9_49919bfd",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "should be user_mgmt service name and this parameter shouldn\u0027t be configurable. It should be a constant in a script. In case service name is not working, we should have a single variable here \"center_node_ip\"",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 7
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08617942_e847a959",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ff9d0f3_56fd5247",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "have a option for common password for all for simplicity, if present and other passwords will be taken from that",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 35
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "012a5a85_9f8d42fc",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "why this is needed",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 26
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54e9959f_8b191005",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 22
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be33d575_98018d48",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "This is a duplicate variable for user_mgmt and this together there should be center_node_ip",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 20
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47218281_7cf1e0fc",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26501325_707f3458",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "This is a duplicate variable for user_mgmt and this together there should be center_node_ip",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1371ea3_43febdd9",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 22
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "844ed913_7fc8a757",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "This is a duplicate variable for user_mgmt and this together there should be center_node_ip",
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94034a08_bb66b321",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2020-11-05T09:42:47Z",
+      "side": 1,
+      "message": "Have a single variable for eg_image_tag and that too will be optional with default value as last EdgeGallery release",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 23
+      },
+      "revId": "5a96855385ed2fe197daea2d3f128d7fbd534998",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
