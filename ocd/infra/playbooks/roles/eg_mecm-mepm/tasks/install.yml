@@ -30,7 +30,7 @@
   replace:
     path: /tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql
     regexp: 'PASSWORD_VALUE'
-    replace: "{{ vardata.mecm_mepm_db_password.name }}"
+    replace: "{{ vardata.db_password.name }}"
 
 - name: Create mecm-mepm-ssl-secret secret
   # yamllint disable rule:line-length
@@ -48,7 +48,7 @@
 
 - name: Create edgegallery-mepm-secret secret
   # yamllint disable rule:line-length
-  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.mecm_mepm_postgresPassword.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.mecm_mepm_postgresLcmCntlrPassword.name}} --from-literal=postgresk8sPluginPassword={{ vardata.mecm_mepm_postgresk8sPluginPassword.name}}
+  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.db_password.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.db_password.name}} --from-literal=postgresk8sPluginPassword={{ vardata.db_password.name}}
   # yamllint disable rule:line-length
 
 - name: Create mepm service account
@@ -58,5 +58,5 @@
 
 - name: Install mecm-mepm
   # yamllint disable rule:line-length
-  command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret --set images.lcmcontroller.tag={{ vardata.mecm_mepm_lcmcontroller_image_tag.name}} --set images.k8splugin.tag={{ vardata.mecm_mepm_k8splugin_image_tag.name}} --set images.postgres.tag={{ vardata.mecm_mepm_postgres_image_tag.name}}
+  command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret --set images.lcmcontroller.tag={{ vardata.eg_image_tag.name}} --set images.k8splugin.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag={{ vardata.postgres_image_tag.name}}
   # yamllint disable rule:line-length

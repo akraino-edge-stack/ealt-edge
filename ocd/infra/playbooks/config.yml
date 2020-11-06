@@ -13,109 +13,41 @@
 # limitations under the License.
 ---
 
-swrusr:
-  name:
-swrpass:
-  name:
-cert_validity_in_days:
-  name: 365
-mecm_meo_db_password:
-  name:
-mecm_mepm_db_password:
-  name:
-dockerusr:
-  name:
-dockerpass:
-  name:
-secret_keystorepass:
-  name:
-secret_cert_pass:
+######### Mandatory parameters #########
+
+eg_image_tag:
   name:
 private_repo_ip:
   name:
-mep_pg_admin_pwd:
+secret_pwd:
   name:
-mep_kong_pg_pwd:
+db_password:
   name:
-mep_cert_pwd:
+
+########## Edge config #############
+
+postgres_image_tag:
   name:
-system_interfaceeth1:
+edge_management_interface:
   name:
-system_interfaceeth2:
+edge_dataplane_interface:
   name:
-mep_ip_addr_macvlan_eg_mep1:
-  name:
-mep_ip_addr_mm5_eg_mm5:
-  name:
-mep_image_tag:
-  name:
-mep_mepauth_image_tag:
-  name:
-mep_dns_image_tag:
-  name:
-generate_cert_pass:
-  name:
-mecm_mepm_postgresPassword:
-  name:
-mecm_mepm_postgresLcmCntlrPassword:
-  name:
-mecm_mepm_postgresk8sPluginPassword:
-  name:
-mecm_mepm_lcmcontroller_image_tag:
-  name:
-mecm_mepm_k8splugin_image_tag:
-  name:
-mecm_mepm_postgres_image_tag:
-  name:
-user_mgmt_encryptpass:
-  name:
-user_mgmt_oauth_appstore_client_ip:
-  name:
-user_mgmt_oauth_developer_client_ip:
-  name:
-user_mgmt_oauth_mecm_client_ip:
-  name:
-user_mgmt_image_tag:
-  name:
-mecm_meo_keystorePassword:
-  name:
-mecm_meo_truststorePassword:
-  name:
-mecm_meo_postgresPassword:
-  name:
-mecm_meo_postgresApmPassword:
-  name:
-mecm_meo_postgresAppoPassword:
-  name:
-mecm_meo_postgresInventoryPassword:
-  name:
+eg-mp1-address:
+  name: 200.1.1.2/24
+eg-mm5-address:
+  name: 100.1.1.2/24
+
+########### Center config ###########
+
 mecm_meo_edgeRepoUserName:
   name:
 mecm_meo_edgeRepoPassword:
   name:
-mecm_meo_image_tag:
-  name:
-mecm_meo_appo_image_tag:
-  name:
-mecm_meo_apm_image_tag:
-  name:
-mecm_meo_postgres_tag:
-  name:
 mecm_fe_centernodeip:
-  name:
-mecm_fe_image_tag:
   name:
 appstore_centernodeip:
   name:
-appstore_fe_image_tag:
-  name:
-appstore_be_image_tag:
-  name:
 developer_centernodeip:
-  name:
-developer_fe_image_tag:
-  name:
-developer_be_image_tag:
   name:
 developer_centernode_port:
   name: 30067
@@ -127,3 +59,8 @@ user_mgmt_oauth_developer_client_port:
   name: 30092
 user_mgmt_oauth_mecm_client_port:
   name: 30093
+
+############ Certificate validity#######
+
+cert_validity_in_days:
+  name: 365
