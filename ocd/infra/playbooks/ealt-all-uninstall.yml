@@ -12,12 +12,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 ---
 
 ############ OCD ############
 
 - hosts: ocdconsolidated
+<<<<<<< HEAD
   become: yes
   tags:
     - ocdhost
@@ -134,3 +136,120 @@
     - k3s
     - docker
   # yamllint disable rule:new-line-at-end-of-file
+=======
+  become: yes
+  tags:
+  - ocdhost
+  - ocdconsolidated
+
+  roles:
+  - eg_helm-repo
+  - eg_certs
+  - helm
+  - k8s
+
+############ Center ############
+
+### EdgeGallery related ###
+
+- hosts: egcenter
+  become: yes
+  tags:
+  - egcenter
+  - center
+
+  roles:
+  - eg_mecm-meo
+  - eg_mecm-fe
+  - eg_appstore
+  - eg_developer
+  - eg_user-mgmt
+  - service_center
+  - eg_secrets
+
+### Other 3rd party related ###
+
+- hosts: thirdpartycenter
+  become: yes
+  tags:
+  - thirdpartycenter
+  - center
+
+  roles:
+  - grafana
+
+### Pre-Requisites ###
+
+- hosts: prerequisitecenter
+  become: yes
+  tags:
+  - prerequisitecenter
+  - center
+
+  roles:
+  - kubeconfig
+  - helm
+
+### Infrastructure ###
+
+- hosts: center-infra
+  become: yes
+  tags:
+  - center-infra
+  - center
+
+  roles:
+  - k8s
+
+############ Edge ############
+
+### EdgeGallery related ###
+
+- hosts: egedge
+  become: yes
+  tags:
+  - egedge
+  - edge
+
+  roles:
+  - eg_mep
+  - eg_mecm-mepm
+  - eg_secret
+
+### Other 3rd party related ###
+
+- hosts: thirdpartyedge
+  become: yes
+  tags:
+  - thirdpartyedge
+  - edge
+
+  roles:
+  - rabbitmq
+  - prometheus
+  - kubeconfig
+  - mepkubeconfig
+  - cadvisor
+
+### Pre-Requisites ###
+
+- hosts: prerequisiteedge
+  become: yes
+  tags:
+  - prerequisiteedge
+  - edge
+
+  roles:
+  - helm
+
+### Infrastructure ###
+- hosts: edge-infra
+  become: yes
+  tags:
+  - edge-infra
+  - edge
+
+  roles:
+  - k3s
+  - docker
+>>>>>>> 1e300af... Install uninstall inventory updated

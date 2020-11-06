@@ -21,6 +21,7 @@
 - hosts: ocdconsolidated
   become: yes
   tags:
+<<<<<<< HEAD
     - ocdhost
     - ocdconsolidated
 
@@ -29,6 +30,16 @@
     - helm
     - eg_certs
     - eg_helm-repo
+=======
+  - ocdhost
+  - ocdconsolidated
+
+  roles:
+  - k8s
+  - helm
+  - eg_certs
+  - eg_helm-repo
+>>>>>>> 1e300af... Install uninstall inventory updated
 
 ############ Center ############
 
@@ -37,6 +48,7 @@
 - hosts: center-infra
   become: yes
   tags:
+<<<<<<< HEAD
     - center-infra
     - center
 
@@ -86,10 +98,63 @@
 
 ############ Edge ############
 
+=======
+  - center-infra
+  - center
+
+  roles:
+  - k8s
+
+### Pre-Requisites ###
+
+- hosts: prerequisitecenter
+  become: yes
+  tags:
+  - prerequisitecenter
+  - center
+
+  roles:
+  - helm
+  - kubeconfig
+
+### Other 3rd party related ###
+
+- hosts: thirdpartycenter
+  become: yes
+  tags:
+  - thirdpartycenter
+  - center
+
+  roles:
+  - grafana
+
+### EdgeGallery related ###
+
+- hosts: egcenter
+  become: yes
+  tags:
+  - egcenter
+  - center
+
+  roles:
+  - eg_pre_require
+  - eg_secret
+  - eg_set-helm-repo
+  - service_center
+  - eg_user-mgmt
+  - eg_mecm-meo
+  - eg_mecm-fe
+  - eg_appstore
+  - eg_developer
+
+############ Edge ############
+
+>>>>>>> 1e300af... Install uninstall inventory updated
 ### Infrastructure ###
 - hosts: edge-infra
   become: yes
   tags:
+<<<<<<< HEAD
     - edge-infra
     - edge
 
@@ -107,12 +172,32 @@
 
   roles:
     - helm
+=======
+  - edge-infra
+  - edge
+
+  roles:
+  - docker
+  - k3s
+
+### Pre-Requisites ###
+
+- hosts: prerequisiteedge
+  become: yes
+  tags:
+  - prerequisiteedge
+  - edge
+
+  roles:
+  - helm
+>>>>>>> 1e300af... Install uninstall inventory updated
 
 ### Other 3rd party related ###
 
 - hosts: thirdpartyedge
   become: yes
   tags:
+<<<<<<< HEAD
     - thirdpartyedge
     - edge
 
@@ -123,12 +208,24 @@
     - mepkubeconfig
     - cadvisor
 
+=======
+  - thirdpartyedge
+  - edge
+
+  roles:
+  - rabbitmq
+  - prometheus
+  - kubeconfig
+  - mepkubeconfig
+  - cadvisor
+>>>>>>> 1e300af... Install uninstall inventory updated
 
 ### EdgeGallery related ###
 
 - hosts: egedge
   become: yes
   tags:
+<<<<<<< HEAD
     - egedge
     - edge
 
@@ -137,3 +234,14 @@
     - eg_mep
     - eg_mecm-mepm
   # yamllint disable rule:new-line-at-end-of-file
+=======
+  - egedge
+  - edge
+
+  roles:
+  - eg_pre_require
+  - eg_secret
+  - eg_set-helm-repo
+  - eg_mep
+  - eg_mecm-mepm
+>>>>>>> 1e300af... Install uninstall inventory updated
