@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf0f1a3c_ccf3a46c",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please provide default value for this parameter.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 12
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "411e5459_d571bb4b",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please provide default value for this parameter",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 7
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75bf5bc2_23131af3",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please provide default value fot this",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 7
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e3c3907_12897887",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "this can be removed and get the value from {{ ansible_host }}. please refer k3s role for ansible_host reference",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 23
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c69567b2_ac37ec57",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please rename it to user_mgmt_port",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 13
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3abcc674_b60daa61",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please rename it to appstore_fe_port",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 36
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "692b68bd_4882fedd",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please rename it to developer_fe_port",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1971f90d_5b31945e",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:17:25Z",
+      "side": 1,
+      "message": "please rename it to mecm_fe_port",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 32
+      },
+      "revId": "60fe8e97fde04685e45e498bda9a8ceee8428a7f",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
