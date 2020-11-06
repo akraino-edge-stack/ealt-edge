@@ -46,7 +46,7 @@
     - eg_developer
     - eg_user-mgmt
     - service_center
-    - eg_secrets
+    - eg_secret
 
 ### Other 3rd party related ###
 
@@ -93,7 +93,7 @@
     - edge
 
   roles:
-    - eg_secrets
+    - eg_secret
     - eg_mep
     - eg_mecm-mepm
 
@@ -133,4 +133,3 @@
   roles:
     - k3s
     - docker
-  # yamllint disable rule:new-line-at-end-of-file

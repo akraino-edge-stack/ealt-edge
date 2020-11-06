@@ -75,7 +75,9 @@
     - center
 
   roles:
-    - eg_secrets
+    - eg_pre_require
+    - eg_secret
+    - eg_set-helm-repo
     - service_center
     - eg_user-mgmt
     - eg_mecm-meo
@@ -133,7 +135,8 @@
     - edge
 
   roles:
-    - eg_secrets
+    - eg_pre_require
+    - eg_secret
+    - eg_set-helm-repo
     - eg_mep
     - eg_mecm-mepm
-  # yamllint disable rule:new-line-at-end-of-file
