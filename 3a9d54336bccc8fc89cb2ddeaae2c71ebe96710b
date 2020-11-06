@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8aac041f_05d8c088",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-06T10:51:28Z",
+      "side": 1,
+      "message": "this can be removed and can use {{ ansible_host }}. please refer k3s role for ansible_host reference",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 7
+      },
+      "revId": "3a9d54336bccc8fc89cb2ddeaae2c71ebe96710b",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
