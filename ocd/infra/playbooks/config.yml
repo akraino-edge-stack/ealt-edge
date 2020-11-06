@@ -13,54 +13,49 @@
 # limitations under the License.
 ---
 
-######### Mandatory parameters #########
-
-eg_image_tag:
-  name:
+######### Common parameters #########
+######### Mandatory #########
 private_repo_ip:
   name:
-secret_pwd:
-  name:
-db_password:
+
+######### Optional #########
+eg_image_tag:
+  name: 0.9
+# User can either give common password or can opt to provide individual passwords
+common_pwd:
   name:
 
 ########## Edge config #############
-
-postgres_image_tag:
-  name:
+######### Optional #########
 edge_management_interface:
-  name:
+  name: eth0
 edge_dataplane_interface:
-  name:
-eg-mp1-address:
-  name: 200.1.1.2/24
-eg-mm5-address:
+  name: eth1
+eg-management-address:
   name: 100.1.1.2/24
+eg-dataplane-address:
+  name: 200.1.1.2/24
+
+# All Edge related password which needs to be specified if user doesn't need common password for security purpose #
+
 
 ########### Center config ###########
-
+######### Mandatory #########
 mecm_meo_edgeRepoUserName:
   name:
 mecm_meo_edgeRepoPassword:
   name:
-mecm_fe_centernodeip:
+center_node_ip:
   name:
-appstore_centernodeip:
-  name:
-developer_centernodeip:
-  name:
-developer_centernode_port:
+
+######### Optional #########
+usermgmt_port:
   name: 30067
-mecm_fe_centernodeport:
-  name: 30067
-user_mgmt_oauth_appstore_client_port:
+appstore_port:
   name: 30091
-user_mgmt_oauth_developer_client_port:
+developer_port:
   name: 30092
-user_mgmt_oauth_mecm_client_port:
+mecm_port:
   name: 30093
 
-############ Certificate validity#######
-
-cert_validity_in_days:
-  name: 365
+# All Center related password which needs to be specified if user doesn't need common password for security purpose #
