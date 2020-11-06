@@ -23,4 +23,4 @@
 
 - name: Developer chart installing
   # yamllint disable rule:line-length
-  command: helm install --wait developer-edgegallery edgegallery/developer --set global.oauth2.authServerAddress=https://{{vardata.developer_centernodeip.name}}:{{ vardata.developer_centernode_port.name}} --set images.developerFe.tag={{vardata.developer_fe_image_tag.name}} --set images.developerBe.tag={{vardata.developer_be_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install --wait developer-edgegallery edgegallery/developer --set global.oauth2.authServerAddress=https://{{vardata.developer_centernodeip.name}}:{{ vardata.developer_centernode_port.name}} --set images.developerFe.tag={{vardata.eg_image_tag.name}} --set images.developerBe.tag={{vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret

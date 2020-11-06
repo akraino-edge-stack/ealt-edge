@@ -23,10 +23,10 @@
 
 - name: Generating certificates for usermanagment
   # yamllint disable rule:line-length
-  command: kubectl create secret generic user-mgmt-jwt-secret --from-file=publicKey=/tmp/ssl-eg-keys-certs/rsa_public_key.pem --from-file=encryptedPrivateKey=/tmp/ssl-eg-keys-certs/encrypted_rsa_private_key.pem --from-literal=encryptPassword={{ vardata.user_mgmt_encryptpass.name}}
+  command: kubectl create secret generic user-mgmt-jwt-secret --from-file=publicKey=/tmp/ssl-eg-keys-certs/rsa_public_key.pem --from-file=encryptedPrivateKey=/tmp/ssl-eg-keys-certs/encrypted_rsa_private_key.pem --from-literal=encryptPassword={{ vardata.secret_pwd.name}}
   # yamllint disable rule:line-length
 
 - name: Install user-mgmt
   # yamllint disable rule:line-length
-  command: helm install --wait user-mgmt-edgegallery edgegallery/usermgmt --set global.oauth2.clients.appstore.clientUrl=https://{{ vardata.user_mgmt_oauth_appstore_client_ip.name}}:{{vardata.user_mgmt_oauth_appstore_client_port.name}},global.oauth2.clients.developer.clientUrl=https://{{ vardata.user_mgmt_oauth_developer_client_ip.name}}:{{vardata.user_mgmt_oauth_developer_client_port.name}},global.oauth2.clients.mecm.clientUrl=https://{{ vardata.user_mgmt_oauth_mecm_client_ip.name}}:{{vardata.user_mgmt_oauth_mecm_client_port.name}}, --set jwt.secretName=user-mgmt-jwt-secret --set images.usermgmt.tag={{ vardata.user_mgmt_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install --wait user-mgmt-edgegallery edgegallery/usermgmt --set global.oauth2.clients.appstore.clientUrl=https://{{ vardata.user_mgmt_oauth_appstore_client_ip.name}}:{{vardata.user_mgmt_oauth_appstore_client_port.name}},global.oauth2.clients.developer.clientUrl=https://{{ vardata.user_mgmt_oauth_developer_client_ip.name}}:{{vardata.user_mgmt_oauth_developer_client_port.name}},global.oauth2.clients.mecm.clientUrl=https://{{ vardata.user_mgmt_oauth_mecm_client_ip.name}}:{{vardata.user_mgmt_oauth_mecm_client_port.name}}, --set jwt.secretName=user-mgmt-jwt-secret --set images.usermgmt.tag={{ vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
   # yamllint disable rule:line-length
