@@ -1,3 +1,4 @@
+#
 # Copyright 2020 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,71 +12,125 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 ---
 
-- hosts: mecm
+############ OCD ############
+
+- hosts: ocdconsolidated
   become: yes
   tags:
-  - infra
-  - infra-mecm
+  - ocdhost
+  - ocdconsolidated
+
+  roles:
+  - eg_helm-repo
+  - eg_certs
+  - helm
+  - k8s
+
+############ Center ############
+
+### EdgeGallery related ###
+
+- hosts: egcenter
+  become: yes
+  tags:
+  - egcenter
+  - center
+
+  roles:
+  - eg_mecm-meo
+  - eg_mecm-fe
+  - eg_appstore
+  - eg_developer
+  - eg_user-mgmt
+  - service_center
+  - eg_secrets
+
+### Other 3rd party related ###
+
+- hosts: thirdpartycenter
+  become: yes
+  tags:
+  - thirdpartycenter
+  - center
 
   roles:
   - grafana
+
+### Pre-Requisites ###
+
+- hosts: prerequisitecenter
+  become: yes
+  tags:
+  - prerequisitecenter
+  - center
+
+  roles:
+  - kubeconfig
   - helm
 
-- hosts: certsmanager
+### Infrastructure ###
+
+- hosts: center-infra
   become: yes
   tags:
-  - certsmanager
+  - center-infra
+  - center
 
   roles:
-  - certmanager
+  - k8s
 
-- hosts: mepautomate
+############ Edge ############
+
+### EdgeGallery related ###
+
+- hosts: egedge
   become: yes
   tags:
-  - mepautomate
+  - egedge
+  - edge
 
   roles:
-  - mepserver
+  - eg_mep
+  - eg_mecm-mepm
+  - eg_secret
 
-- hosts: mep
+### Other 3rd party related ###
+
+- hosts: thirdpartyedge
   become: yes
   tags:
-  - infra
-  - infra-mep
+  - thirdpartyedge
+  - edge
 
   roles:
   - rabbitmq
-  - cadvisor
   - prometheus
+  - kubeconfig
+  - mepkubeconfig
+  - cadvisor
+
+### Pre-Requisites ###
+
+- hosts: prerequisiteedge
+  become: yes
+  tags:
+  - prerequisiteedge
+  - edge
+
+  roles:
   - helm
+
+### Infrastructure ###
+- hosts: edge-infra
+  become: yes
+  tags:
+  - edge-infra
+  - edge
+
+  roles:
   - k3s
   - docker
-
-- hosts: infra-helm
-  become: yes
-  tags:
-  - helm
-
-  roles:
-  - helm
-
-- hosts: infra-k8s
-  become: yes
-  tags:
-  - k8s
-  - infra
-
-  roles:
-  - k8s
-
-- hosts: infra-k3s
-  become: yes
-  tags:
-  - k3s
-  - infra
-
-  roles:
-  - k3s
