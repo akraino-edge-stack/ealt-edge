@@ -1,3 +1,4 @@
+#
 # Copyright 2020 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,68 +15,122 @@
 
 ---
 
-- hosts: mecm
+############ OCD ############
+
+- hosts: ocdconsolidated
   become: yes
   tags:
-  - infra
-  - infra-mecm
+    - ocdhost
+    - ocdconsolidated
 
   roles:
-  - grafana
-  - helm
+    - eg_helm-repo
+    - eg_certs
+    - helm
+    - k8s
 
-- hosts: certsmanager
+############ Center ############
+
+### EdgeGallery related ###
+
+- hosts: egcenter
   become: yes
   tags:
-  - certsmanager
+    - egcenter
+    - center
 
   roles:
-  - certmanager
+    - eg_mecm-meo
+    - eg_mecm-fe
+    - eg_appstore
+    - eg_developer
+    - eg_user-mgmt
+    - service_center
+    - eg_secrets
 
-- hosts: mepautomate
+### Other 3rd party related ###
+
+- hosts: thirdpartycenter
   become: yes
   tags:
-  - mepautomate
+    - thirdpartycenter
+    - center
 
   roles:
-  - mepserver
+    - grafana
 
-- hosts: mep
+### Pre-Requisites ###
+
+- hosts: prerequisitecenter
   become: yes
   tags:
-  - infra
-  - infra-mep
+    - prerequisitecenter
+    - center
 
   roles:
-  - rabbitmq
-  - cadvisor
-  - prometheus
-  - helm
-  - k3s
-  - docker
+    - kubeconfig
+    - helm
 
-- hosts: infra-helm
+### Infrastructure ###
+
+- hosts: center-infra
   become: yes
   tags:
-  - helm
+    - center-infra
+    - center
 
   roles:
-  - helm
+    - k8s
 
-- hosts: infra-k8s
+############ Edge ############
+
+### EdgeGallery related ###
+
+- hosts: egedge
   become: yes
   tags:
-  - k8s
-  - infra
+    - egedge
+    - edge
 
   roles:
-  - k8s
+    - eg_secrets
+    - eg_mep
+    - eg_mecm-mepm
 
-- hosts: infra-k3s
+### Other 3rd party related ###
+
+- hosts: thirdpartyedge
   become: yes
   tags:
-  - k3s
-  - infra
+    - thirdpartyedge
+    - edge
 
   roles:
-  - k3s
+    - rabbitmq
+    - prometheus
+    - kubeconfig
+    - mepkubeconfig
+    - cadvisor
+
+### Pre-Requisites ###
+
+- hosts: prerequisiteedge
+  become: yes
+  tags:
+    - prerequisiteedge
+    - edge
+
+  roles:
+    - helm
+
+### Infrastructure ###
+- hosts: edge-infra
+  become: yes
+  tags:
+    - edge-infra
+    - edge
+
+  roles:
+    - k3s
+    - docker
+  # yamllint disable rule:new-line-at-end-of-file

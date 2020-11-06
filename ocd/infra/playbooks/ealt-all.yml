@@ -16,120 +16,124 @@
 
 ---
 
-- hosts: infra-k8s
+############ OCD ############
+
+- hosts: ocdconsolidated
   become: yes
   tags:
-  - k8s
-  - infra
-  - mecm
+    - ocdhost
+    - ocdconsolidated
 
   roles:
-  - k8s
+    - k8s
+    - helm
+    - eg_certs
+    - eg_helm-repo
 
-- hosts: infra-k3s
+############ Center ############
+
+### Infrastructure ###
+
+- hosts: center-infra
   become: yes
   tags:
-  - k3s
-  - infra
-  - mep
+    - center-infra
+    - center
 
   roles:
-  - docker
-  - k3s
+    - k8s
 
-- hosts: infra-helm
+### Pre-Requisites ###
+
+- hosts: prerequisitecenter
   become: yes
   tags:
-  - helm
+    - prerequisitecenter
+    - center
 
   roles:
-  - helm
+    - helm
+    - kubeconfig
 
-- hosts: mecm
+### Other 3rd party related ###
+
+- hosts: thirdpartycenter
   become: yes
   tags:
-  - infra
-  - infra-mecm
-  - mecm
+    - thirdpartycenter
+    - center
 
   roles:
-  - helm
-  - grafana
-  - kubeconfig
-  - applcm
+    - grafana
 
-- hosts: mep
-  become: yes
-  tags:
-  - infra
-  - infra-mep
-  - mep
-
-  roles:
-  - helm
-  - rabbitmq
-  - prometheus
-  - kubeconfig
-  - mepkubeconfig
-  - cadvisor
-
-- hosts: mecm
-  become: yes
-  tags:
-  - infra
-  - infra-mecm
-  - mecm
-
-  roles:
-  - mepconfig
-
-- hosts: mepautomate
-  become: yes
-  tags:
-  - mepautomate
-
-  roles:
-  - mepserver
-  - mepagent
-
-- hosts: mep-centos
-  become: yes
-  tags:
-  - infra
-  - mep
-
-  roles:
-  - vault
-
-- hosts: certsmanager
-  become: yes
-  tags:
-  - certsmanager
-
-  roles:
-  - certmanager
+### EdgeGallery related ###
 
 - hosts: egcenter
   become: yes
   tags:
-  - egcenter
+    - egcenter
+    - center
 
   roles:
-  - eg_certs
-  - service_center
-  - eg_user-mgmt
-  - eg_mecm-meo
-  - eg_mecm-fe
-  - eg_appstore
-  - eg_developer
+    - eg_secrets
+    - service_center
+    - eg_user-mgmt
+    - eg_mecm-meo
+    - eg_mecm-fe
+    - eg_appstore
+    - eg_developer
+
+
+############ Edge ############
+
+### Infrastructure ###
+- hosts: edge-infra
+  become: yes
+  tags:
+    - edge-infra
+    - edge
+
+  roles:
+    - docker
+    - k3s
+
+### Pre-Requisites ###
+
+- hosts: prerequisiteedge
+  become: yes
+  tags:
+    - prerequisiteedge
+    - edge
+
+  roles:
+    - helm
+
+### Other 3rd party related ###
+
+- hosts: thirdpartyedge
+  become: yes
+  tags:
+    - thirdpartyedge
+    - edge
+
+  roles:
+    - rabbitmq
+    - prometheus
+    - kubeconfig
+    - mepkubeconfig
+    - cadvisor
+
+
+### EdgeGallery related ###
 
 - hosts: egedge
   become: yes
   tags:
-  - egedge
+    - egedge
+    - edge
 
   roles:
-  - eg_certs
-  - eg_mep
-  - eg_mecm-mepm
+    - eg_secrets
+    - eg_mep
+    - eg_mecm-mepm
   # yamllint disable rule:new-line-at-end-of-file
