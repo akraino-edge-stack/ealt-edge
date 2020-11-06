@@ -23,4 +23,4 @@
 
 - name: Install mecm-fe
   # yamllint disable rule:line-length
-  command: helm install --wait mecm-fe-edgegallery edgegallery/mecm-fe --set global.oauth2.authServerAddress=https://{{vardata.mecm_fe_centernodeip.name}}:{{vardata.mecm_fe_centernodeport.name}} --set images.mecmFe.tag={{vardata.mecm_fe_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install --wait mecm-fe-edgegallery edgegallery/mecm-fe --set global.oauth2.authServerAddress=https://{{vardata.mecm_fe_centernodeip.name}}:{{vardata.mecm_fe_centernodeport.name}} --set images.mecmFe.tag={{vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
