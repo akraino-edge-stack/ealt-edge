@@ -23,4 +23,4 @@
 
 - name: Helm install appstore
   # yamllint disable rule:line-length
-  command: helm install --wait appstore-edgegallery edgegallery/appstore --set global.oauth2.authServerAddress=https://{{vardata.appstore_centernodeip.name}}:30067 --set images.appstoreFe.tag={{vardata.eg_image_tag.name}} --set images.appstoreBe.tag={{vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install --wait appstore-edgegallery edgegallery/appstore --set global.oauth2.authServerAddress=https://{{ ansible_host }}:30067 --set images.appstoreFe.tag={{vardata.eg_image_tag.name}} --set images.appstoreBe.tag={{vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret

@@ -34,12 +34,12 @@
 
 - name: Generates certificate mecm-ssl-secret
   # yamllint disable rule:line-length
-  command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.secret_pwd.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.secret_pwd.name}}
+  command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.common_pwd.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
 
 - name: Generates certificate edgegallery-mecm-secret
   # yamllint disable rule:line-length
-  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.secret_pwd.name}} --from-literal=postgresApmPassword={{ vardata.secret_pwd.name}} --from-literal=postgresAppoPassword={{ vardata.secret_pwd.name}} --from-literal=postgresInventoryPassword={{ vardata.secret_pwd.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
+  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.common_pwd.name}} --from-literal=postgresApmPassword={{ vardata.common_pwd.name}} --from-literal=postgresAppoPassword={{ vardata.common_pwd.name}} --from-literal=postgresInventoryPassword={{ vardata.common_pwd.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
@@ -50,5 +50,5 @@
 
 - name: Helm install
   # yamllint disable rule:line-length
-  command: helm install --wait mecm-meo-edgegallery edgegallery/mecm-meo --set ssl.secretName=mecm-ssl-secret --set mecm.secretName=edgegallery-mecm-secret --set images.inventory.tag={{ vardata.eg_image_tag.name}} --set images.appo.tag={{ vardata.eg_image_tag.name}} --set images.apm.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag={{ vardata.postgres_image_tag.name}} --set mecm.docker.fsgroup=result.stdout
+  command: helm install --wait mecm-meo-edgegallery edgegallery/mecm-meo --set ssl.secretName=mecm-ssl-secret --set mecm.secretName=edgegallery-mecm-secret --set images.inventory.tag={{ vardata.eg_image_tag.name}} --set images.appo.tag={{ vardata.eg_image_tag.name}} --set images.apm.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag=12.3 --set mecm.docker.fsgroup=result.stdout
   # yamllint disable rule:line-length
