@@ -58,5 +58,5 @@
 
 - name: Install mecm-mepm
   # yamllint disable rule:line-length
-  command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret --set images.lcmcontroller.tag={{ vardata.eg_image_tag.name}} --set images.k8splugin.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag={{ vardata.postgres_image_tag.name}}
+  command: helm install mecm-mepm-edgegallery edgegallery/mecm-mepm --set jwt.publicKeySecretName=mecm-mepm-jwt-public-secret --set mepm.secretName=edgegallery-mepm-secret --set ssl.secretName=mecm-mepm-ssl-secret --set images.lcmcontroller.tag={{ vardata.eg_image_tag.name}} --set images.k8splugin.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag=12.3
   # yamllint disable rule:line-length
