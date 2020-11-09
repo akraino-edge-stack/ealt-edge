@@ -36,16 +36,9 @@ func init() {
 	//Adding the various sub-commands of init command
 	//Adding all subcommand to init
 	initCmd.AddCommand(initCmds.NewAllCommand())
-	//ealt init infra
-	initCmd.AddCommand(initCmds.NewInfraCommand())
-	//ealt init manager
-	initCmd.AddCommand(initCmds.NewMecmCommand())
+
 	//ealt init edge
 	initCmd.AddCommand(initCmds.NewEdgeCommand())
-	//ealt init k8s
-	initCmd.AddCommand(initCmds.NewK8SCommand())
-	//ealt init k3s
-	initCmd.AddCommand(initCmds.NewK3SCommand())
 
 	//Add init subcommand to root command.
 	rootCmd.AddCommand(initCmd)
