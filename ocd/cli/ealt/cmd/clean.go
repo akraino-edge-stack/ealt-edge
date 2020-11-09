@@ -29,16 +29,9 @@ var cleanCmd = &cobra.Command{
 
 func init() {
 	cleanCmd.AddCommand(cleancmds.NewAllCommand())
-	//ealt init infra
-	cleanCmd.AddCommand(cleancmds.NewInfraCommand())
-	//ealt init manager
-	cleanCmd.AddCommand(cleancmds.NewMecmCommand())
+
 	//ealt init edge
 	cleanCmd.AddCommand(cleancmds.NewEdgeCommand())
-	//ealt init k8s
-	cleanCmd.AddCommand(cleancmds.NewK8SCommand())
-	//ealt init k3s
-	cleanCmd.AddCommand(cleancmds.NewK3SCommand())
 
 	//Add init subcommand to root command.
 	rootCmd.AddCommand(cleanCmd)
