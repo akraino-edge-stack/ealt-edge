@@ -1,0 +1,47 @@
+#
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_registry/
+
+- name: Download 0.9 tar
+  command: wget http://release.edgegallery.org/arm64/all/0.9.tar.gz
+  args:
+    chdir: /tmp/eg_registry/deploy/
+
+- name: Untar the donwloaded tar
+  command: tar -zxf 0.9.tar.gz
+  args:  
+    chdir: /tmp/eg_registry/deploy/
+
+- name: Replacing private ip
+  replace:
+    path: /tmp/eg_registry/deploy/load-images.sh
+    regexp: REGISTRIES_IP
+    replace: "{{ vardata.private_repo_ip.name }}"
+
+- name: Replacing private port
+  replace:
+    path: /tmp/eg_registry/deploy/load-images.sh
+    regexp: REGISTRIES_PORT
+    replace: "{{ vardata.images_port.name }}"
+         
+- name: Execute load-images file
+  command: sh /tmp/eg_registry/deploy/load-images.sh

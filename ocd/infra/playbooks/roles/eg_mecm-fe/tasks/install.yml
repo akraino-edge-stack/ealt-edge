@@ -23,4 +23,4 @@
 
 - name: Install mecm-fe
   # yamllint disable rule:line-length
-  command: helm install --wait mecm-fe-edgegallery edgegallery/mecm-fe --set global.oauth2.authServerAddress=https://{{ ansible_host }}:{{vardata.usermgmt_port.name}} --set images.mecmFe.tag={{vardata.eg_image_tag.name}} --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
+  command: helm install mecm-fe-edgegallery edgegallery/mecm-fe --set global.oauth2.authServerAddress=https://{{ ansible_host }}:{{vardata.usermgmt_port.name}} --set images.mecmFe.repository={{ vardata.private_repo_ip.name}}:{{ vardata.images_port.name}}/edgegallery/mecm-fe --set images.initservicecenter.repository={{ vardata.private_repo_ip.name}}:{{ vardata.images_port.name}}/edgegallery/curl --set images.mecmFe.tag={{vardata.eg_image_tag.name}} --set images.mecmFe.pullPolicy=IfNotPresent --set images.initservicecenter.pullPolicy=IfNotPresent --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
