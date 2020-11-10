@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26e0c9b7_c86f1844",
+        "filename": "ocd/infra/playbooks/config.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-10T07:28:56Z",
+      "side": 1,
+      "message": "docker_registry_port",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 11
+      },
+      "revId": "f4edd252f8fbf32e51403ca39c9f07c2faeaf20e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "373bc6f7_c4b68684",
+        "filename": "ocd/infra/playbooks/roles/eg_registry/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-10T07:28:56Z",
+      "side": 1,
+      "message": "you can add uninstall also. \n1. stop and remove docker registry container\n2. delete downloaded tar file.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 30
+      },
+      "revId": "f4edd252f8fbf32e51403ca39c9f07c2faeaf20e",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
