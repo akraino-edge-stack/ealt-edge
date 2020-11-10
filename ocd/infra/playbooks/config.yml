@@ -69,6 +69,8 @@ developer_port:
   name: 30092
 mecm_port:
   name: 30093
+images_port:
+  name: 5000
 
 # All Center related password which needs to be specified if user
 # doesn't need common password for security purpose

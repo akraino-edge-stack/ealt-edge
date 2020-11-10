@@ -15,11 +15,30 @@
 #
 
 ---
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: deploy
+    dest: /tmp/eg_prerequisite/
 
 - name: Import config file
   include_vars:
     file: ../../../config.yml
     name: vardata
+
+- name: Replacing private ip
+  replace:
+    path: /tmp/eg_prerequisite/deploy/eg_daemon.sh
+    regexp: REGISTRIES_IP
+    replace: "{{ vardata.private_repo_ip.name }}"
+
+- name: Replacing private port
+  replace:
+    path: /tmp/eg_prerequisite/deploy/eg_daemon.sh
+    regexp: REGISTRIES_PORT
+    replace: "{{ vardata.images_port.name }}"
+
+- name: Execute script for docker daemon
+  command: sh /tmp/eg_prerequisite/deploy/eg_daemon.sh
 
 - name: Certificate copy
   debug:
@@ -28,11 +47,3 @@
 - synchronize:
     src: /tmp/ssl-eg-keys-certs
     dest: /tmp/
-
-- name: Docker login
-  # yamllint disable rule:line-length
-  command: docker login -u {{ vardata.dockerusr.name}} -p {{ vardata.dockerpass.name}} swr.ap-southeast-1.myhuaweicloud.com
-
-- name: Create docker-registry secret
-  # yamllint disable rule:line-length
-  command: kubectl create secret docker-registry swrregcred --docker-server=https://swr.ap-southeast-1.myhuaweicloud.com/v2/ --docker-username={{ vardata.swrusr.name}} --docker-password={{ vardata.swrpass.name}}
