@@ -21,10 +21,17 @@
       file: ../../../config.yml
       name: vardata
 
-- name: Generating certificates for usermanagment
+- name: Create certificates for usermanagment with common pwd
   # yamllint disable rule:line-length
   command: kubectl create secret generic user-mgmt-jwt-secret --from-file=publicKey=/tmp/ssl-eg-keys-certs/rsa_public_key.pem --from-file=encryptedPrivateKey=/tmp/ssl-eg-keys-certs/encrypted_rsa_private_key.pem --from-literal=encryptPassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
+  when: '{{ vardata.common_pwd.name}}'
+
+- name: Generating certificates for usermanagment
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic user-mgmt-jwt-secret --from-file=publicKey=/tmp/ssl-eg-keys-certs/rsa_public_key.pem --from-file=encryptedPrivateKey=/tmp/ssl-eg-keys-certs/encrypted_rsa_private_key.pem --from-literal=encryptPassword={{ vardata.user_mgmt_encryptPassword.name}}
+  # yamllint disable rule:line-length
+  when: '{{ vardata.user_mgmt_encryptPassword.name}}'
 
 - name: Install user-mgmt
   # yamllint disable rule:line-length

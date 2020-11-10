@@ -32,17 +32,33 @@
     regexp: 'PASSWORD_VALUE'
     replace: "{{ vardata.db_password.name }}"
 
-- name: Generates certificate mecm-ssl-secret
+- name: Create mecm-ssl-secret with common pwd
   # yamllint disable rule:line-length
   command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.common_pwd.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
+  when: '{{ vardata.common_pwd.name}}'
 
-- name: Generates certificate edgegallery-mecm-secret
+- name: Generates certificate mecm-ssl-secret
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.mecm_meo_keystorePassword.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.mecm_meo_truststorePassword.name}}
+  # yamllint disable rule:line-length
+  when: '{{ vardata.mecm_meo_keystorePassword.name}}'
+
+- name: Create certificate edgegallery-mecm-secret with common pwd
   # yamllint disable rule:line-length
   command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.common_pwd.name}} --from-literal=postgresApmPassword={{ vardata.common_pwd.name}} --from-literal=postgresAppoPassword={{ vardata.common_pwd.name}} --from-literal=postgresInventoryPassword={{ vardata.common_pwd.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
+  when: '{{ vardata.common_pwd.name}}'
+
+- name: Generates certificate edgegallery-mecm-secret
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.mecm_meo_postgresPassword.name}} --from-literal=postgresApmPassword={{ vardata.mecm_meo_postgresApmPassword.name}} --from-literal=postgresAppoPassword={{ vardata.mecm_meo_postgresAppoPassword.name}} --from-literal=postgresInventoryPassword={{ vardata.mecm_meo_postgresInventoryPassword.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
+  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/eg_mecm-meo/deploy/
+  when: '{{ vardata.mecm_meo_postgresPassword.name}}'
 
 - name: Fs group value
   shell: 'getent group docker | cut -d: -f3'
