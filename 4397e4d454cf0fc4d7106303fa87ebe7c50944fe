@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc64de87_f0b2bcb3",
+        "filename": "ocd/infra/playbooks/roles/eg_registry/tasks/install.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-10T09:49:01Z",
+      "side": 1,
+      "message": "please check if we can add condition for arm64 and x86",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 35
+      },
+      "revId": "4397e4d454cf0fc4d7106303fa87ebe7c50944fe",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9edf664_7ad876d1",
+        "filename": "ocd/infra/playbooks/roles/eg_registry/tasks/uninstall.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-10T09:49:01Z",
+      "side": 1,
+      "message": "this is already included in helm-repo uninstall.yaml. is this required here?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "4397e4d454cf0fc4d7106303fa87ebe7c50944fe",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
