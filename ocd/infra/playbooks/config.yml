@@ -74,6 +74,8 @@ docker_registry_port:
 
 # All Center related password which needs to be specified if user
 # doesn't need common password for security purpose
+user_mgmt_encryptPassword:
+  name:
 mecm_meo_keystorePassword:
   name:
 mecm_meo_truststorePassword:

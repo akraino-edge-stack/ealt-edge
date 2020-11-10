@@ -50,6 +50,13 @@
   # yamllint disable rule:line-length
   command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.db_password.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.db_password.name}} --from-literal=postgresk8sPluginPassword={{ vardata.db_password.name}}
   # yamllint disable rule:line-length
+  when: '{{ vardata.db_password.name}}'
+
+- name: Create edgegallery-mepm-secret secret
+  # yamllint disable rule:line-length
+  command: kubectl create secret generic edgegallery-mepm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-mepm/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.mecm_mepm_postgresPassword.name}} --from-literal=postgresLcmCntlrPassword={{ vardata.mecm_mepm_postgresLcmCntlrPassword.name}} --from-literal=postgresk8sPluginPassword={{ vardata.mecm_mepm_postgresk8sPluginPassword.name}}
+  # yamllint disable rule:line-length
+  when: '{{ vardata.mecm_mepm_postgresPassword.name}}'
 
 - name: Create mepm service account
   command: kubectl apply -f /tmp/eg_mecm-mepm/deploy/conf/manifest/mepm/mepm-service-account.yaml
