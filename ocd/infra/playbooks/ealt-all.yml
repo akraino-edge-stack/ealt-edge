@@ -28,6 +28,7 @@
     - k8s
     - helm
     - eg_certs
+    - eg_registry
     - eg_helm-repo
 
 ############ Center ############
@@ -75,7 +76,7 @@
     - center
 
   roles:
-    - eg_pre_require
+    - eg_prerequisite
     - eg_secret
     - eg_set-helm-repo
     - service_center
@@ -135,7 +136,7 @@
     - edge
 
   roles:
-    - eg_pre_require
+    - eg_prerequisite
     - eg_secret
     - eg_set-helm-repo
     - eg_mep
