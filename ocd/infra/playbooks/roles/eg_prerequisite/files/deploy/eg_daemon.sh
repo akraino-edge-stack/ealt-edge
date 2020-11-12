@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function _help_insecure_registry()
 {
   grep  -i "insecure-registries" /etc/docker/daemon.json | grep "REGISTRIES_IP:REGISTRIES_PORT" >/dev/null 2>&1

@@ -18,3 +18,5 @@
 
 - name: Uninstall developer
   command: helm uninstall developer-edgegallery
+  ignore_errors: yes
+  no_log: True

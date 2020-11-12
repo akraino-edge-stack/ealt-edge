@@ -18,9 +18,15 @@
 
 - name: Stop registry
   command: docker stop registry
+  ignore_errors: yes
+  no_log: True
 
 - name: Remove registry
   command: docker rm -v registry
+  ignore_errors: yes
+  no_log: True
 
 - name: Remove tmp file
   command: rm -v /tmp/eg_registry
+  ignore_errors: yes
+  no_log: True

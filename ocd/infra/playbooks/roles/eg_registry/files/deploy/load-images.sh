@@ -1,3 +1,4 @@
+#!/bin/bash
 TARBALL_PATH=/tmp/eg_registry/deploy/
 
 function _load_and_run_docker_registry()

@@ -18,6 +18,10 @@
 
 - name: Uninstall user management
   command: helm uninstall user-mgmt-edgegallery
+  ignore_errors: yes
+  no_log: True
 
 - name: Uninstall user mngmt jwt
   command: kubectl delete secret user-mgmt-jwt-secret
+  ignore_errors: yes
+  no_log: True
