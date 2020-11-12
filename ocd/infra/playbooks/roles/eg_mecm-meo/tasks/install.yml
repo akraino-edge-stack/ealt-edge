@@ -30,19 +30,23 @@
   replace:
     path: /tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql
     regexp: 'PASSWORD_VALUE'
-    replace: "{{ vardata.db_password.name }}"
+    replace: "{{ vardata.common_pwd.name }}"
+
+- name: Set a variable
+  ansible.builtin.set_fact:
+    comm_pwd: "{{ vardata.common_pwd.name }}"
 
 - name: Create mecm-ssl-secret with common pwd
   # yamllint disable rule:line-length
   command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.common_pwd.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
-  when: '{{ vardata.common_pwd.name}}'
+  when: comm_pwd != ""
 
 - name: Generates certificate mecm-ssl-secret
   # yamllint disable rule:line-length
   command: kubectl create secret generic mecm-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-file=keystore.jks=/tmp/ssl-eg-keys-certs/keystore.jks --from-literal=keystorePassword={{ vardata.mecm_meo_keystorePassword.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-literal=truststorePassword={{ vardata.mecm_meo_truststorePassword.name}}
   # yamllint disable rule:line-length
-  when: '{{ vardata.mecm_meo_keystorePassword.name}}'
+  when: comm_pwd == ""
 
 - name: Create certificate edgegallery-mecm-secret with common pwd
   # yamllint disable rule:line-length
@@ -50,7 +54,7 @@
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
-  when: '{{ vardata.common_pwd.name}}'
+  when: comm_pwd != ""
 
 - name: Generates certificate edgegallery-mecm-secret
   # yamllint disable rule:line-length
@@ -58,7 +62,7 @@
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
-  when: '{{ vardata.mecm_meo_postgresPassword.name}}'
+  when: comm_pwd == ""
 
 - name: Fs group value
   shell: 'getent group docker | cut -d: -f3'
@@ -66,5 +70,4 @@
 
 - name: Helm install
   # yamllint disable rule:line-length
-  command: helm install mecm-meo-edgegallery edgegallery/mecm-meo --set ssl.secretName=mecm-ssl-secret --set mecm.secretName=edgegallery-mecm-secret --set images.inventory.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-inventory --set images.appo.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-appo --set images.apm.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-apm --set images.postgres.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/postgres --set images.inventory.tag={{ vardata.eg_image_tag.name}} --set images.appo.tag={{ vardata.eg_image_tag.name}} --set images.apm.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag=12.3 --set images.inventory.pullPolicy=IfNotPresent --set images.appo.pullPolicy=IfNotPresent --set images.apm.pullPolicy=IfNotPresent --set images.postgres.pullPolicy=IfNotPresent --set mecm.docker.fsgroup=result.stdout
-  # yamllint disable rule:line-length
+  command: helm install mecm-meo-edgegallery edgegallery/mecm-meo --set ssl.secretName=mecm-ssl-secret --set mecm.secretName=edgegallery-mecm-secret --set images.inventory.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-inventory --set images.appo.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-appo --set images.apm.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/mecm-apm --set images.postgres.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/postgres --set images.inventory.tag={{ vardata.eg_image_tag.name}} --set images.appo.tag={{ vardata.eg_image_tag.name}} --set images.apm.tag={{ vardata.eg_image_tag.name}} --set images.postgres.tag=12.3 --set images.inventory.pullPolicy=IfNotPresent --set images.appo.pullPolicy=IfNotPresent --set images.apm.pullPolicy=IfNotPresent --set images.postgres.pullPolicy=IfNotPresent --set mecm.docker.fsgroup="{{result.stdout}}"

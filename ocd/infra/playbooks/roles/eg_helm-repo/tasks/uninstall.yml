@@ -17,6 +17,10 @@
 
 - name: Docker stop helm repo
   command: docker stop helm-repo
+  ignore_errors: yes
+  no_log: True
 
 - name: Docker rm helm repo
   command: docker rm helm-repo
+  ignore_errors: yes
+  no_log: True

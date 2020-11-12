@@ -18,3 +18,5 @@
 
 - name: Uninstall mecm fe
   command: helm uninstall mecm-fe-edgegallery
+  ignore_errors: yes
+  no_log: True

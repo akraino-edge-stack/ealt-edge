@@ -20,3 +20,5 @@
   command: rm -rf /tmp/ssl-eg-keys-certs
   args:
     chdir: /tmp/
+  ignore_errors: yes
+  no_log: True
