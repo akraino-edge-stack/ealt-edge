@@ -53,6 +53,7 @@
     - center
 
   roles:
+    - eg_prerequisite
     - helm
     - kubeconfig
 
@@ -76,7 +77,6 @@
     - center
 
   roles:
-    - eg_prerequisite
     - eg_secret
     - eg_set-helm-repo
     - service_center
@@ -98,6 +98,7 @@
 
   roles:
     - docker
+    - eg_prerequisite
     - k3s
 
 ### Pre-Requisites ###
@@ -126,7 +127,6 @@
     - mepkubeconfig
     - cadvisor
 
-
 ### EdgeGallery related ###
 
 - hosts: egedge
@@ -136,7 +136,6 @@
     - edge
 
   roles:
-    - eg_prerequisite
     - eg_secret
     - eg_set-helm-repo
     - eg_mep

@@ -18,3 +18,5 @@
 
 - name: Uninstall service center
   command: helm uninstall service-center-edgegallery
+  ignore_errors: yes
+  no_log: True
