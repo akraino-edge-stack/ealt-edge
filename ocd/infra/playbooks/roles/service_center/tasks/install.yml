@@ -16,17 +16,12 @@
 
 ---
 
-- name: Doing deployment setup for service-center
-  copy:
-    src: deploy
-    dest: /tmp/service_center/
-
 - name: Import config file
   include_vars:
     file: ../../../config.yml
     name: vardata
 
-- name: Pull helm chart service center
+- name: Install service center
   # yamllint disable rule:line-length
   command: helm install service-center-edgegallery edgegallery/servicecenter --set images.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/service-center --set images.pullPolicy=IfNotPresent --set global.ssl.enabled=true --set global.ssl.secretName=edgegallery-ssl-secret
   # yamllint disable rule:line-length

@@ -18,10 +18,11 @@
 
 - name: Import config file
   include_vars:
-      file: ../../../config.yml
-      name: vardata
+    file: ../../../config.yml
+    name: vardata
 
 - name: Generate secret
   # yamllint disable rule:line-length
   command: kubectl create secret generic edgegallery-ssl-secret --from-file=keystore.p12=/tmp/ssl-eg-keys-certs/keystore.p12 --from-literal=keystorePassword={{ vardata.common_pwd.name}} --from-literal=keystoreType=PKCS12 --from-literal=keyAlias=edgegallery --from-file=trust.cer=/tmp/ssl-eg-keys-certs/ca.crt --from-file=server.cer=/tmp/ssl-eg-keys-certs/tls.crt --from-file=server_key.pem=/tmp/ssl-eg-keys-certs/encryptedtls.key --from-literal=cert_pwd={{ vardata.common_pwd.name}}
-  # yamllint disable rule:line-length
+  args:
+    chdir: /tmp/ssl-eg-keys-certs/

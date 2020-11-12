@@ -15,10 +15,12 @@
 #
 
 ---
+
 - name: Doing deployment setup for edge gallery
   copy:
     src: deploy
     dest: /tmp/eg_prerequisite/
+    mode: 750
 
 - name: Import config file
   include_vars:
@@ -38,7 +40,11 @@
     replace: "{{ vardata.docker_registry_port.name }}"
 
 - name: Execute script for docker daemon
-  command: sh /tmp/eg_prerequisite/deploy/eg_daemon.sh
+  shell:
+    cmd: /tmp/eg_prerequisite/deploy/eg_daemon.sh
+
+- name: Delete Execute script for docker daemon
+  command: rm -rf /tmp/eg_prerequisite
 
 - name: Certificate copy
   debug:

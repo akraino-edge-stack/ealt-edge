@@ -18,6 +18,10 @@
 
 - name: Uninstall mecm meo
   command: helm uninstall mecm-meo-edgegallery
+  ignore_errors: yes
+  no_log: True
 
-- name: Uninstall sercets
+- name: Delete mecm-ssl-secret and edgegallery-mecm-secret
   command: kubectl delete secret mecm-ssl-secret edgegallery-mecm-secret
+  ignore_errors: yes
+  no_log: True

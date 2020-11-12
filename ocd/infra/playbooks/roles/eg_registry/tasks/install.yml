@@ -20,6 +20,12 @@
   copy:
     src: deploy
     dest: /tmp/eg_registry/
+    mode: 750
+
+- name: Import config file
+  include_vars:
+    file: ../../../config.yml
+    name: vardata
 
 - name: Download 0.9 tar
   command: wget http://release.edgegallery.org/arm64/all/0.9.tar.gz
@@ -41,14 +47,15 @@
 - name: Replacing private ip
   replace:
     path: /tmp/eg_registry/deploy/load-images.sh
-    regexp: REGISTRIES_IP
+    regexp: 'REGISTRIES_IP'
     replace: "{{ vardata.private_repo_ip.name }}"
 
 - name: Replacing private port
   replace:
     path: /tmp/eg_registry/deploy/load-images.sh
-    regexp: REGISTRIES_PORT
+    regexp: 'REGISTRIES_PORT'
     replace: "{{ vardata.docker_registry_port.name }}"
 
-- name: Execute load-images file
-  command: sh /tmp/eg_registry/deploy/load-images.sh
+- name: Execute the script
+  shell:
+    cmd: /tmp/eg_registry/deploy/load-images.sh
