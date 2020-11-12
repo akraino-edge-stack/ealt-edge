@@ -16,7 +16,7 @@
 
 ---
 
-# tasks file for eg_comm
+# tasks file for eg_prerequisite
 - include: "install.yml"
   static: false
   when: operation == 'install'

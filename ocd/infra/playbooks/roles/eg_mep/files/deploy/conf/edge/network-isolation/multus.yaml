@@ -195,14 +195,14 @@ spec:
             - "--multus-conf-file=auto"
             - "--cni-version=0.3.1"
           resources:
-          requests:
-            cpu: "100m"
-            memory: "50Mi"
-          limits:
-            cpu: "100m"
-            memory: "50Mi"
+            requests:
+              cpu: "100m"
+              memory: "50Mi"
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
           securityContext:
-          privileged: true
+            privileged: true
           volumeMounts:
             - name: cni
               mountPath: /host/etc/cni/net.d

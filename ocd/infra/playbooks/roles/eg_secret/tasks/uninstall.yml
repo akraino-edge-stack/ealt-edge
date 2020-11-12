@@ -18,3 +18,5 @@
 
 - name: Delete edgegallery ssl secret
   command: kubectl delete secret edgegallery-ssl-secret
+  ignore_errors: yes
+  no_log: True

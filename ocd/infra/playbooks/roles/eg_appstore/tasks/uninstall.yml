@@ -18,3 +18,5 @@
 
 - name: Unisntall appstore
   command: helm uninstall appstore-edgegallery
+  ignore_errors: yes
+  no_log: True

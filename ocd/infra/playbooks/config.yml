@@ -26,6 +26,9 @@ common_pwd:
   name:
 
 ########## Edge config #############
+######### Mandatory #########
+mep_kong_pg_pwd:
+  name:
 ######### Optional #########
 edge_management_interface:
   name: eth0
@@ -39,8 +42,6 @@ eg-dataplane-address:
 # All Edge related password which needs to be specified if user doesn't
 # need common password for security purpose
 mep_pg_admin_pwd:
-  name:
-mep_kong_pg_pwd:
   name:
 mep_cert_pwd:
   name:

@@ -128,7 +128,7 @@
 - hosts: edge-infra
   become: yes
   tags:
-    - edge-infra
+   - edge-infra
     - edge
 
   roles:
