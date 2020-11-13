@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "1f81cca1_5d3e63ab",
+        "filename": "ocd/infra/playbooks/roles/eg_prerequisite/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 338
+      },
+      "writtenOn": "2020-11-13T11:19:06Z",
+      "side": 1,
+      "message": "Yes permission required, if i removed it is throwing error while executing .sh file \"Permission denied\"",
+      "parentUuid": "2ccb4251_7c60c9b3",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 13
+      },
+      "revId": "669295dd1fc370975a8b91b263487232e98f3bac",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "da87750d_a1d5f8cd",
         "filename": "ocd/infra/playbooks/roles/eg_user-mgmt/tasks/uninstall.yml",
         "patchSetId": 3
