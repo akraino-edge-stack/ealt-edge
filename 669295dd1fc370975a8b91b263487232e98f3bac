@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45ef86e2_cb448f4e",
+        "filename": "ocd/infra/playbooks/roles/eg_appstore/tasks/uninstall.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-13T10:45:20Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 19,
+        "startChar": 8,
+        "endLine": 19,
+        "endChar": 17
+      },
+      "revId": "669295dd1fc370975a8b91b263487232e98f3bac",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f127c10a_85d56edc",
+        "filename": "ocd/infra/playbooks/roles/eg_mecm-meo/tasks/uninstall.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-13T10:45:20Z",
+      "side": 1,
+      "message": "delete mecm-ssl-secret",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 25
+      },
+      "revId": "669295dd1fc370975a8b91b263487232e98f3bac",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da87750d_a1d5f8cd",
+        "filename": "ocd/infra/playbooks/roles/eg_user-mgmt/tasks/uninstall.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-13T10:45:20Z",
+      "side": 1,
+      "message": "delete user-mgmt-jwt-secret",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 32
+      },
+      "revId": "669295dd1fc370975a8b91b263487232e98f3bac",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3370525_349eb82a",
+        "filename": "ocd/infra/playbooks/roles/service_center/tasks/install.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 317
+      },
+      "writtenOn": "2020-11-13T10:45:20Z",
+      "side": 1,
+      "message": "Install service center",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "669295dd1fc370975a8b91b263487232e98f3bac",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
