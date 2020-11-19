@@ -72,17 +72,6 @@
     - kubeconfig
     - helm
 
-### Infrastructure ###
-
-- hosts: center-infra
-  become: yes
-  tags:
-    - center-infra
-    - center
-
-  roles:
-    - k8s
-
 ############ Edge ############
 
 ### EdgeGallery related ###

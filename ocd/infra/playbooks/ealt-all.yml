@@ -33,17 +33,6 @@
 
 ############ Center ############
 
-### Infrastructure ###
-
-- hosts: center-infra
-  become: yes
-  tags:
-    - center-infra
-    - center
-
-  roles:
-    - k8s
-
 ### Pre-Requisites ###
 
 - hosts: prerequisitecenter
