@@ -44,6 +44,7 @@
   roles:
     - eg_prerequisite
     - helm
+    - eg_set-helm-repo
     - kubeconfig
 
 ### Other 3rd party related ###
@@ -67,7 +68,6 @@
 
   roles:
     - eg_secret
-    - eg_set-helm-repo
     - service_center
     - eg_user-mgmt
     - eg_mecm-meo

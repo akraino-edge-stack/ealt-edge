@@ -36,6 +36,9 @@
   args:
     chdir: /tmp/eg_helm-repo/deploy/helm/helm-charts/
 
+- name: Changing permisiion
+  command: chmod -R 755 /tmp/eg_helm-repo
+
 - name: Creating helm repo
   # yamllint disable rule:line-length
   command: docker run --name helm-repo -v /tmp/eg_helm-repo/deploy/helm/helm-charts/:/usr/share/nginx/html:ro -d -p 8080:80 nginx:stable

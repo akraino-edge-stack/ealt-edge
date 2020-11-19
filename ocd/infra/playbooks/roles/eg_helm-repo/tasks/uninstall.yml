@@ -24,3 +24,8 @@
   command: docker rm helm-repo
   ignore_errors: yes
   no_log: True
+
+- name: Remove tmp folder
+  command: rm -rf /tmp/eg_helm-repo
+  ignore_errors: yes
+  no_log: True
