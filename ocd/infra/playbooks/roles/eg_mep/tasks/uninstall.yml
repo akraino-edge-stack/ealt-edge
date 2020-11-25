@@ -42,92 +42,62 @@
 
 - name: Delete network isolation multus eg sp controller
   # yamllint disable rule:line-length
-  command: kubectl delete -f /tmp/eg_mep/deploy/edge/network-isolation/eg-sp-controller.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
+  command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-controller.yaml
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation multus eg sp rbac
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/network-isolation/eg-sp-rbac.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation multus
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/network-isolation/multus.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
-  ignore_errors: yes
-  no_log: True
-
-- name: Delete network isolation rm host local
-  # yamllint disable rule:line-length
-  command: rm /opt/cni/bin/macvlan /opt/cni/bin/host-local
-  args:
-    chdir: /tmp/remote-platform/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation eg mp1
   command: ip link set dev eg-mp1 down
-  args:
-    chdir: /tmp/remote-platform/
   ignore_errors: yes
   no_log: True
 
 - name: Delete nnetwork isolation eg mp1 link
   command: ip link delete eg-mp1
-  args:
-    chdir: /tmp/remote-platform/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation eg mm5
   command: ip link set dev eg-mm5 down
-  args:
-    chdir: /tmp/remote-platform/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation eg mm5 link
   command: ip link delete eg-mm5
-  args:
-    chdir: /tmp/remote-platform/
   ignore_errors: yes
   no_log: True
 
 - name: Delete network isolation multus rm
-  command: rm /opt/cni/bin/multus
-  args:
-    chdir: /tmp/remote-platform/
+  command: rm -rf /opt/cni/bin/multus
   ignore_errors: yes
   no_log: True
 
 - name: Uninstall dns metallb config mep
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/config-map.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete dns metallb
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/metallb.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
 - name: Delete dns metallb namespace
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/namespace.yaml
-  args:
-    chdir: /tmp/eg_mep/deploy/
   ignore_errors: yes
   no_log: True
 
