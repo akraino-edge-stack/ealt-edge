@@ -20,6 +20,11 @@
   ignore_errors: yes
   no_log: True
 
+- name: Import config file
+  include_vars:
+    file: ../../../config.yml
+    name: vardata
+
 - debug:
     msg: prometheus is already present
   when: result.stdout != ""
@@ -42,7 +47,18 @@
   when: result is failed and ansible_architecture == 'aarch64'
 
 - name: "INSTALL: Install prometheus on aarch64"
-  shell:
-    cmd: 'helm install mep-prometheus
-    stable/prometheus -f /tmp/prometheus/values.yaml --version v9.3.1'
+  # yamllint disable rule:line-length
+  command: helm install mep-prometheus stable/prometheus -f /tmp/prometheus/values.yaml --version v9.3.1 --set alertmanager.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/prom/alertmanager --set configmapReload.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/jimmidyson/configmap-reload --set nodeExporter.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/prom/node-exporter --set server.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/prom/prometheus --set pushgateway.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/prom/pushgateway --set kubeStateMetrics.image.repository={{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/carlosedp/kube-state-metrics --set alertmanager.image.pullPolicy=IfNotPresent --set configmapReload.image.pullPolicy=IfNotPresent --set nodeExporter.image.pullPolicy=IfNotPresent --set server.image.pullPolicy=IfNotPresent --set pushgateway.image.pullPolicy=IfNotPresent --set kubeStateMetrics.image.pullPolicy=IfNotPresent
+  # yamllint disable rule:line-length
   when: result is failed and ansible_architecture == 'aarch64'
+
+- name: Expose promethious server
+  # yamllint disable rule:line-length
+  command: kubectl expose deployment mep-prometheus-server  --type=NodePort --name nodeport-mep-prometheus-server
+  # yamllint disable rule:line-length
+
+- name: Execute patch service with given port
+  shell:
+    # yamllint disable rule:line-length
+    cmd: "kubectl patch service nodeport-mep-prometheus-server  --type='json' --patch='[{ \"op\": \"replace\", \"path\": \"/spec/ports/0/nodePort\", \"value\":{{ vardata.prometheus_node_port.name }}}]'"
+    # yamllint disable rule:line-length
