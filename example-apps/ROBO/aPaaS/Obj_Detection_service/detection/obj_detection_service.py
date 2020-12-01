@@ -14,10 +14,12 @@
 # limitations under the License.
 #
 
+import os
 import config
 from flask_sslify import SSLify
-from flask import Flask, Response
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from werkzeug import secure_filename
 
 
 class model_info():
@@ -69,6 +71,10 @@ count = 0
 listOfMsgs = []
 
 
+def Detection(img):
+    return
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower()\
            in ALLOWED_EXTENSIONS
@@ -80,7 +86,12 @@ def uploadModel():
     upload model
     :return: html file
     """
+    app.logger.info("Received message from ClientIP [" + request.remote_addr
+                    + "] Operation [" + request.method + "]" +
+                    " Resource [" + request.url + "]")
 
+    modelInfo = model_info("caffe")
+    modelInfo.update_model("caffe", "mobilenet_ssd", "prototext")
     return Response("success")
 
 
@@ -90,7 +101,13 @@ def setConfidenceLevel():
     Trigger the video_feed() function on opening "0.0.0.0:5000/video_feed" URL
     :return:
     """
+    app.logger.info("Received message from ClientIP [" + request.remote_addr
+                    + "] Operation [" + request.method + "]" +
+                    " Resource [" + request.url + "]")
 
+    confidenceLevel = 80
+    modelInfo = model_info("caffe")
+    modelInfo.set_confidence_level(confidenceLevel)
     return Response("success")
 
 
@@ -101,7 +118,27 @@ def Obj_Detection():
     Input: frame/image
     :return: imposed frame, count, Obj type, time taken by detection
     """
-    return Response("success")
+    app.logger.info("Received message from ClientIP [" + request.remote_addr
+                    + "] Operation [" + request.method + "]" +
+                    " Resource [" + request.url + "]")
+
+    if 'file' not in request.files:
+        raise IOError('No file')
+
+    file = request.files['file']
+    if file.filename == '':
+        app.logger.info('No file selected for uploading')
+        raise IOError('No file')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+        app.logger.info('File successfully uploaded')
+        Detect_result = Detection(filename)
+    else:
+        app.logger.info('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
+        return Response("failure")
+    # return jsonify({'Face number': num, 'Result': 'upload success'})
+    return jsonify(Detect_result)
 
 
 def start_server(handler):
