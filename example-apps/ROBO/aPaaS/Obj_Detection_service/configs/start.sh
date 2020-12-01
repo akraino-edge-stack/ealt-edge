@@ -16,17 +16,48 @@
 # Validates if ip is valid
 validate_ip()
 {
+ ip_var="$1"
+    # checks if variable is unset
+ if [ -z "$ip_var" ] ; then
+    echo "ip is not set"
+    return 1
+ fi
 
-
+ if ! echo "$ip_var" | grep -qE '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.)' ; then
+   return 1
+ fi
+ return 0
 }
 
 validate_name() {
-
+  hostname="$1"
+  len="${#hostname}"
+  if [ "${len}" -gt "64" ]; then
+    return 1
+  fi
+  if ! echo "$hostname" | grep -qE '^[a-zA-Z0-9]*$|^[a-zA-Z0-9][a-zA-Z0-9_\-]*[a-zA-Z0-9]$'; then
+    return 1
+  fi
+  return 0
 }
 
 # validates whether file exist
 validate_file_exists() {
+  file_path="$1"
 
+  # checks variable is unset
+  if [ -z "$file_path" ]; then
+    echo "file path variable is not set"
+    return 1
+  fi
+
+  # checks if file exists
+  if [ ! -f "$file_path" ]; then
+    echo "file does not exist"
+    return 1
+  fi
+
+  return 0
 }
 
 validate_ip "$LISTEN_IP"
