@@ -18,14 +18,15 @@ import os
 
 # [Server Configurations]
 server_port = 9998
-#server_address = os.environ.get('LISTEN_IP')
-server_address = "127.0.0.1"
+server_address = os.environ.get('LISTEN_IP')
 
 # [SSL Configurations]
 ssl_enabled = False
 ssl_protocol = "TLSv1.2"
-ssl_ciphers = ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-          "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"]
+ssl_ciphers = ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+               "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+               "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+               "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"]
 ssl_certfilepath = "/usr/app/ssl/server_tls.crt"
 ssl_keyfilepath = "/usr/app/ssl/server_tls.key"
 ssl_cacertpath = "/usr/app/ssl/ca.crt"

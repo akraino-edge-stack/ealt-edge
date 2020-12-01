@@ -19,7 +19,7 @@ from logging.handlers import RotatingFileHandler
 from detection.obj_detection_service import start_server
 
 if __name__ == '__main__':
-    #handler = RotatingFileHandler('/usr/app/log/obj_detection.log', maxBytes=10000000, backupCount=10)
-    handler = RotatingFileHandler('obj_detection.log', maxBytes=10000000, backupCount=10)
+    handler = RotatingFileHandler('/usr/app/log/obj_detection.log',
+                                  maxBytes=10000000, backupCount=10)
     handler.setLevel(logging.INFO)
     start_server(handler)
