@@ -115,6 +115,8 @@
     - kubeconfig
     - mepkubeconfig
     - cadvisor
+    - influxdb
+    - openebsrole
 
 ### EdgeGallery related ###
 

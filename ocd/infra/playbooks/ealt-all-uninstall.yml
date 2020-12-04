@@ -101,6 +101,8 @@
     - kubeconfig
     - mepkubeconfig
     - cadvisor
+    - influxdb
+    - openebsrole
 
 ### Pre-Requisites ###
 
