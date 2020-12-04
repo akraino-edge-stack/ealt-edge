@@ -29,6 +29,7 @@
     - eg_certs
     - helm
     - k8s
+    - docker
 
 ############ Center ############
 

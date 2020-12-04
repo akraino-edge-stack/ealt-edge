@@ -27,6 +27,7 @@
   roles:
     - k8s
     - helm
+    - docker
     - eg_certs
     - eg_registry
     - eg_helm-repo
