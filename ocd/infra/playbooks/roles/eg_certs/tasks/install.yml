@@ -33,5 +33,5 @@
 
 - name: generate cert
   # yamllint disable rule:line-length
-  command: docker run -e CERT_VALIDITY_IN_DAYS=365 -v /tmp/ssl-eg-keys-certs:/certs swr.ap-southeast-1.myhuaweicloud.com/edgegallery/deploy-tool:latest
+  command: docker run -e CERT_VALIDITY_IN_DAYS=365 -v /tmp/ssl-eg-keys-certs:/certs {{ vardata.private_repo_ip.name}}:{{ vardata.docker_registry_port.name}}/edgegallery/deploy-tool:latest
   # yamllint disable rule:line-length
