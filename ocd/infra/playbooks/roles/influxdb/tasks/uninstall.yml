@@ -19,3 +19,5 @@
 - name: Uninstalling influxdb
   shell:
     cmd: helm uninstall influxdb
+  ignore_errors: yes
+  no_log: True

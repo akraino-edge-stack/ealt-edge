@@ -116,8 +116,6 @@
     - kubeconfig
     - mepkubeconfig
     - cadvisor
-    - influxdb
-    - openebsrole
 
 ### EdgeGallery related ###
 
@@ -132,3 +130,15 @@
     - eg_set-helm-repo
     - eg_mep
     - eg_mecm-mepm
+
+### Storage ###
+
+- hosts: openebsinfluxdb
+  become: yes
+  tags:
+    - ealt_ebs_influx
+    - edge
+
+  roles:
+    - influxdb
+    - openebsrole

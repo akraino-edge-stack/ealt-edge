@@ -19,3 +19,5 @@
 - name: Uninstall openebs
   shell:
     cmd: kubectl delete ns openebs
+  ignore_errors: yes
+  no_log: True

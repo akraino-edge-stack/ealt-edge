@@ -105,6 +105,18 @@
     - influxdb
     - openebsrole
 
+### Storage ###
+
+- hosts: openebsinfluxdb
+  become: yes
+  tags:
+    - ealt_ebs_influx
+    - edge
+
+  roles:
+    - influxdb
+    - openebsrole
+
 ### Pre-Requisites ###
 
 - hosts: prerequisiteedge

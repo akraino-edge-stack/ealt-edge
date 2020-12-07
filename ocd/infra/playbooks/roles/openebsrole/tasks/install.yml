@@ -19,15 +19,24 @@
 - name: "create namespace openebs"
   shell:
     cmd: kubectl create ns openebs
+  ignore_errors: yes
+  no_log: True
 
 - name: "INSTALL: add helm repo add aarch64"
   shell:
     cmd: helm repo add openebs https://openebs.github.io/charts
+  ignore_errors: yes
+  no_log: True
 
 - name: "INSTALL: helm repo update aarch64"
   shell:
     cmd: helm repo update
+  ignore_errors: yes
+  no_log: True
 
 - name: "INSTALL: Install on Openebs aarch64"
   shell:
-  cmd: helm install --namespace openebs  --generate-name openebs --version 2.3.0
+  # yamllint disable rule:line-length
+    cmd: helm install --namespace openebs  --generate-name openebs --version 2.3.0
+  ignore_errors: yes
+  no_log: True
