@@ -55,12 +55,6 @@ mecm_mepm_postgresk8sPluginPassword:
   name:
 
 ########### Center config ###########
-######### Mandatory #########
-mecm_meo_edgeRepoUserName:
-  name:
-mecm_meo_edgeRepoPassword:
-  name:
-
 ######### Optional #########
 usermgmt_port:
   name: 30067

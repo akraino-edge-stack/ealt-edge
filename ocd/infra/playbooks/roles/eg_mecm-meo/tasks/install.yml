@@ -50,7 +50,7 @@
 
 - name: Create certificate edgegallery-mecm-secret with common pwd
   # yamllint disable rule:line-length
-  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.common_pwd.name}} --from-literal=postgresApmPassword={{ vardata.common_pwd.name}} --from-literal=postgresAppoPassword={{ vardata.common_pwd.name}} --from-literal=postgresInventoryPassword={{ vardata.common_pwd.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
+  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.common_pwd.name}} --from-literal=postgresApmPassword={{ vardata.common_pwd.name}} --from-literal=postgresAppoPassword={{ vardata.common_pwd.name}} --from-literal=postgresInventoryPassword={{ vardata.common_pwd.name}} --from-literal=edgeRepoUserName=admin --from-literal=edgeRepoPassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
@@ -58,7 +58,7 @@
 
 - name: Generates certificate edgegallery-mecm-secret
   # yamllint disable rule:line-length
-  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.mecm_meo_postgresPassword.name}} --from-literal=postgresApmPassword={{ vardata.mecm_meo_postgresApmPassword.name}} --from-literal=postgresAppoPassword={{ vardata.mecm_meo_postgresAppoPassword.name}} --from-literal=postgresInventoryPassword={{ vardata.mecm_meo_postgresInventoryPassword.name}} --from-literal=edgeRepoUserName={{ vardata.mecm_meo_edgeRepoUserName.name}}  --from-literal=edgeRepoPassword={{ vardata.mecm_meo_edgeRepoPassword.name}}
+  command: kubectl create secret generic edgegallery-mecm-secret --from-file=postgres_init.sql=/tmp/eg_mecm-meo/deploy/conf/keys/postgres_init.sql --from-literal=postgresPassword={{ vardata.mecm_meo_postgresPassword.name}} --from-literal=postgresApmPassword={{ vardata.mecm_meo_postgresApmPassword.name}} --from-literal=postgresAppoPassword={{ vardata.mecm_meo_postgresAppoPassword.name}} --from-literal=postgresInventoryPassword={{ vardata.mecm_meo_postgresInventoryPassword.name}} --from-literal=edgeRepoUserName=admin --from-literal=edgeRepoPassword={{ vardata.common_pwd.name}}
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_mecm-meo/deploy/
