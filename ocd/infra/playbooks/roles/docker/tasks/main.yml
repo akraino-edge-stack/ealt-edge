@@ -18,6 +18,6 @@
   static: false
   when: operation == 'install'
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+#- include: "uninstall.yml"
+#  static: false
+#  when: operation == 'uninstall'
