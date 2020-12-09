@@ -20,6 +20,11 @@ import os
 server_port = 9999
 server_address = os.environ.get('LISTEN_IP')
 
+# [InfluxDB config]
+IPADDRESS = os.environ.get('INFLUXDB_IP')
+PORT = os.environ.get('INFLUXDB_PORT')
+DATABASE_NAME = "Shelf_Inventry"
+
 # [SSL Configurations]
 ssl_enabled = False
 ssl_protocol = "TLSv1.2"

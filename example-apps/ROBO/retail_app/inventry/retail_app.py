@@ -16,8 +16,13 @@
 
 import config
 from flask_sslify import SSLify
-from flask import Flask, request, Response
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from camera_driver.capture_frame import VideoCamera, VideoFile
+from influxdb import InfluxDBClient
+import json
+import time
+import requests
 
 
 app = Flask(__name__)
@@ -31,30 +36,105 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 count = 0
 listOfMsgs = []
+listOfCameras = []
+listOfVideos = []
 
 
-class shelf_inventry():
+class inventry_info:
     """
-    def __init__(self, url):
-        # self.video = cv2.VideoCapture(url)
-
-    def delete(self):
-        # self.video.release()
-        return
+    Store the data and manage multiple input video feeds
     """
+    def __init__(self, current_count=0, total_count=0, time=0):
+            self.type = "INV"
+            self.labels = "Bottles"
+            self.current_count = current_count
+            self.total_count = total_count
+            self.time = time
+
+    def setcount(self, current_count, total_count):
+            self.current_count = current_count
+            self.total_count = total_count
+
+    def getcount(self):
+            return self.current_count
+
+    def setlabel(self, labels):
+            self.labels = labels
+
+    def getlabel(self):
+            return self.labels
 
 
-def store_data():
+def store_data(inventry_info):
     """
     store time series data in influx db
     """
     # TODO config, schema table, DB, fill data set
+    create_database()
+    store_info_db(inventry_info)
 
 
-def obj_detect():
+def shelf_inventry(video_capture, camera_info):
     """
-    detect obj and count for self
+    人脸识别
     """
+    global count
+    labels = "bottles"
+    process_this_frame = 0
+    while True:
+        success, frame = video_capture.get_frame()
+        if not success:
+            break
+        if process_this_frame == 0:
+            url = config.detection_url + "/v1/obj_detection/detect"
+            # info1 = cv2.imencode(".jpg", rgb_small_frame)[1].tobytes()
+            data = json.loads(requests.post(url, data=frame,
+                                            verify=config.ssl_cacertpath).text)
+        inven_info = inventry_info()
+        current_count = data[count]
+        labels = data[labels]
+        total_count = inven_info.current_count + inven_info.total_count
+        inven_info.setcount(current_count, total_count)
+        inven_info.setlabel(labels)
+        inven_info.utime = time.time()
+        store_data(inven_info)
+
+
+def store_info_db(inven_info):
+    """
+    Send "shelf" data to InfluxDB
+
+    :param inven_info: Inventry object
+    :return: None
+    """
+    global db_client
+    json_body = [
+        {
+            "measurement": inven_info.type,
+            "tags": {
+                "object": "bottles",
+            },
+            "fields": {
+                "time": inven_info.time,
+                "Current Count": inven_info.current_count,
+                "Total Count": inven_info.total_count,
+            }
+        }]
+    db_client.write_points(json_body)
+
+
+def create_database():
+    """
+    Connect to InfluxDB and create the database
+
+    :return: None
+    """
+    global db_client
+
+    proxy = {"http": "http://{}:{}".format(config.IPADDRESS, config.PORT)}
+    db_client = InfluxDBClient(host=config.IPADDRESS, port=config.PORT,
+                               proxies=proxy, database=config.DATABASE_NAME)
+    db_client.create_database(config.DATABASE_NAME)
 
 
 @app.route('/v1/monitor/cameras', methods=['POST'])
@@ -66,7 +146,7 @@ def add_camera():
     camera_info = {"name": camera_info["name"],
                    "rtspurl": camera_info["rtspurl"],
                    "location": camera_info["location"]}
-    # listOfCameras.append(camera_info)
+    listOfCameras.append(camera_info)
     return Response("success")
 
 
@@ -78,22 +158,20 @@ def get_camera(name, rtspurl, location):
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    # camera_info = {"name": name, "rtspurl": rtspurl, "location": location}
-    """
+    camera_info = {"name": name, "rtspurl": rtspurl, "location": location}
     if "mp4" in camera_info["rtspurl"]:
-        # video_file = VideoFile(camera_info["rtspurl"])
-        # video_dict = {camera_info["name"]:video_file}
-        # listOfVideos.append(video_dict)
-        # return Response(video(video_file, camera_info["name"]),
-                        # mimetype='multipart/x-mixed-replace; boundary=frame')
+        video_file = VideoFile(camera_info["rtspurl"])
+        video_dict = {camera_info["name"]: video_file}
+        listOfVideos.append(video_dict)
+        return Response(shelf_inventry(video_file, camera_info["name"]),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
     else:
-        # video_file = VideoCamera(camera_info["rtspurl"])
-        # video_dict = {camera_info["name"]: video_file}
-        # listOfVideos.append(video_dict)
-        # return Response(video(video_file, camera_info["name"]),
-                     # mimetype='multipart/x-mixed-replace; boundary=frame')
+        video_file = VideoCamera(camera_info["rtspurl"])
+        video_dict = {camera_info["name"]: video_file}
+        listOfVideos.append(video_dict)
+        return Response(shelf_inventry(video_file, camera_info["name"]),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
         return Response("success")
-    """
 
 
 @app.route('/v1/monitor/cameras/<camera_name>', methods=['DELETE'])
@@ -101,7 +179,6 @@ def delete_camera(camera_name):
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    """
     for video1 in listOfVideos:
         if camera_name in video1:
             video_obj = video1[camera_name]
@@ -113,7 +190,6 @@ def delete_camera(camera_name):
         if camera_name in msg["msg"]:
             listOfMsgs.remove(msg)
     return Response("success")
-    """
 
 
 @app.route('/v1/monitor/cameras')
@@ -121,7 +197,7 @@ def query_cameras():
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    # return jsonify(listOfCameras)
+    return jsonify(listOfCameras)
     return Response("success")
 
 
