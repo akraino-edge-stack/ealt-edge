@@ -35,6 +35,11 @@
   ignore_errors: yes
   no_log: True
 
+- name: Delete dns namesapce metallb
+  command: kubectl delete secret memberlist -n metallb-system
+  ignore_errors: yes
+  no_log: True
+
 - name: Delete ssl config namesapce mep
   command: kubectl delete ns mep
   ignore_errors: yes
@@ -98,10 +103,5 @@
 - name: Delete dns metallb namespace
   # yamllint disable rule:line-length
   command: kubectl delete -f /tmp/eg_mep/deploy/conf/edge/metallb/namespace.yaml
-  ignore_errors: yes
-  no_log: True
-
-- name: Delete dns namesapce metallb
-  command: kubectl delete secret memberlist -n metallb-system
   ignore_errors: yes
   no_log: True

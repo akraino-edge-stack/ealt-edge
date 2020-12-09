@@ -57,6 +57,30 @@
   when: result is succeeded and ansible_architecture == 'aarch64'
   #when: result is succeeded
 
+- name: "UNINSTALL: Uninstall docker engine"
+  command: apt-get purge -y docker-engine
+  ignore_errors: yes
+  no_log: true
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
+- name: "UNINSTALL: Uninstall docker"
+  command: apt-get purge -y docker
+  ignore_errors: yes
+  no_log: true
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
+- name: "UNINSTALL: Uninstall docker.io"
+  command: apt-get purge -y docker.io
+  ignore_errors: yes
+  no_log: true
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
+- name: "UNINSTALL: Uninstall docker.io"
+  command: apt-get purge docker-ce docker-ce-cli containerd.io
+  ignore_errors: yes
+  no_log: true
+  when: result is succeeded and ansible_architecture == 'x86_64'
+
 - debug:
     msg: "CentOS commands start"
 
@@ -65,3 +89,4 @@
     cmd: yes | yum remove docker-ce docker-ce-cli containerd.io
   ignore_errors: yes
   no_log: true
+  when: ansible_facts['distribution'] == "CentOS"
