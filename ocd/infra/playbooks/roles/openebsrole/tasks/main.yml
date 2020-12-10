@@ -15,13 +15,8 @@
 #
 
 ---
-
-# tasks file for sample-rolename
+# tasks file for openebs
 
 - include: "install.yml"
   static: false
   when: operation == 'install'
-
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'

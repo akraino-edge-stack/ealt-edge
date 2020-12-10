@@ -16,27 +16,47 @@
 
 ---
 
-- name: "create namespace openebs"
+- name: check if openebs is already installed
+  shell:
+    cmd: kubectl get pods -n openebs
+  register: result
+  ignore_errors: yes
+  no_log: True
+
+- debug:
+    msg: openebs already installed
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , Openebs not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
+
+- name: "INSTALL: create namespace for openebs"
   shell:
     cmd: kubectl create ns openebs
   ignore_errors: yes
   no_log: True
+  when: result.stdout == ""
 
-- name: "INSTALL: add helm repo add aarch64"
+- name: "INSTALL: add helm repo for openebs"
   shell:
     cmd: helm repo add openebs https://openebs.github.io/charts
   ignore_errors: yes
   no_log: True
+  when: result.stdout == ""
 
-- name: "INSTALL: helm repo update aarch64"
+- name: "INSTALL: update helm repo"
   shell:
     cmd: helm repo update
   ignore_errors: yes
   no_log: True
+  when: result.stdout == ""
 
-- name: "INSTALL: Install on Openebs aarch64"
+- name: "INSTALL: install openebs"
   shell:
-  # yamllint disable rule:line-length
-    cmd: helm install --namespace openebs  --generate-name openebs --version 2.3.0
+    cmd: helm install openebs --namespace openebs  openebs/openebs
   ignore_errors: yes
   no_log: True
+  when: result.stdout == ""

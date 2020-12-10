@@ -16,13 +16,13 @@
 
 ---
 
-- name: "INSTALL: Install influxdata by helm charts"
+- name: "INSTALL: Installing influxdata"
   shell:
     cmd: helm repo add influxdata https://influxdata.github.io/helm-charts
   ignore_errors: yes
   no_log: True
 
-- name: "INSTALL: Deploye influxdata"
+- name: "INSTALL: Install infuxdb"
   shell:
     cmd: helm upgrade -i influxdb influxdata/influxdb --set image.tag=1.8.0
   ignore_errors: yes
