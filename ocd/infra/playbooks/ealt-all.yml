@@ -133,12 +133,12 @@
 
 ### Storage ###
 
-#- hosts: openebsinfluxdb
-#  become: yes
-#  tags:
-#    - ealt_ebs_influx
-#    - edge
+- hosts: openebsinfluxdb
+  become: yes
+  tags:
+    - ealt_ebs_influx
+    - edge
 
-#  roles:
-#    - influxdb
-#    - openebsrole
+  roles:
+    - influxdb
+    - openebsrole
