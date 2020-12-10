@@ -1,0 +1,52 @@
+#
+# Copyright 2020 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: check if velero is already installed
+  shell:
+    cmd: kubectl get pods -n velero
+  register: result
+  ignore_errors: yes
+  no_log: True
+
+- debug:
+    msg: velero already installed
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , velero not installed continue with Installation
+# yamllint disable rule:line-length
+  when: result.stdout == ""
+
+- name: Adding helm repo for velero
+  command: helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
+  ignore_errors: yes
+  no_log: True
+  when: result.stdout == ""
+
+- name: Create name space for velero
+  command: kubectl create ns
+  ignore_errors: yes
+  no_log: True
+  when: result.stdout == ""
+
+- name: Install velero
+  command: helm install vmware-tanzu/velero --namespace velero --set-file credentials.secretContents.cloud=./credentials-velero --set configuration.provider=aws --set configuration.backupStorageLocation.name= default --set configuration.backupStorageLocation.bucket=newbucket > --set configuration.backupStorageLocation.config.region=minio > --set configuration.volumeSnapshotLocation.name=default > --set configuration.volumeSnapshotLocation.config.region=minio > --set image.repository=velero/velero > --set image.tag=v1.5.1 > --set image.pullPolicy=IfNotPresent> --set initContainers[0].name=velero-plugin-for-aws > --set initContainers[0].image=velero/velero-plugin-for-aws:v1.1.0 > --set initContainers[0].volumeMounts[0].mountPath=/target > --set initContainers[0].volumeMounts[0].name=plugins --generate-name =velero
+  ignore_errors: yes
+  no_log: True
+  when: result.stdout == ""
