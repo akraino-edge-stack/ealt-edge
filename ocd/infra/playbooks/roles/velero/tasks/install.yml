@@ -40,7 +40,7 @@
   when: result.stdout == ""
 
 - name: Create name space for velero
-  command: kubectl create ns
+  command: kubectl create ns velero
   ignore_errors: yes
   no_log: True
   when: result.stdout == ""
