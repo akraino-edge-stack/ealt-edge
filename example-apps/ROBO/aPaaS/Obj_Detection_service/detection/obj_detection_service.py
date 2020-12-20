@@ -203,7 +203,8 @@ def Detection(img):
     cv2.destroyAllWindows()
     # Detect_result = {'ImposedImage': 'frame', 'ObjCount': count,
     # 'ObjType': type, 'Time': time}
-    Detect_result = {'ImposedImage': "frame", 'ObjCount': count}
+    Detect_result = {'ImposedImage': "frame", 'ObjCount': count,
+                     'labels': label}
     return Detect_result
 
 
@@ -264,7 +265,6 @@ def Obj_Detection():
     else:
         app.logger.info('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
         return Response("failure")
-    # return jsonify({'Face number': num, 'Result': 'upload success'})
     return jsonify(Detect_result)
 
 
