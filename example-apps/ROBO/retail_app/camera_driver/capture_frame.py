@@ -14,38 +14,40 @@
 # limitations under the License.
 #
 
+import cv2
+
 
 class VideoCamera(object):
     """
     opneCV to capture frame from a camera
     """
-    """
     def __init__(self, url):
-        # self.video = cv2.VideoCapture(url)
+        self.video = cv2.VideoCapture(url)
 
     def delete(self):
-        # self.video.release()
+        self.video.release()
 
     def get_frame(self):
-        # get a frane from camera url
-        # success, image = self.video.read()
-        return
-    """
+        """
+        get a frame from camera url
+        """
+        success, image = self.video.read()
+        return success, image
 
 
 class VideoFile(object):
     """
     opneCV to capture frame from a video stream
     """
-    """
     def __init__(self, video_name):
-        # self.video = cv2.VideoCapture("./test/resources/" + video_name)
+        self.video = cv2.VideoCapture("./test/resources/" + video_name)
 
     def delete(self):
-        # self.video.release()
+        self.video.release()
 
     def get_frame(self):
-        # get a frane from stream
-        # success, image = self.video.read()
-        return
-    """
+        """
+        get a frane from stream
+        """
+        success, image = self.video.read()
+        return success, image
