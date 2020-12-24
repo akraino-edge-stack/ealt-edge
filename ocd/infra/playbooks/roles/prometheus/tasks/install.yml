@@ -35,11 +35,6 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
-- name: "INSTALL: Install prometheus on x86_64"
-  shell:
-    cmd: helm install mep-prometheus stable/prometheus --version v9.3.1
-  when: result is failed and ansible_architecture == 'x86_64'
-
 - name: "INSTALL: copy values.yaml to host"
   copy:
     src: values.yaml
@@ -52,7 +47,6 @@
   # yamllint disable rule:line-length
   ignore_errors: yes
   no_log: True
-  when: result is failed and ansible_architecture == 'aarch64'
 
 - name: Expose promethious server
   # yamllint disable rule:line-length
