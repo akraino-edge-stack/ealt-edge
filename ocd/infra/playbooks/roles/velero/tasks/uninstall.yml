@@ -15,12 +15,28 @@
 #
 
 ---
-# tasks file for velero
 
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
+- name: check if velero is already installed
+  shell:
+    cmd: kubectl get ns velero
+  register: result
+  ignore_errors: yes
+  no_log: True
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- debug:
+    msg: Unisntall velero
+  when: result.stdout != ""
+
+- debug:
+# yamllint disable rule:line-length
+    msg: Ignore Uninstall Log , velero not installed
+# yamllint disable rule:line-length
+  when: result.stdout == ""
+
+- name: Remove namespace for velero
+  command: kubectl delete ns velero
+  when: result is succeeded
+
+- name: Remove velero credentials file
+  command: rm /root/credentials-velero
+  when: result is succeeded
