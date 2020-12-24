@@ -67,6 +67,38 @@
   ignore_errors: yes
   when: result is failed and ansible_architecture == 'aarch64'
 
+- name: "INSTALL: Installing docker upgrade"
+# yamllint disable rule:line-length
+  command: apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+# yamllint disable rule:line-length
+  ignore_errors: yes
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "INSTALL: Add repository"
+  shell: curl -sL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "INSTALL: CA-Certificates"
+# yamllint disable rule:line-length
+  shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+# yamllint disable rule:line-length
+  ignore_errors: yes
+  failed_when: false
+  no_log: True
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "INSTALL: Update....."
+  command: apt-get update -y
+  ignore_errors: yes
+  failed_when: false
+  no_log: True
+  when: result is failed and ansible_architecture == 'x86_64'
+
+- name: "INSTALL: Installed docker"
+  command: apt-get install -y docker-ce docker-ce-cli containerd.io
+  ignore_errors: yes
+  when: result is failed and ansible_architecture == 'x86_64'
+
 - debug:
     msg: "CentOS commands start"
 

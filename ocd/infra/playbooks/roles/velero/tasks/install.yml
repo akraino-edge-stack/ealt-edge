@@ -33,6 +33,29 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
+- name: Doing deployment setup for edge gallery
+  copy:
+    src: credentials-velero
+    dest: /root/
+    mode: 750
+
+- name: Import config file
+  include_vars:
+    file: ../../../config.yml
+    name: vardata
+
+- name: Replacing access key
+  replace:
+    path: /root/credentials-velero
+    regexp: 'velero_access_key'
+    replace: "{{ vardata.velero_access_key.name }}"
+
+- name: Replacing secret key
+  replace:
+    path: /root/credentials-velero
+    regexp: 'velero_secret_key'
+    replace: "{{ vardata.velero_secret_key.name }}"
+
 - name: Adding helm repo for velero
   command: helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
   ignore_errors: yes
