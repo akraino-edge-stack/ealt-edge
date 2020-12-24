@@ -85,3 +85,9 @@ mecm_meo_postgresAppoPassword:
   name:
 mecm_meo_postgresInventoryPassword:
   name:
+
+######### Optional keys for velero##############
+velero_access_key:
+  name: minio
+velero_secret_key:
+  name: minio123

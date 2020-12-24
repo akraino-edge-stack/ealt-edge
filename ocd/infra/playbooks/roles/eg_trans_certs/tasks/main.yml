@@ -15,12 +15,8 @@
 #
 
 ---
-# tasks file for velero
 
+# tasks file for eg_trans_certs
 - include: "install.yml"
   static: false
   when: operation == 'install'
-
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
