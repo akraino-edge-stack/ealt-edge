@@ -15,12 +15,11 @@
 #
 
 ---
-# tasks file for velero
 
-- include: "install.yml"
-  static: false
-  when: operation == 'install'
+- name: Certificate copy
+  debug:
+    msg: Copy certificate from ocd to center and edge
 
-- include: "uninstall.yml"
-  static: false
-  when: operation == 'uninstall'
+- synchronize:
+    src: /tmp/ssl-eg-keys-certs
+    dest: /tmp/

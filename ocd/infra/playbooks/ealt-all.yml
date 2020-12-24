@@ -28,6 +28,7 @@
     - k8s
     - helm
     - docker
+    - eg_prerequisite
     - eg_registry
     - eg_helm-repo
     - eg_certs
@@ -43,6 +44,7 @@
     - center
 
   roles:
+    - eg_trans_certs
     - eg_prerequisite
     - helm
     - eg_set-helm-repo
@@ -87,6 +89,7 @@
     - edge
 
   roles:
+    - eg_trans_certs
     - docker
     - eg_prerequisite
     - k3s
