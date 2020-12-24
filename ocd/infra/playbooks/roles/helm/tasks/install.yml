@@ -55,7 +55,7 @@
 
 - name: "INSTALL: Add helm repo"
 # yamllint disable rule:line-length
-  command: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+  command: helm repo add stable https://charts.helm.sh/stable
 # yamllint disable rule:line-length
   when: result is failed
 

@@ -29,10 +29,14 @@
 
 - name: "UNINSTALL: Helm Uninstall on x86_64"
   command: rm -rf linux-amd64/helm
+  ignore_errors: yes
+  no_log: True
   when: result is succeeded and ansible_architecture == 'x86_64'
 
 - name: "UNINSTALL: Remove download helm file on x86_64"
   command: rm ~/helm-v3.0.2-linux-amd64.tar.gz
+  ignore_errors: yes
+  no_log: True
   when: result is succeeded and ansible_architecture == 'x86_64'
 
 - name: "UNINSTALL: Helm Uninstall on aarch64"

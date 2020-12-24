@@ -45,11 +45,3 @@
 
 - name: Delete Execute script for docker daemon
   command: rm -rf /tmp/eg_prerequisite
-
-- name: Certificate copy
-  debug:
-    msg: Copy certificate from ocd to center and edge
-
-- synchronize:
-    src: /tmp/ssl-eg-keys-certs
-    dest: /tmp/
