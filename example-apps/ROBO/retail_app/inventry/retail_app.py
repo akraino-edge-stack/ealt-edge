@@ -45,35 +45,36 @@ class inventry_info:
     Store the data and manage multiple input video feeds
     """
     def __init__(self, current_count=0, total_count=0, time=0):
-            self.type = "Shelf_INV"
-            self.labels = "Bottles"
-            self.current_count = current_count
-            self.total_count = total_count
-            self.time = time
+        self.type = "Shelf_INV"
+        self.labels = "Bottles"
+        self.current_count = current_count
+        self.total_count = total_count
+        self.time = time
 
     def setcurrentcount(self, current_count):
-            self.current_count = current_count
+        self.current_count = current_count
 
     def settotalcount(self, total_count):
-            self.total_count = total_count
+        self.total_count = total_count
 
     def getcurrentcount(self):
-            return self.current_count
+        return self.current_count
 
     def gettotalcount(self):
-            return self.total_count
+        return self.total_count
 
     def setlabel(self, labels):
-            self.labels = labels
+        self.labels = labels
 
     def getlabel(self):
-            return self.labels
+        return self.labels
 
     def settime(self, time):
-            self.labels = time
+        self.labels = time
 
     def gettime(self):
-            return self.time
+        return self.time
+
 
 def store_data(inventry_info):
     """
