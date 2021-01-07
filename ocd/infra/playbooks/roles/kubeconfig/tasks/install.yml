@@ -18,6 +18,12 @@
   debug:
     msg: transfering config file to OCD Host
 
+- name: access k8s from ocd using config file copy from center or edge
+  fetch:
+    src: /root/.kube/config
+    dest: /root/.kube/config
+    flat: yes
+
 - name: Fetch the file from the controller and edge nodes to ocd-host
   fetch:
     src: /root/.kube/config
