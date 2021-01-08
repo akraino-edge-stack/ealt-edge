@@ -28,19 +28,19 @@
     name: vardata
 
 - name: Download 0.9 tar
-  command: wget http://release.edgegallery.org/arm64/all/0.9.tar.gz
+  command: wget http://release.edgegallery.org/release/arm64/all/EdgeGallery-v0.9.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'aarch64'
 
 - name: Download 0.9 tar
-  command: wget http://release.edgegallery.org/x86/all/0.9.tar.gz
+  command: wget http://release.edgegallery.org/release/x86/all/EdgeGallery-v0.9.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'x86_64'
 
 - name: Untar the donwloaded tar
-  command: tar -zxf 0.9.tar.gz
+  command: tar -zxf EdgeGallery-v0.9.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
 
