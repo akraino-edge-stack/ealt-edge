@@ -50,35 +50,35 @@ class inventory_info:
     Store the data and manage multiple input video feeds
     """
     def __init__(self, current_count=0, total_count=0, time=0):
-            self.type = "Shelf_INV1"
-            self.labels = "Bottles"
-            self.current_count = current_count
-            self.total_count = total_count
-            self.time = time
+        self.type = "Shelf_INV1"
+        self.labels = "Bottles"
+        self.current_count = current_count
+        self.total_count = total_count
+        self.time = time
 
     def setcurrentcount(self, current_count):
-            self.current_count = current_count
+        self.current_count = current_count
 
     def settotalcount(self, total_count):
-            self.total_count = total_count
+        self.total_count = total_count
 
     def getcurrentcount(self):
-            return self.current_count
+        return self.current_count
 
     def gettotalcount(self):
-            return self.total_count
+        return self.total_count
 
     def setlabel(self, labels):
-            self.labels = labels
+        self.labels = labels
 
     def getlabel(self):
-            return self.labels
+        return self.labels
 
     def settime(self, time):
-            self.labels = time
+        self.labels = time
 
     def gettime(self):
-            return self.time
+        return self.time
 
 
 # temporary copied capture_frame file to this due to docker issue for module
@@ -150,7 +150,7 @@ def shelf_inventory(video_capture, camera_info, true=None):
 
     labels = "bottles"
     process_this_frame = 0
-    if mock_func is 1:
+    if mock_func == 1:
         inven_info = inventory_info()
         mock_table(inven_info)
     else:
