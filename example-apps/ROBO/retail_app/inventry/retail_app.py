@@ -19,8 +19,8 @@ from flask_sslify import SSLify
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 # from camera_driver.capture_frame import VideoCamera, VideoFile
-#from capture_frame import VideoCamera, VideoFile
-#from influxdb import InfluxDBClient
+# from capture_frame import VideoCamera, VideoFile
+# from influxdb import InfluxDBClient
 import json
 import time
 import requests
@@ -43,6 +43,7 @@ listOfMsgs = []
 listOfCameras = []
 listOfVideos = []
 mock_func = 1
+
 
 class inventory_info:
     """
@@ -160,8 +161,9 @@ def shelf_inventory(video_capture, camera_info, true=None):
             if process_this_frame == 0:
                 url = config.detection_url + "/v1/obj_detection/detect"
                 # info1 = cv2.imencode(".jpg", rgb_small_frame)[1].tobytes()
-                data = json.loads(requests.post(url, data=frame,
-                                            verify=config.ssl_cacertpath).text)
+                data = json.loads(requests.post
+                                  (url, data=frame,
+                                   verify=config.ssl_cacertpath).text)
         inven_info = inventory_info()
         current_count = data[count]
         labels = data[labels]
@@ -170,7 +172,7 @@ def shelf_inventory(video_capture, camera_info, true=None):
         inven_info.settotalcount(total_count)
         inven_info.setlabel(labels)
         inven_info.utime = time.time()
-        #store_data(inven_info)
+        # store_data(inven_info)
         local_store(inven_info)
 
 
@@ -220,10 +222,9 @@ def create_database():
     :return: None
     """
     global db_client
-
-    proxy = {"http": "http://{}:{}".format(config.IPADDRESS, config.PORT)}
+#    proxy = {"http": "http://{}:{}".format(config.IPADDRESS, config.PORT)}
 #    db_client = InfluxDBClient(host=config.IPADDRESS, port=config.PORT,
- #                              proxies=proxy, database=config.DATABASE_NAME)
+#    proxies=proxy, database=config.DATABASE_NAME)
 #    db_client.create_database(config.DATABASE_NAME)
 
 
@@ -238,13 +239,14 @@ def inventry_table():
 
 
 @app.route('/v1/inventry/image', methods=['GET'])
-def inventry_table():
+def detected_image():
     """
     return inventry table
 
     :return: inventry table
     """
     return jsonify(listOfMsgs)
+
 
 def allowed_videofile(filename):
     """
@@ -264,7 +266,8 @@ def upload_video():
         files = request.files.getlist("file")
         for file in files:
             if allowed_videofile(file.filename):
-                file.save(os.path.join(app.config['VIDEO_PATH'], file.filename))
+                file.save(os.path.join(app.config['VIDEO_PATH'],
+                                       file.filename))
             else:
                 raise IOError('video format error')
     return Response("success")
