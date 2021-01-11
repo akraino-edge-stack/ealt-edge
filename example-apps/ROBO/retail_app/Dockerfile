@@ -25,8 +25,9 @@ RUN sed -i "s|umask 022|umask 027|g" /etc/profile
 # Create the home directory for the new app user.
 RUN mkdir -p /usr/app
 RUN mkdir -p /usr/app/bin
-RUN mkdir -p /usr/app/detection
-RUN mkdir -p /usr/app/resources
+RUN mkdir -p /usr/app/inventry
+RUN mkdir -p /usr/app/test/resources
+RUN mkdir -p /usr/app/images
 
 # Set the home directory to our app user's home.
 ENV APP_HOME=/usr/app
@@ -69,9 +70,11 @@ WORKDIR $APP_HOME
 
 # Copy the application & scripts
 COPY config.py requirements.txt run.py $APP_HOME/
-COPY detection $APP_HOME/monitoring/
-COPY resources $APP_HOME/resources/
-COPY configs/*.sh $APP_HOME/bin
+COPY inventry $APP_HOME/inventry/
+COPY test $APP_HOME/test/
+COPY test/resources $APP_HOME/test/resources/
+#COPY configs/*.sh $APP_HOME/bin
+COPY configs/start.sh $APP_HOME/bin
 
 RUN chmod 750 $APP_HOME &&\
     chmod -R 550 $APP_HOME/bin &&\
@@ -80,7 +83,7 @@ RUN chmod 750 $APP_HOME &&\
     chown -R $USER_NAME:$GROUP_NAME $APP_HOME
 
 # Exposed port
-EXPOSE 9997
+EXPOSE 9996
 
 # Change to the app user.
 USER $USER_NAME

@@ -14,8 +14,10 @@
 # limitations under the License.
 #
 
-flask
-requests
+flask~=1.1.2
+requests~=2.18.4
 flask_sslify
 opencv-python
 flask_cors
+
+influxdb~=5.3.1
