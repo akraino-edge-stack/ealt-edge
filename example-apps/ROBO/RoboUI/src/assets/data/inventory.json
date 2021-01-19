@@ -1,0 +1,18 @@
+{
+    "InventryData": [
+        {
+            "shelfName": "Shelf1",
+            "ObjType": "Bottles",
+            "currentCount": "1",
+            "totalCount": "3",
+            "time": "Tue Feb 26 12:11:59 2020"
+        },
+        {
+            "shelfName": "Shelf2",
+            "ObjType": "Bottles",
+            "currentCount": "3",
+            "totalCount": "3",
+            "time": "Tue Feb 26 12:15:00 2020"
+        }
+    ]
+}

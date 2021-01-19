@@ -1,0 +1,43 @@
+.maindiv {
+    position: center;
+    position: relative;
+    padding-top: 20px;
+
+    .centerdiv {
+  
+      width: 100%;
+      margin: 0;
+      position: absolute;
+      padding-top: 20px;
+      padding-right: 20px;
+      padding-left: 20px;
+
+      .mp4-upload {
+
+        .center-button {
+          display:flex; justify-content: center
+        }
+
+      }
+
+      mat-accordion {
+        width: 80%;
+      }
+
+      .tablepage {
+
+        position: relative;
+        .filter {
+            width: 70%;
+            padding-left: 20px;
+        }
+        .cameratable {
+            table {
+                width: 100%;
+            }
+        }
+
+      }
+    }
+  }
+  
