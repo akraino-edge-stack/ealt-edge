@@ -40,9 +40,17 @@ public class pvcService {
             pvcsDetail.setNamespace(item.getMetadata().getNamespace());
             pvcsDetail.setName(item.getMetadata().getName());
             pvcsDetail.setStatus(item.getStatus().getPhase());
-            //pvcsDetail.setIp(item.getStatus().getPodIP());
-            //pvcsDetail.setNode(item.getSpec().getNodeName());
-            pvcsDetail.setReadiness("null");
+
+            pvcsDetail.setVolume(item.getSpec().getVolumeName());
+            pvcsDetail.setVolumemode(item.getSpec().getVolumeMode());
+           //TODO: getAccessModes return list of string, need to check
+            // pvcsDetail.setAccessmodes(item.getSpec().getAccessModes());
+            pvcsDetail.setStorageclass(item.getSpec().getStorageClassName());
+
+          //  pvcsDetail.setAge(item.getStatus().getConditions().getLastTransitionTime());
+            //TODO: getCapacity is a map. need to get quantity from map and fill
+            //pvcsDetail.setCapacity(item.getStatus().getCapacity());
+            pvcsDetail.setAge("null");
             pvcslistElement.add(pvcsDetail);
         }
 
