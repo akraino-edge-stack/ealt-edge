@@ -24,8 +24,9 @@ public class backupApplication {
     @Bean
     public static void apiclient() throws IOException {
         // file path to your KubeConfig
-        String homePath = System.getenv("HOME");
-        String kubeConfigPath = homePath + "/.kube/config";
+        //String homePath = System.getenv("HOME");
+        //String kubeConfigPath = homePath + "/.kube/config";
+        String kubeConfigPath = System.getenv("KUBE_CONFIG");
 
         // loading the out-of-cluster config, a kubeconfig from file-system
         ApiClient client =
