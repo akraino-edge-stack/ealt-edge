@@ -17,8 +17,4 @@ public class EALTEdgeBackup {
     private String errors;
     private String warnings;
     private String created;
-    private String expires;
-    private String storage;
-    private String location;
-    private String selector;
 }
