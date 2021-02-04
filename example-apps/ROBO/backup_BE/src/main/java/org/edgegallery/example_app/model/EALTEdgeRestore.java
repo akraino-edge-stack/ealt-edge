@@ -13,10 +13,4 @@ public class EALTEdgeRestore {
     private String name;
     private String backup;
     private String status;
-    private String started;
-    private String completed;
-    private String errors;
-    private String warnings;
-    private String created;
-    private String selector;
 }
