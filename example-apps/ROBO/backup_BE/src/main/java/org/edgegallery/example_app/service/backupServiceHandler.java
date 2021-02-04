@@ -1,6 +1,5 @@
 package org.edgegallery.example_app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.edgegallery.example_app.model.EALTEdgeBackup;
 import org.edgegallery.example_app.model.EALTEdgeBackupRestore;
@@ -17,20 +16,21 @@ public class backupServiceHandler {
 
     @Autowired
     private restoreService RestoreService;
+
     /**
      * get back/restore tables.
      * @return
      */
     public ResponseEntity<EALTEdgeBackupRestore> getBackupRestoreDetails() {
 
-        EALTEdgeBackupRestore eALTEdgeBackupRestore = new EALTEdgeBackupRestore();
+        EALTEdgeBackupRestore ealtEdgeBackupRestore = new EALTEdgeBackupRestore();
 
-        List<EALTEdgeBackup> backupsList = BackupService.getBackupTables();
+        List<EALTEdgeBackup> backupsList =  BackupService.getBackupTables();
         List<EALTEdgeRestore> restoresList = RestoreService.getRestoreTables();
 
-        eALTEdgeBackupRestore.setBackupsData(backupsList);
-        eALTEdgeBackupRestore.setRestoresData(restoresList);
-        return ResponseEntity.ok(eALTEdgeBackupRestore);
+        ealtEdgeBackupRestore.setBackupsData(backupsList);
+        ealtEdgeBackupRestore.setRestoresData(restoresList);
+        return ResponseEntity.ok(ealtEdgeBackupRestore);
     }
 
     /**

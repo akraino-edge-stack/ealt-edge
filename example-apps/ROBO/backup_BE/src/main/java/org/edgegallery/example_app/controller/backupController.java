@@ -37,7 +37,7 @@ public class backupController {
     @Autowired
     private backupServiceHandler BackupServiceHandler;
 
-    @GetMapping(value = "/backups-restores", produces = MediaType.APPLICATION_JSON)
+    @GetMapping(value = "/backup-restore", produces = MediaType.APPLICATION_JSON)
     @ApiOperation(value = "get backup and restore tables.", response = EALTEdgeBackupRestore.class,
             responseContainer = "List")
     @ApiResponses(value = {
