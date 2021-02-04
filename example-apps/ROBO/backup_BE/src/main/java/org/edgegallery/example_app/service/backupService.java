@@ -1,11 +1,17 @@
 package org.edgegallery.example_app.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import org.apache.commons.lang.StringUtils;
 import org.edgegallery.example_app.model.EALTEdgeBackup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.edgegallery.example_app.util.ShellCommand;
 import org.springframework.stereotype.Service;
+import org.edgegallery.example_app.common.*;
 
 @Service
 public class backupService {
@@ -24,20 +30,11 @@ public class backupService {
 
     public List<EALTEdgeBackup> getBackupTables() {
 
-        EALTEdgeBackup backup = new EALTEdgeBackup();
-        String command = "velero get backups";
+        String ip = Constants.IP;
+        String command = "sshpass ssh root@" + ip + " velero get backups";
 
-        String output = ShellCommands.executeCommand(command);
-
-        //System.out.println(output);
         List<EALTEdgeBackup> backupsList = new ArrayList<EALTEdgeBackup>();
-
-        String list = ShellCommands.parseResult(output);
-
-        //TODO: after parse the result, need to fill info in backup node in list
-        backup.setName("backup1");
-
-        backupsList.add(backup);
+        backupsList = ShellCommands.executeBackupCommand(command);
 
         return backupsList;
     }

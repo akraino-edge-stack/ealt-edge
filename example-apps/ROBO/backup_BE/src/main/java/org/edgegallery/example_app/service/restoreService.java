@@ -1,7 +1,13 @@
 package org.edgegallery.example_app.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import org.apache.commons.lang.StringUtils;
+import org.edgegallery.example_app.common.Constants;
 import org.edgegallery.example_app.model.EALTEdgeBackup;
 import org.edgegallery.example_app.model.EALTEdgeRestore;
 import org.edgegallery.example_app.util.ShellCommand;
@@ -22,22 +28,19 @@ public class restoreService {
         System.out.println(output);
         return "success";
     }
-
+    
+    /**
+     * get restore table and parse
+     * @return
+     */
     public List<EALTEdgeRestore> getRestoreTables() {
-        EALTEdgeRestore restoreDetails = new EALTEdgeRestore();
-        String command = "velero get restores";
 
-        String output = shellCommand.executeCommand(command);
+    	String ip = Constants.IP;
+        String command = "sshpass ssh root@" + ip + " velero get restores";
 
-        //System.out.println(output);
         List<EALTEdgeRestore> restoresList = new ArrayList<EALTEdgeRestore>();
+        restoresList = shellCommand.executeRestoreCommand(command);
 
-        String list = shellCommand.parseResult(output);
-
-        //TODO: after parse the result, need to fill info in backup node in list
-        restoreDetails.setName("restore1");
-
-        restoresList.add(restoreDetails);
         return restoresList;
     }
 }
