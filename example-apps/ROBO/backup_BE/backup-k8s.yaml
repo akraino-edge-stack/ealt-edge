@@ -32,7 +32,7 @@ spec:
             claimName: task-pv-claim
       containers:
         - name: backup-be
-          image: khemendra/backup:1.1
+          image: ealtedge/robo-be
           env:
             - name: KUBE_CONFIG
               value: "/usr/app/.kube/config"
