@@ -14,8 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.edgegallery.example_app.model.EALTEdgeBackup;
 import org.edgegallery.example_app.model.EALTEdgeRestore;
 import org.springframework.stereotype.Service;
-import com.jcraft.jsch.*;
-
 
 @Service
 public class ShellCommand {
