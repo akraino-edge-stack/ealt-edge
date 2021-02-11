@@ -20,19 +20,25 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 # from camera_driver.capture_frame import VideoCamera, VideoFile
 # from capture_frame import VideoCamera, VideoFile
-# from influxdb import InfluxDBClient
+from influxdb import InfluxDBClient
 import json
-import time
 import requests
 import os
 import cv2
-
+import hashlib
+from wand.image import Image
+import os.path
+from os import path
+import base64
+import time
+import sys
 
 app = Flask(__name__)
 CORS(app)
 sslify = SSLify(app)
 app.config['JSON_AS_ASCII'] = False
-app.config['UPLOAD_PATH'] = '/usr/app/images/'
+app.config['UPLOAD_PATH'] = '/usr/app/images_result/'
+app.config['VIDEO_PATH'] = '/usr/app/test/resources/'
 app.config['supports_credentials'] = True
 app.config['CORS_SUPPORTS_CREDENTIALS'] = True
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -42,14 +48,14 @@ count = 0
 listOfMsgs = []
 listOfCameras = []
 listOfVideos = []
-mock_func = 1
+mock_func = 0
 
 
 class inventory_info:
     """
     Store the data and manage multiple input video feeds
     """
-    def __init__(self, current_count=0, total_count=0, time=0):
+    def __init__(self, current_count=0, total_count=10, time=0):
         self.type = "Shelf_INV1"
         self.labels = "Bottles"
         self.current_count = current_count
@@ -83,7 +89,6 @@ class inventory_info:
 
 # temporary copied capture_frame file to this due to docker issue for module
 # import
-
 class VideoCamera(object):
     """
     opneCV to capture frame from a camera
@@ -107,7 +112,7 @@ class VideoFile(object):
     opneCV to capture frame from a video stream
     """
     def __init__(self, video_name):
-        self.video = cv2.VideoCapture("./test/resources/" + video_name)
+        self.video = cv2.VideoCapture(app.config['VIDEO_PATH'] + video_name)
 
     def delete(self):
         self.video.release()
@@ -120,15 +125,6 @@ class VideoFile(object):
         return success, image
 
 
-def store_data(inventory_info):
-    """
-    store time series data in influx db
-    """
-    # TODO config, schema table, DB, fill data set
-    create_database()
-    store_info_db(inventory_info)
-
-
 def mock_table(inven_info):
     current_count = 3
     labels = "Bottles"
@@ -136,7 +132,9 @@ def mock_table(inven_info):
     inven_info.setcurrentcount(current_count)
     inven_info.settotalcount(total_count)
     inven_info.setlabel(labels)
-    inven_info.utime = time.time()
+    time_sec = time.time()
+    local_time = time.ctime(time_sec)
+    inven_info.utime = local_time
     # store_data(inven_info)
     local_store(inven_info)
 
@@ -148,8 +146,13 @@ def shelf_inventory(video_capture, camera_info, true=None):
     global count
     global mock_func
 
-    labels = "bottles"
+    labels = "Bottles"
+    count_val = 'ObjCount'
     process_this_frame = 0
+    i = 0
+    url = config.detection_url + "detect"
+    url_get = config.detection_url + "image"
+
     if mock_func == 1:
         inven_info = inventory_info()
         mock_table(inven_info)
@@ -157,23 +160,47 @@ def shelf_inventory(video_capture, camera_info, true=None):
         while True:
             success, frame = video_capture.get_frame()
             if not success:
+                print ('read frame from file is failed')
                 break
+            i = i+1
+            if i < 100:
+                continue
+
+            i = 0
             if process_this_frame == 0:
-                url = config.detection_url + "/v1/obj_detection/detect"
-                # info1 = cv2.imencode(".jpg", rgb_small_frame)[1].tobytes()
-                data = json.loads(requests.post
-                                  (url, data=frame,
-                                   verify=config.ssl_cacertpath).text)
-        inven_info = inventory_info()
-        current_count = data[count]
-        labels = data[labels]
-        total_count = inven_info.current_count + inven_info.total_count
-        inven_info.setcurrentcount(current_count)
-        inven_info.settotalcount(total_count)
-        inven_info.setlabel(labels)
-        inven_info.utime = time.time()
-        # store_data(inven_info)
-        local_store(inven_info)
+
+                # info1 = cv2.imencode(".jpg", frame)[1].tobytes()
+                imencoded = cv2.imencode(".jpg", frame)[1]
+                file = {'file': (
+                'image.jpg', imencoded.tostring(), 'image/jpeg',
+                {'Expires': '0'})}
+                # data = json.loads(requests.post
+                #                  (url, data=frame,
+                #                  verify=config.ssl_cacertpath).text)
+
+                res = requests.post(url, files=file)
+                data = json.loads(res.text)
+
+                ## get image
+                response = requests.get(url_get)
+
+                file = open(app.config['UPLOAD_PATH'] + "sample_image.jpg",
+                            "wb")
+                file.write(response.content)
+                file.close()
+
+                inven_info = inventory_info()
+                current_count = data[count_val]
+                total_count = inven_info.current_count + inven_info.total_count
+                inven_info.setcurrentcount(current_count)
+                inven_info.settotalcount(total_count)
+                inven_info.setlabel(labels)
+                time_sec = time.time()
+                local_time = time.ctime(time_sec)
+                inven_info.time = local_time
+                store_info_db(inven_info)
+                # local_store(inven_info)
+                time.sleep(0.01)
 
 
 def local_store(inven_info):
@@ -185,10 +212,14 @@ def local_store(inven_info):
     """
     if len(listOfMsgs) >= 100:
         listOfMsgs.pop()
+
+    time_sec = time.time()
+    local_time = time.ctime(time_sec)
+    print (local_time)
     newdict = {"shelfName": inven_info.type, "ObjType": inven_info.labels,
                "currentCount": inven_info.current_count,
                "totalCount": inven_info.total_count,
-               "time": time.time()}
+               "time": local_time}
     listOfMsgs.insert(0, newdict)
 
 
@@ -208,11 +239,44 @@ def store_info_db(inven_info):
             },
             "fields": {
                 "time": inven_info.time,
-                "Current Count": inven_info.current_count,
-                "Total Count": inven_info.total_count,
+                "Current-Count": inven_info.current_count,
+                "Total-Count": inven_info.total_count,
             }
         }]
     db_client.write_points(json_body)
+
+
+def retrive_info_db():
+    """
+    Send "shelf" data to InfluxDB
+
+    :param inven_info: Inventry object
+    :return: None
+    """
+    global db_client
+
+    # get data last n data points from DB
+    result = db_client.query('select * from Shelf_INV1 order by desc limit '
+                             '10;')
+
+    # Get points and iterate over each record
+    points = result.get_points(tags={"object": "bottles"})
+
+    # clear the msg list
+    # listOfMsgs.clear()
+    del listOfMsgs[:]
+
+    # iterate points and fill the records and insert to list
+    for point in points:
+        print("Current-Count: %i, Total-Count: %i, Time: %s" % (point[
+                                                             'Current-Count'],
+                                          point['Total-Count'],
+                                          point['time']))
+        newdict = {"shelfName": 'Shelf_INV1', "ObjType": "bottles",
+                   "currentCount": point['Current-Count'],
+                   "totalCount": point['Total-Count'],
+                   "time": point['time']}
+        listOfMsgs.insert(0, newdict)
 
 
 def create_database():
@@ -222,10 +286,10 @@ def create_database():
     :return: None
     """
     global db_client
-#    proxy = {"http": "http://{}:{}".format(config.IPADDRESS, config.PORT)}
-#    db_client = InfluxDBClient(host=config.IPADDRESS, port=config.PORT,
-#    proxies=proxy, database=config.DATABASE_NAME)
-#    db_client.create_database(config.DATABASE_NAME)
+    proxy = {"http": "http://{}:{}".format(config.IPADDRESS, config.PORT)}
+    db_client = InfluxDBClient(host=config.IPADDRESS, port=config.PORT,
+                proxies=proxy, database=config.DATABASE_NAME)
+    db_client.create_database(config.DATABASE_NAME)
 
 
 @app.route('/v1/inventry/table', methods=['GET'])
@@ -235,17 +299,32 @@ def inventry_table():
 
     :return: inventry table
     """
-    return jsonify(listOfMsgs)
+    retrive_info_db()
+    table = {"InventryData": listOfMsgs}
+    return jsonify(table)
 
 
 @app.route('/v1/inventry/image', methods=['GET'])
 def detected_image():
     """
-    return inventry table
+    detect images with imposed
 
-    :return: inventry table
+    :return: result image
     """
-    return jsonify(listOfMsgs)
+    detected_image = app.config['UPLOAD_PATH'] + 'sample_image.jpg'
+    print('file exits:', str(path.exists(detected_image)))
+    status = str(path.exists(detected_image))
+    if status == 'True':
+        ## as base64 string
+        with open(detected_image, "rb") as img_file:
+            jpeg_bin = base64.b64encode(img_file.read())
+
+        response = {'image': jpeg_bin}
+        return jsonify(response)
+    else:
+        response = {'image' : 'null'}
+        print('file not exist')
+        return jsonify(response)
 
 
 def allowed_videofile(filename):
@@ -262,50 +341,93 @@ def upload_video():
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
+    print ("videpath:" + app.config['VIDEO_PATH'])
     if 'file' in request.files:
         files = request.files.getlist("file")
         for file in files:
             if allowed_videofile(file.filename):
                 file.save(os.path.join(app.config['VIDEO_PATH'],
                                        file.filename))
+                print('file path is:', app.config['VIDEO_PATH'] +
+                                       file.filename)
             else:
                 raise IOError('video format error')
-    return Response("success")
+                msg = {"responce": "failure"}
+                return jsonify(msg)
+    msg = {"responce":"success"}
+    return jsonify(msg)
+
+def hash_func(camera_info):
+    hash_string = camera_info["cameraNumber"] + \
+                  camera_info["cameraLocation"] + \
+                  camera_info["rtspUrl"]
+    # readable_hash = hashlib.sha256(str(hash_string).encode(
+    # 'utf-8')).hexdigest()
+    readable_hash = hash(hash_string)
+    if readable_hash < 0:
+        readable_hash += sys.maxsize
+    print (readable_hash)
+    return readable_hash
 
 
 @app.route('/v1/monitor/cameras', methods=['POST'])
 def add_camera():
-    camera_info = request.json
+    camera_detail = request.json
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    camera_info = {"name": camera_info["name"],
-                   "rtspurl": camera_info["rtspurl"],
-                   "location": camera_info["location"]}
+    camera_id = hash_func(camera_detail)
+    for camera_info in listOfCameras:
+        if camera_id == camera_info["cameraID"]:
+            msg = {"responce": "failure"}
+            return jsonify(msg)
+            break
+    camera_info = {"cameraID": camera_id,
+                   "cameraNumber": camera_detail["cameraNumber"],
+                   "rtspUrl": camera_detail["rtspUrl"],
+                   "cameraLocation": camera_detail["cameraLocation"]}
     listOfCameras.append(camera_info)
-    return Response("success")
+    msg = {"responce":"success"}
+    return jsonify(msg)
 
 
-@app.route('/v1/monitor/cameras/<name>/<rtspurl>/<location>', methods=['GET'])
-def get_camera(name, rtspurl, location):
+@app.route('/v1/monitor/cameras/<cameraID>', methods=['GET'])
+def get_camera(cameraID):
     """
     register camera with location
     """
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    camera_info = {"name": name, "rtspurl": rtspurl, "location": location}
-    if "mp4" in camera_info["rtspurl"]:
-        video_file = VideoFile(camera_info["rtspurl"])
-        video_dict = {camera_info["name"]: video_file}
+    valid_id = 0
+    for camera_info in listOfCameras:
+        cameraID = int(cameraID)
+        if cameraID == camera_info["cameraID"]:
+            valid_id = 1
+            break
+
+    if valid_id == 0:
+        app.logger.info ("camera ID is not valid")
+        msg = {"responce":"failure"}
+        return jsonify(msg)
+
+    if "mp4" in camera_info["rtspUrl"]:
+        video_file = VideoFile(camera_info["rtspUrl"])
+        video_dict = {camera_info["cameraNumber"]: video_file}
         listOfVideos.append(video_dict)
-        return Response(shelf_inventory(video_file, camera_info["name"]),
-                        mimetype='multipart/x-mixed-replace; boundary=frame')
+        # return Response(shelf_inventory(video_file, camera_info[
+        # "cameraNumber"]),
+        #                mimetype='multipart/x-mixed-replace; boundary=frame')
+        shelf_inventory(video_file, camera_info["cameraNumber"])
+        app.logger.info("get_camera: Added json")
+        msg = {"responce":"success"}
+        return jsonify(msg)
+
     else:
-        video_file = VideoCamera(camera_info["rtspurl"])
-        video_dict = {camera_info["name"]: video_file}
+        video_file = VideoCamera(camera_info["rtspUrl"])
+        video_dict = {camera_info["cameraNumber"]: video_file}
         listOfVideos.append(video_dict)
-        return Response(shelf_inventory(video_file, camera_info["name"]),
+        return Response(shelf_inventory(video_file, camera_info["cameraNumber"]),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -319,7 +441,7 @@ def delete_camera(camera_name):
             video_obj = video1[camera_name]
             video_obj.delete()
     for camera in listOfCameras:
-        if camera_name == camera["name"]:
+        if camera_name == camera["cameraNumber"]:
             listOfCameras.remove(camera)
     for msg in listOfMsgs:
         if camera_name in msg["msg"]:
@@ -332,7 +454,8 @@ def query_cameras():
     app.logger.info("Received message from ClientIP [" + request.remote_addr
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
-    return jsonify(listOfCameras)
+    camera_info = {"roboCamera": listOfCameras}
+    return jsonify(camera_info)
 
 
 @app.route('/', methods=['GET'])
@@ -345,6 +468,7 @@ def hello_world():
 
 def start_server(handler):
     app.logger.addHandler(handler)
+    create_database()
     if config.ssl_enabled:
         context = (config.ssl_certfilepath, config.ssl_keyfilepath)
         app.run(host=config.server_address, debug=True, ssl_context=context,

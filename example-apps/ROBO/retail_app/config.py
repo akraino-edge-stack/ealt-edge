@@ -17,12 +17,15 @@
 import os
 
 # [Server Configurations]
-server_port = 9999
-server_address = os.environ.get('LISTEN_IP')
+server_port = 9995
+# server_address = os.environ.get('LISTEN_IP')
+server_address = "0.0.0.0"
 
 # [InfluxDB config]
-IPADDRESS = os.environ.get('INFLUXDB_IP')
-PORT = os.environ.get('INFLUXDB_PORT')
+IPADDRESS = os.environ.get('INFLUXDB_IP', '159.138.33.54')
+PORT = os.environ.get('INFLUXDB_PORT', '30944')
+# IPADDRESS = '127.0.0.1'
+# PORT = '31782'
 DATABASE_NAME = "Shelf_Inventry"
 
 # [SSL Configurations]
@@ -30,7 +33,7 @@ ssl_enabled = False
 ssl_protocol = "TLSv1.2"
 ssl_ciphers = ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
                "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-               "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+               "TLS_ECDHE_RSA_WITH_AES_-p 127.0.0.1:80:8080/tcp256_GCM_SHA384",
                "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"]
 ssl_certfilepath = "/usr/app/ssl/server_tls.crt"
 ssl_keyfilepath = "/usr/app/ssl/server_tls.key"
@@ -39,7 +42,14 @@ ssl_server_name = os.environ.get('SERVER_NAME', "ealtedge")
 
 # [Service Configurations]
 api_gateway = os.environ.get("API_GATEWAY", "apigw.mep.org")
-Obj_Det = os.environ.get("OBJ_DETECTION", "objdetection")
+#Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP", "localhost")
+
+Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP", "159.138.33.54")
+# Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP", "0.0.0.0")
+Obj_Det_SER_PORT = os.environ.get("OBJ_DET_SER_PORT", "30093")
+Obj_Det = os.environ.get("OBJ_DETECTION", "mep/v1/obj_detection")
 
 # [Constants]
-detection_url = "http://" + api_gateway + "/" + Obj_Det
+# detection_url = "http://" + api_gateway + "/" + Obj_Det
+detection_url = "http://" + Obj_Det_SER_IP + ":" + Obj_Det_SER_PORT + "/" + \
+                                           Obj_Det + "/"

@@ -16,9 +16,13 @@
 
 # Prepare stage for multistage image build
 ## START OF STAGE0 ##
-FROM python:3.6-slim-stretch
-
+# FROM python:3.6-slim-stretch
+# FROM python:3.9
+# FROM python:3.9-slim-buster
 # # CREATE APP USER ##
+
+FROM python:2.7
+
 # Set umask
 RUN sed -i "s|umask 022|umask 027|g" /etc/profile
 
@@ -27,7 +31,7 @@ RUN mkdir -p /usr/app
 RUN mkdir -p /usr/app/bin
 RUN mkdir -p /usr/app/inventry
 RUN mkdir -p /usr/app/test/resources
-RUN mkdir -p /usr/app/images
+RUN mkdir -p /usr/app/images_result
 
 # Set the home directory to our app user's home.
 ENV APP_HOME=/usr/app
@@ -36,6 +40,7 @@ ENV GID=166
 ENV USER_NAME=eguser
 ENV GROUP_NAME=eggroup
 ENV ENV="/etc/profile"
+ENV PYTHONUNBUFFERED=0
 
 # Create an app user so our program doesn't run as root.
 RUN apt-get -y update &&\
@@ -51,7 +56,6 @@ RUN apt-get install -y --fix-missing \
     curl \
     graphicsmagick \
     libgraphicsmagick1-dev \
-    libatlas-dev \
     libavcodec-dev \
     libavformat-dev \
     libgtk2.0-dev \
@@ -59,10 +63,9 @@ RUN apt-get install -y --fix-missing \
     liblapack-dev \
     libswscale-dev \
     pkg-config \
-    python3-dev \
-    python3-numpy \
     software-properties-common \
     zip \
+    imagemagick \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 # Set the working directory.
@@ -71,9 +74,9 @@ WORKDIR $APP_HOME
 # Copy the application & scripts
 COPY config.py requirements.txt run.py $APP_HOME/
 COPY inventry $APP_HOME/inventry/
+
 COPY test $APP_HOME/test/
 COPY test/resources $APP_HOME/test/resources/
-#COPY configs/*.sh $APP_HOME/bin
 COPY configs/start.sh $APP_HOME/bin
 
 RUN chmod 750 $APP_HOME &&\
@@ -83,7 +86,7 @@ RUN chmod 750 $APP_HOME &&\
     chown -R $USER_NAME:$GROUP_NAME $APP_HOME
 
 # Exposed port
-EXPOSE 9996
+EXPOSE 9995
 
 # Change to the app user.
 USER $USER_NAME
