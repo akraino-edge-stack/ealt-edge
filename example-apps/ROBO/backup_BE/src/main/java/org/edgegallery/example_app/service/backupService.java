@@ -20,7 +20,9 @@ public class backupService {
     private ShellCommand ShellCommands;
 
     public String create_backup(String backupname, String namespace) {
-        String command = "velero backup create " + backupname + " --include-namespaces " + namespace;
+        String ip = System.getenv("HOSTIP");
+        String command =
+                "sshpass ssh root@" + ip + " velero backup create " + backupname + " --include-namespaces " + namespace;
 
         String output = ShellCommands.executeCommand(command);
 

@@ -21,7 +21,9 @@ public class restoreService {
     ShellCommand shellCommand;
 
     public String create_restore(String restorename, String backupname) {
-        String command = "velero restore create " + restorename + " --from-backup " + backupname;
+        String ip = System.getenv("HOSTIP");
+        String command = "sshpass ssh root@" + ip + " velero restore create " + restorename + " --from-backup " +
+                         backupname;
 
         String output = shellCommand.executeCommand(command);
 
