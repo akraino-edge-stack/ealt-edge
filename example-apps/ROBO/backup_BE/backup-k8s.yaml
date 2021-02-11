@@ -36,6 +36,9 @@ spec:
           env:
             - name: KUBE_CONFIG
               value: "/usr/app/.kube/config"
+            - name: HOSTIP
+              value: "10.10.0.54"
+
           ports:
             - containerPort: 8091
           volumeMounts:
@@ -57,7 +60,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/home/root1/.kube/"
+    path: "/root/.kube/"
 
 # pvc
 ---

@@ -14,33 +14,21 @@
 
 # FROM swr.ap-southeast-1.myhuaweicloud.com/edgegallery/openjdk:8u201-jdk-alpine
 
+# currently this pod is running as root user due to this need to communicate with host shell.config
+# in future this can be further checked with adding some level restrictions to user
 FROM openjdk:11-jre-slim
-# Define all environment variable here
-#ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/bin/java
 
-ENV TZ='Asia/Shanghai'
 ENV APP_FILE backup.jar
 ENV APP_HOME /usr/app
-ENV UID=166
-ENV GID=166
-ENV USER_NAME=eguser
-ENV GROUP_NAME=eggroup
-ENV ENV="/etc/profile"
-
-# # CREATE APP USER ##
-# Set umask
-RUN sed -i "s|umask 022|umask 027|g" /etc/profile
 
 # Create the home directory for the new app user.
 RUN mkdir -p /usr/app
 RUN mkdir -p /usr/app/bin
 
 # Create an app user so our program doesn't run as root.
-RUN apt-get update &&\
-#    apt-get add shadow &&\
-    groupadd -r -g $GID $GROUP_NAME &&\
-    useradd -r -u $UID -g $GID -d $APP_HOME -s /sbin/nologin -c "Docker image user" $USER_NAME
+RUN apt-get update && apt-get install -y sshpass
 
 WORKDIR $APP_HOME
 
@@ -50,16 +38,13 @@ RUN chmod 750 $APP_HOME &&\
     mkdir -p -m 750 $APP_HOME/log &&\
     mkdir -p -m 750 $APP_HOME/packages &&\
     mkdir -p -m 700 $APP_HOME/ssl &&\
-    mkdir -p -m 700 $APP_HOME/.kube &&\
-    chown -R $USER_NAME:$GROUP_NAME $APP_HOME
+    mkdir -p -m 700 $APP_HOME/.kube
 
-COPY --chown=$USER_NAME:$GROUP_NAME /target/*.jar $APP_HOME/bin
-COPY --chown=$USER_NAME:$GROUP_NAME config $APP_HOME/.kube
+COPY /target/*.jar $APP_HOME/bin
 
 EXPOSE 8091
 
 # Change to the app user.
-USER $USER_NAME
 
 # Execute script & application
 ENTRYPOINT ["sh", "-c"]
