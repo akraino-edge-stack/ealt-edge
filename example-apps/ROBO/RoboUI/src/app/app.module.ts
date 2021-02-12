@@ -45,12 +45,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ToastrModule } from 'ngx-toastr';
 import { DataMonitorComponent } from './data-monitor/data-monitor.component';
+import { BackuprestoreComponent } from './backuprestore/backuprestore.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataFetchComponent,
-    DataMonitorComponent
+    DataMonitorComponent,
+    BackuprestoreComponent
   ],
   imports: [
     BrowserModule,

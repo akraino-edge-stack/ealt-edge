@@ -25,8 +25,8 @@ export class DataFetchComponent implements OnInit {
   cameraColumns: string [] = ['cameraID','cameraLocation','cameraNumber','rtspUrl'];
   cameraDataSource = new MatTableDataSource<camerainfo>(CAMERA_INFO_LIST);
 
-  SERVER_URL = "http://localhost:9996/v1/monitor/video";
-  videoUploadForm: FormGroup;  
+  SERVER_URL = "http://localhost:30092/v1/monitor/video";
+  videoUploadForm: FormGroup;
   cameraDetailsForm: FormGroup;
 
   cameraData = {} as cameraData;

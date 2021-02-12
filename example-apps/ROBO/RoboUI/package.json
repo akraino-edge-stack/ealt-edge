@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.5",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "bootstrap": "^4.5.3",
+    "image-to-base64": "^2.1.1",
     "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
