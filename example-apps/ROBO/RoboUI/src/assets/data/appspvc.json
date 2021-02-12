@@ -1,0 +1,53 @@
+{
+    "appsData": [
+        {
+            "namespace": "default01",
+            "name": "appname",
+            "ready": "ready",
+            "status": "running",
+            "restarts": "3 times",
+            "age": "3d",
+            "ip": "10.10.0.1",
+            "node": "ealtcenter",
+            "nominatednode": "ealtcenter",
+            "readinessgates": "passed"
+        },
+        {
+            "namespace": "default02",
+            "name": "appname",
+            "ready": "ready",
+            "status": "running",
+            "restarts": "3 times",
+            "age": "3d",
+            "ip": "10.10.0.1",
+            "node": "ealtcenter",
+            "nominatednode": "ealtcenter",
+            "readinessgates": "passed"
+        }
+    ],
+
+    "pvcData": [
+        {
+            "namespace": "default",
+            "name": "pvcname01",
+            "status": "ready",
+            "volume": "samplevolume",
+            "capacity": "samplecapacity",
+            "accessmodes" : "sampleaccessmodes",
+            "storageclass" : "samplestorage",
+            "age" : "5d",
+            "volumemode" : "samplevolumemode"
+        },
+        {
+            "namespace": "default",
+            "name": "pvcname02",
+            "status": "ready",
+            "volume": "samplevolume",
+            "capacity": "samplecapacity",
+            "accessmodes" : "sampleaccessmodes",
+            "storageclass" : "samplestorage",
+            "age" : "5d",
+            "volumemode" : "samplevolumemode"
+        }
+    ]
+}

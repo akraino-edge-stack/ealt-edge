@@ -1,0 +1,26 @@
+
+.maindiv{
+
+    position: center;
+    position: relative;
+    padding-top: 20px;
+
+    .tablepage {
+
+    position: relative;
+    .filter {
+        width: 70%;
+        padding-left: 20px;
+    }
+    .monitortable {
+        table {
+            width: 100%;
+        }
+    }
+
+  }
+
+  .image-card {
+      padding: 20px;
+  }
+}
