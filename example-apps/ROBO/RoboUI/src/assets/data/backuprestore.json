@@ -1,0 +1,50 @@
+{
+    "backupsData": [
+        {
+            "name": "backupname01",
+            "status": "ready",
+            "errors": "sampleerrors",
+            "warnings": "warning",
+            "created": "created",
+            "expires": "expires",
+            "storage": "storage",
+            "location": "samplelocation",
+            "selector": "selector"
+        },
+        {
+            "name": "backupname02",
+            "status": "ready",
+            "errors": "sampleerrors",
+            "warnings": "warning",
+            "created": "created",
+            "expires": "expires",
+            "storage": "storage",
+            "location": "samplelocation",
+            "selector": "selector"
+        }
+    ],
+    "restoresData": [
+        {
+            "name": "backupname01",
+            "backup": "nback03",
+            "status": "ready",
+            "started": "starts",
+            "completed": "completed",
+            "errors": "err",
+            "warnings": "warn02",
+            "created": "createdsample",
+            "selector": "selector"
+        },
+        {
+            "name": "backupname01",
+            "backup": "nback03",
+            "status": "ready",
+            "started": "starts",
+            "completed": "completed",
+            "errors": "err",
+            "warnings": "warn02",
+            "created": "createdsample",
+            "selector": "selector"
+        }
+    ]
+}

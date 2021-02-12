@@ -1,0 +1,47 @@
+<div class="maindiv">
+    <div class="tablepage">
+        <div class="monitortable">
+
+            <table mat-table [dataSource]="monitorDataSource">
+
+                <ng-container matColumnDef="shelfName">
+                    <th mat-header-cell *matHeaderCellDef> Shelf Name </th>
+                    <td mat-cell *matCellDef="let monitor"> {{monitor.shelfName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="objType">
+                    <th mat-header-cell *matHeaderCellDef> Object Type </th>
+                    <td mat-cell *matCellDef="let monitor"> {{monitor.ObjType}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="currentCount">
+                    <th mat-header-cell *matHeaderCellDef> Current Count </th>
+                    <td mat-cell *matCellDef="let monitor"> {{monitor.currentCount}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalCount">
+                    <th mat-header-cell *matHeaderCellDef> Total Count </th>
+                    <td mat-cell *matCellDef="let monitor"> {{monitor.totalCount}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Time </th>
+                    <td mat-cell *matCellDef="let monitor"> {{monitor.time}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="monitorColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: monitorColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </div>
+    <div class="image-card">
+        <mat-card>
+            <img id="myimage" [src]='thumbnail' />
+            <!-- <p>Backend image</p> -->
+        </mat-card>
+    </div>
+
+</div>
