@@ -3,10 +3,15 @@
 
     position: center;
     position: relative;
-    padding-top: 20px;
-
+    .refresh {
+        padding-top: 20px;
+        display:flex;
+        // justify-content: center;
+        float: right;
+        padding-bottom: 10px;
+    }
     .tablepage {
-
+    // padding-top:10px;
     position: relative;
     .filter {
         width: 70%;
