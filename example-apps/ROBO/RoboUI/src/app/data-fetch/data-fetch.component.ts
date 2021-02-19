@@ -26,7 +26,7 @@ export class DataFetchComponent implements OnInit {
   cameraDataSource = new MatTableDataSource<camerainfo>(CAMERA_INFO_LIST);
 
   SERVER_URL = "http://localhost:30092/v1/monitor/video";
-  videoUploadForm: FormGroup;
+  videoUploadForm: FormGroup;  
   cameraDetailsForm: FormGroup;
 
   cameraData = {} as cameraData;
@@ -62,6 +62,7 @@ export class DataFetchComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.fetchCameraDetails();
     this.videoUploadForm = this.formBuilder.group({
       video: ['']
     });
@@ -97,8 +98,7 @@ export class DataFetchComponent implements OnInit {
     
     this.selectedCamera = "Camera"
     this.selectedLocation = "Bangalore"
-    
-    this.fetchCameraDetails();
+    // this.fetchCameraDetails();
   }
 
   onFileSelect(event) {

@@ -13,24 +13,32 @@ import { cameraData, camerainfo, cameraDetails, monitorDetails, monitorinfo, cam
 export class RoboService {
 
   private baseUrl = 'http://localhost:30091';
+
   private inventoryBaseUrl = 'http://localhost:30092';
 
   private postCameraDetailsUrl = this.inventoryBaseUrl + '/v1/monitor/cameras'
   private cameraDetailsUrl = this.inventoryBaseUrl + '/v1/monitor/cameras'
+  private cameraDetails_url = './../assets/data/sample.json'
+
+  private monitorDetails_url = './../assets/data/sample.json'
   private monitorDetailsUrl = this.inventoryBaseUrl + '/v1/inventry/table'
+
   private monitorImageUrl = this.inventoryBaseUrl + '/v1/inventry/image'
+
   private triggerObjUrl = this.inventoryBaseUrl + '/v1/monitor/cameras/'
+
   private appsPvcsDetailsUrl = this.baseUrl + '/v1/robo/apps-pvcs'
-  private backupRestoreDetailsUrl = this.baseUrl + '/v1/robo/backup-restore'
-  private postBackupDetailsUrl = this.baseUrl + '/v1/robo/backup'
-  private postRestoreDetailsUrl = this.baseUrl + '/v1/robo/restore'
-  private disasterUrl = this.baseUrl + '/v1/robo/disaster'
-
-  private cameraDetails_url = './../assets/data/camera.json'
-  private backupRestoreDetails_url = './../assets/data/backuprestore.json'
   private appsPvcsDetails_url = './../assets/data/appspvc.json'
-  private monitorDetails_url = './../assets/data/inventory.json'
 
+  private backupRestoreDetailsUrl = this.baseUrl + '/v1/robo/backup-restore'
+  
+  //private backupRestoreDetails_url = './../assets/data/backuprestore.json'
+
+  private postBackupDetailsUrl = this.baseUrl + '/v1/robo/backup'
+
+  private postRestoreDetailsUrl = this.baseUrl + '/v1/robo/restore'
+
+  private disasterUrl = this.baseUrl + '/v1/robo/disaster'
 
   constructor(private http:HttpClient) { }
   
@@ -57,9 +65,9 @@ export class RoboService {
     return this.http.get<cameraDetails>(this.cameraDetailsUrl);
   }
 
-  getMonitorInfo(): Observable<monitorDetails> {
+  getMonitorInfo(): Observable<any> {
     debugger;
-    return this.http.get<monitorDetails>(this.monitorDetailsUrl);
+    return this.http.get<any>(this.monitorDetailsUrl);
   }
 
   getMonitorImage(): Observable<any> {
@@ -72,12 +80,18 @@ export class RoboService {
     console.log(data);
     debugger;
     this.triggerObjUrl = this.triggerObjUrl + data;
+    debugger;
+    console.log(this.triggerObjUrl);
     return this.http.get<any>(this.triggerObjUrl)
   }
 
   getAppsPvcsInfo(): Observable<appsPvcs> {
     return this.http.get<appsPvcs>(this.appsPvcsDetailsUrl);
   }
+
+  // getBackupRestoreInfo(): Observable<backupRestore> {
+    // }
+    //   return this.http.get<backupRestore>(this.backupRestoreDetails_url);
 
   getBackupRestoreInfo(): Observable<any> {
     return this.http.get<any>(this.backupRestoreDetailsUrl);

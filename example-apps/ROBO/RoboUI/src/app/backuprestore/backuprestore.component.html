@@ -20,26 +20,26 @@
                             <th mat-header-cell *matHeaderCellDef> NAME </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.name}} </td>
                         </ng-container>
-
+<!-- 
                         <ng-container matColumnDef="ready">
                             <th mat-header-cell *matHeaderCellDef> READY </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.ready}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef> STATUS </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.status}} </td>
                         </ng-container>
-
+<!-- 
                         <ng-container matColumnDef="restarts">
                             <th mat-header-cell *matHeaderCellDef> RESTARTS </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.restarts}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
-                        <ng-container matColumnDef="age">
+                        <!-- <ng-container matColumnDef="age">
                             <th mat-header-cell *matHeaderCellDef> AGE </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.age}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="ip">
                             <th mat-header-cell *matHeaderCellDef> IP </th>
@@ -51,26 +51,28 @@
                             <td mat-cell *matCellDef="let apps"> {{apps.node}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="nominatednode">
+                        <!-- <ng-container matColumnDef="nominatednode">
                             <th mat-header-cell *matHeaderCellDef> NOMINATED NODE </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.nominatednode}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
-                        <ng-container matColumnDef="readinessgates">
+                        <!-- <ng-container matColumnDef="readinessgates">
                             <th mat-header-cell *matHeaderCellDef> READINESS GATES </th>
                             <td mat-cell *matCellDef="let apps"> {{apps.readinessgates}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <tr mat-header-row *matHeaderRowDef="appsColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: appsColumns;"></tr>
                     </table>
 
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
 
                 </div>
             </mat-tab>
-            <mat-tab label="PVs and PVCs">
-                PVs and PVCs
+            
+            
+            <mat-tab label="PVCs">
+                PVCs
                 <div class="pvstable">
 
                     <table mat-table [dataSource]="pvsDataSource">
@@ -95,28 +97,28 @@
                             <td mat-cell *matCellDef="let pvs"> {{pvs.volume}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="capacity">
+                        <!-- <ng-container matColumnDef="capacity">
                             <th mat-header-cell *matHeaderCellDef> CAPACITY </th>
                             <td mat-cell *matCellDef="let pvs"> {{pvs.capacity}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
-                        <ng-container matColumnDef="accessmodes">
+                        <!-- <ng-container matColumnDef="accessmodes">
                             <th mat-header-cell *matHeaderCellDef> ACCESS MODES </th>
                             <td mat-cell *matCellDef="let pvs"> {{pvs.accessmodes}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="storageclass">
                             <th mat-header-cell *matHeaderCellDef> STORAGE CLASS </th>
                             <td mat-cell *matCellDef="let pvs"> {{pvs.storageclass}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="age">
+                        <!-- <ng-container matColumnDef="age">
                             <th mat-header-cell *matHeaderCellDef> AGE </th>
                             <td mat-cell *matCellDef="let pvs"> {{pvs.age}} </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="volumemode">
-                            <th mat-header-cell *matHeaderCellDef> VOLUME NODE </th>
+                            <th mat-header-cell *matHeaderCellDef> VOLUMEMODE </th>
                             <td mat-cell *matCellDef="let pvs"> {{pvs.volumemode}} </td>
                         </ng-container>
 
