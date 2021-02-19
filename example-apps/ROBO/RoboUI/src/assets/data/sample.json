@@ -1,0 +1,88 @@
+{
+    "roboCamera": [
+        {
+            "cameraID": 1960388362306041504,
+            "cameraLocation": "Bangalore",
+            "cameraNumber": "Camera1",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "4914975009606440017",
+            "cameraLocation": "bangalore",
+            "cameraNumber": "camshelf7",
+            "rtspUrl": "randomname.mp4"
+        },
+        {
+            "cameraID": "1570908640724175325",
+            "cameraLocation": "Beijing",
+            "cameraNumber": "Camera",
+            "rtspUrl": "shelf"
+        },
+        {
+            "cameraID": "2010229651372697543",
+            "cameraLocation": "Beijing",
+            "cameraNumber": "Camera",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "826993028663777933",
+            "cameraLocation": "Shangai",
+            "cameraNumber": "Camera01",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "2926498843313055982",
+            "cameraLocation": "Mumbai",
+            "cameraNumber": "Camera-mumbai",
+            "rtspUrl": "bottleshelf.mp4"
+        },
+        {
+            "cameraID": "3813790383850240300",
+            "cameraLocation": "chennai",
+            "cameraNumber": "Camera-chen",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "4819542429618771549",
+            "cameraLocation": "Mumbai",
+            "cameraNumber": "Camera05",
+            "rtspUrl": "bottleshelf01.mp4"
+        },
+        {
+            "cameraID": "5028594284584149292",
+            "cameraLocation": "Bangalore1",
+            "cameraNumber": "Camera001",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "527201027173642822",
+            "cameraLocation": "Beijing",
+            "cameraNumber": "Camera08",
+            "rtspUrl": "shelf1.mp4"
+        },
+        {
+            "cameraID": "2297729249451603771",
+            "cameraLocation": "Beijing",
+            "cameraNumber": "Cam11",
+            "rtspUrl": "demoshelf.mp4"
+        },
+        {
+            "cameraID": "943016121424881133",
+            "cameraLocation": "Bangalore",
+            "cameraNumber": "Cam12",
+            "rtspUrl": "demoshelf.mp4"
+        },
+        {
+            "cameraID": "7697628706616486018",
+            "cameraLocation": "Bengaluru",
+            "cameraNumber": "Cam55",
+            "rtspUrl": "demoshelf.mp4"
+        },
+        {
+            "cameraID": "1234241466428109927",
+            "cameraLocation": "bangalore",
+            "cameraNumber": "camshelf8",
+            "rtspUrl": "randomname.mp4"
+        }
+    ]
+}

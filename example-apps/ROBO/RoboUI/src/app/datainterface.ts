@@ -10,7 +10,7 @@ export interface cameraDetails {
 }
 
 export interface camerainfo {
-  cameraID: string;
+  cameraID: any;
   cameraLocation: string;
 	cameraNumber: string;
 	rtspUrl: string;
@@ -42,14 +42,9 @@ export interface cameraID {
 export interface appsinfo {
   namespace: string;
   name: string;
-  ready: string;
   status: string;
-  restarts: string;
-  age: string;
   ip: string;
   node: string;
-  nominatednode: string;
-  readinessgates: string;
 }
 
 export interface appsPvcs {
@@ -62,10 +57,7 @@ export interface pvpvsinfo {
   name: string;
   status: string;
   volume: string;
-  capacity: string;
-  accessmodes: string;
   storageclass: string;
-  age: string;
   volumemode: string;
 }
 

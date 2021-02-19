@@ -9,7 +9,6 @@ import { RoboService } from './../../app/robo.service';
 
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
-
 @Component({
   selector: 'app-data-monitor',
   templateUrl: './data-monitor.component.html',
@@ -40,18 +39,26 @@ export class DataMonitorComponent implements OnInit {
     this.inventoryDetails();
   }
 
+  refreshPage() {
+    this.inventoryDetails();
+    this.monitorDetails();
+  }
+
   monitorDetails() {
     debugger;
     this.roboService.getMonitorImage()
         .subscribe( (data:any) => {
+          
       debugger;
       console.log(data);
+      // referred https://stackoverflow.com/questions/55591871/view-blob-response-as-image-in-angular
       
       let objectURL = 'data:image/jpeg;base64,' + data.image;
       this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(objectURL);
 
      },
-     error => console.log(error));
+     error => console.log(error));    
+
   }
 
   inventoryDetails() {
@@ -59,6 +66,7 @@ export class DataMonitorComponent implements OnInit {
       .subscribe(data => {
       console.log(data);
       this.monitorInfo = data;
+      
       this.monitorArrayList = data.InventryData;
       this.monitorDataSource = new MatTableDataSource(this.monitorArrayList);
       this.monitorDataSource.paginator = this.paginator;

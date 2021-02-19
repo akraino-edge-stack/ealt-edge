@@ -15,15 +15,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BackuprestoreComponent implements OnInit {
 
-  appsColumns: string [] = ['namespace','name','ready','status','restarts','age','ip','node','nominatednode','readinessgates']
+  appsColumns: string [] = ['namespace','name','status','ip','node']
   appsDataSource = new MatTableDataSource<appsinfo>(APPS_INFO_LIST);
 
-  appsArrayList = [];
+  appsArrayList: appsinfo [];
 
-  pvsColumns: string [] = ['namespace','name','status','volume','capacity','accessmodes','storageclass','age','volumemode']
+  pvsColumns: string [] = ['namespace','name','status','volume','storageclass','volumemode']
   pvsDataSource = new MatTableDataSource<pvpvsinfo>(PVS_INFO_LIST);
 
-  pvsArrayList = [];
+  pvsArrayList : pvpvsinfo [];
 
   backupsColumns: string [] = ['name','status','errors','warnings','created']
   backupsDataSource = new MatTableDataSource<backupsinfo>(BACKUPS_INFO_LIST);
@@ -72,6 +72,7 @@ export class BackuprestoreComponent implements OnInit {
       console.log(data);
       this.appsinfo = data;
       this.appsArrayList = data.appsData;
+      debugger;
       this.appsDataSource = new MatTableDataSource(this.appsArrayList);
       this.appsDataSource.paginator = this.paginator;
 
@@ -161,11 +162,11 @@ export class BackuprestoreComponent implements OnInit {
 }
 
 const APPS_INFO_LIST: appsinfo[] = [
-  { namespace: '',name: '', ready: '', status: '', restarts: '', age: '', ip: '', node: '', nominatednode: '', readinessgates: '' }
+  { namespace: '',name: '', status: '', ip: '', node: ''}
 ];
 
 const PVS_INFO_LIST: pvpvsinfo[] = [
-  { namespace: '',name: '', status: '', volume: '', capacity: '', accessmodes: '', storageclass: '', age: '', volumemode: '' }
+  { namespace: '',name: '', status: '', volume: '', storageclass: '', volumemode: '' }
 ];
 
 const BACKUPS_INFO_LIST: backupsinfo[] = [
