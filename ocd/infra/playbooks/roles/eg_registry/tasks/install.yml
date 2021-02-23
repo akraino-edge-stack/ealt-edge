@@ -44,13 +44,13 @@
   when: ansible_architecture == 'x86_64'
 
 - name: Untar the downloaded tar
-  command: tar -zxf /EdgeGallery-v0.9-all-x86.tar.gz
+  command: tar -zxf EdgeGallery-v0.9-all-x86.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'x86_64'
 
 - name: Untar the downloaded tar
-  command: tar -zxf /EdgeGallery-v0.9-all-arm64.tar.gz
+  command: tar -zxf EdgeGallery-v0.9-all-arm64.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'aarch64'
