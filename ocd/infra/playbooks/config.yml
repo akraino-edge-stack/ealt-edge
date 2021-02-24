@@ -20,7 +20,7 @@ private_repo_ip:
 
 ######### Optional #########
 eg_image_tag:
-  name: 0.9
+  name: v1.0.0-staging
 # User can either give common pwd or can opt to provide individual pwds
 common_pwd:
   name:

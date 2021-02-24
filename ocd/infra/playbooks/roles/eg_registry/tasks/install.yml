@@ -27,30 +27,30 @@
     file: ../../../config.yml
     name: vardata
 
-- name: Download 0.9 tar
+- name: Download 1.0 tar
 # yamllint disable rule:line-length
-  command: wget http://release.edgegallery.org/release/arm64/all/EdgeGallery-v0.9-all-arm64.tar.gz
+  command: wget http://release.edgegallery.org/release/arm64/all/EdgeGallery-v1.0-all-arm64.tar.gz
 # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'aarch64'
 
-- name: Download 0.9 tar
+- name: Download 1.0 tar
 # yamllint disable rule:line-length
-  command: wget http://release.edgegallery.org/release/x86/all/EdgeGallery-v0.9-all-x86.tar.gz
+  command: wget http://release.edgegallery.org/release/x86/all/EdgeGallery-v1.0-all-x86.tar.gz
 # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'x86_64'
 
 - name: Untar the downloaded tar
-  command: tar -zxf /EdgeGallery-v0.9-all-x86.tar.gz
+  command: tar -zxf EdgeGallery-v1.0-all-x86.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'x86_64'
 
 - name: Untar the downloaded tar
-  command: tar -zxf /EdgeGallery-v0.9-all-arm64.tar.gz
+  command: tar -zxf EdgeGallery-v1.0-all-arm64.tar.gz
   args:
     chdir: /tmp/eg_registry/deploy/
   when: ansible_architecture == 'aarch64'
