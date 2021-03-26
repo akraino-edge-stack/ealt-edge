@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable,throwError } from 'rxjs'
 import { timer, Subscription, pipe } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { cameraData, camerainfo, cameraDetails, monitorDetails, monitorinfo, cameraID, appsPvcs, backupRestore, monitorImage } from './datainterface'
 
@@ -20,7 +21,7 @@ export class RoboService {
   private cameraDetailsUrl = this.inventoryBaseUrl + '/v1/monitor/cameras'
   private cameraDetails_url = './../assets/data/sample.json'
 
-  private monitorDetails_url = './../assets/data/sample.json'
+  private monitorDetails_url = './../assets/data/inventory.json'
   private monitorDetailsUrl = this.inventoryBaseUrl + '/v1/inventry/table'
 
   private monitorImageUrl = this.inventoryBaseUrl + '/v1/inventry/image'
@@ -32,7 +33,7 @@ export class RoboService {
 
   private backupRestoreDetailsUrl = this.baseUrl + '/v1/robo/backup-restore'
   
-  //private backupRestoreDetails_url = './../assets/data/backuprestore.json'
+  private backupRestoreDetails_url = './../assets/data/backuprestore.json'
 
   private postBackupDetailsUrl = this.baseUrl + '/v1/robo/backup'
 
@@ -70,8 +71,15 @@ export class RoboService {
     return this.http.get<any>(this.monitorDetailsUrl);
   }
 
+  
+
   getMonitorImage(): Observable<any> {
     debugger;
+    // return timer(0, 2000)
+    //     .pipe(
+          
+    //        switchMap(_ => this.http.get(this.monitorImageUrl)),
+    //     );
     return this.http.get<any>(this.monitorImageUrl);
   }
 
@@ -79,7 +87,9 @@ export class RoboService {
   triggerDetection(data): Observable<any> {
     console.log(data);
     debugger;
+    this.triggerObjUrl = this.inventoryBaseUrl + '/v1/monitor/cameras/';
     this.triggerObjUrl = this.triggerObjUrl + data;
+    
     debugger;
     console.log(this.triggerObjUrl);
     return this.http.get<any>(this.triggerObjUrl)
@@ -88,6 +98,10 @@ export class RoboService {
   getAppsPvcsInfo(): Observable<appsPvcs> {
     return this.http.get<appsPvcs>(this.appsPvcsDetailsUrl);
   }
+
+  // getBackupRestoreInfo(): Observable<backupRestore> {
+    // }
+    //   return this.http.get<backupRestore>(this.backupRestoreDetails_url);
 
   getBackupRestoreInfo(): Observable<any> {
     return this.http.get<any>(this.backupRestoreDetailsUrl);

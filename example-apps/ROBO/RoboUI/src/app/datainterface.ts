@@ -27,9 +27,10 @@ export interface monitorImage {
 
 export interface monitorinfo {
   shelfName: string;
-	ObjType: string;
+  ObjType: string;
   currentCount: string;
-  totalCount: string;
+  maxCount: string;
+  status: string;
   time: string;
 }
 

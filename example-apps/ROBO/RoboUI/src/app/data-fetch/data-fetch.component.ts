@@ -160,6 +160,7 @@ export class DataFetchComponent implements OnInit {
   }
 
   onCameraIDSelection() {
+    console.log("Spotted...")
     var index: number
     console.log("Inside onCameraIDSelection.......")
     debugger;
@@ -172,7 +173,7 @@ export class DataFetchComponent implements OnInit {
       console.log(data)
      },
      error => console.log(error));
-
+     index = null;
   }
 
 

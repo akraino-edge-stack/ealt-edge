@@ -3,7 +3,7 @@
         <button (click)="refreshPage()" mat-raised-button color="primary" type="submit">Refresh</button>
     </div>
     <div style="display:flex; justify-content: center;">
-        <h3>INVENTORY STATUS</h3>
+        <h3>SHELF STATUS</h3>
     </div>
     <div class="tablepage">
         <div class="monitortable">
@@ -12,30 +12,36 @@
 
                 <ng-container matColumnDef="shelfName">
                     <th mat-header-cell *matHeaderCellDef> Shelf Name </th>
-                    <td mat-cell *matCellDef="let monitor"> {{monitor.shelfName}} </td>
+                    <td  mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}" > {{monitor.shelfName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="objType">
                     <th mat-header-cell *matHeaderCellDef> Object Type </th>
-                    <td mat-cell *matCellDef="let monitor"> {{monitor.ObjType}} </td>
+                    <td mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}"> {{monitor.ObjType}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="currentCount">
                     <th mat-header-cell *matHeaderCellDef> Current Count </th>
-                    <td mat-cell *matCellDef="let monitor"> {{monitor.currentCount}} </td>
+                    <td mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}"> {{monitor.currentCount}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="totalCount">
-                    <th mat-header-cell *matHeaderCellDef> Total Count </th>
-                    <td mat-cell *matCellDef="let monitor"> {{monitor.totalCount}} </td>
+                <ng-container matColumnDef="maxCount">
+                    <th mat-header-cell *matHeaderCellDef> Max Count </th>
+                    <td mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}"> {{monitor.maxCount}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td  mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}"> {{monitor.status}}
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="time">
                     <th mat-header-cell *matHeaderCellDef> Time </th>
-                    <td mat-cell *matCellDef="let monitor"> {{monitor.time}} </td>
+                    <td mat-cell *matCellDef="let monitor" [ngStyle]="{'color': getColor(monitor.status)}" > {{monitor.time}} </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="monitorColumns"></tr>
+                <tr  mat-header-row *matHeaderRowDef="monitorColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: monitorColumns;"></tr>
             </table>
 
