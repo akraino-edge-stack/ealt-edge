@@ -1,0 +1,39 @@
+.main {
+    .menu {
+
+        .akraino-icon {
+            padding-right:20px;
+        }
+
+        .menu-toolbar {
+            .ealt-menu {
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .home {
+                margin-left: 07px;  
+            }
+        }
+    
+        .home {
+            font-size: 25px;
+            font-weight: bold;
+            // padding-left: 20px;
+        }
+
+        .other-button {
+            font-weight: bold;
+        }
+
+        .power-button {
+            position: absolute;
+            right: 0px;
+            margin-right: 5px;
+        }
+    }
+}
+button:hover {
+    background-color: black;
+    color: turquoise;
+    font-weight: bold;
+}

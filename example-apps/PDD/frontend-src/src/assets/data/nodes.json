@@ -1,0 +1,76 @@
+{
+    "eliotNodes":[
+        {
+            "nodeName":"eliot01",
+            "nodeStatus":"Ready",
+            "nodeRole": "Master",
+            "age": "10d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.206",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime01"
+        },
+        {
+            "nodeName":"eliot02",
+            "nodeStatus":"Not Ready",
+            "nodeRole": "Worker",
+            "age": "9d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.209",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime02"
+        },
+        {
+            "nodeName":"eliot03",
+            "nodeStatus":"Not Ready",
+            "nodeRole": "Worker",
+            "age": "8d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.210",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime03"
+        },
+        {
+            "nodeName":"eliot03",
+            "nodeStatus":"Not Ready",
+            "nodeRole": "Worker",
+            "age": "8d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.210",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime03"
+        },
+        {
+            "nodeName":"eliot03",
+            "nodeStatus":"Not Ready",
+            "nodeRole": "Worker",
+            "age": "8d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.210",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime03"
+        },
+        {
+            "nodeName":"eliot03",
+            "nodeStatus":"Not Ready",
+            "nodeRole": "Worker",
+            "age": "8d",
+            "version": "v1.15.0",
+            "internalIp": "10.10.0.210",
+            "externalIp": "none",
+            "osImage": "Centos Linux 7 core",
+            "kernel": "3.10.0",
+            "containerRuntime": "runtime03"
+        }
+    ]
+}
