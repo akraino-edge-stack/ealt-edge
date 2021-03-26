@@ -1,0 +1,19 @@
+nohup: ignoring input
+
+> demoedgex@0.0.0 start /home/root1/eliot2910/eliot/blueprints/common/eliot-ui/frontend-src
+> ng serve --proxy-config proxy.conf.json --host=0.0.0.0
+
+An unhandled exception occurred: Port 4200 is already in use. Use '--port' to specify a different port.
+See "/tmp/ng-ZJRaj8/angular-errors.log" for further details.
+npm ERR! file sh
+npm ERR! code ELIFECYCLE
+npm ERR! errno ENOENT
+npm ERR! syscall spawn
+npm ERR! demoedgex@0.0.0 start: `ng serve --proxy-config proxy.conf.json --host=0.0.0.0`
+npm ERR! spawn ENOENT
+npm ERR! 
+npm ERR! Failed at the demoedgex@0.0.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/root1/.npm/_logs/2019-11-19T09_35_26_086Z-debug.log
