@@ -20,7 +20,7 @@ import { v4 as uuid } from 'uuid';
 export class EaltserviceService {
 
 
-  private baseUrl = 'http://159.138.139.4:30281/';
+  private baseUrl = 'http://localhost:30281/';
 
   private imageUploadUrl = this.baseUrl+'uploadimageinput';
 
@@ -34,9 +34,6 @@ export class EaltserviceService {
   private inputImageUrl = this.baseUrl
 
   private pcbDetectUrl = this.baseUrl
-
-  private monitorImageUrl = 'http://159.138.33.54:30092' + '/v1/inventry/image'
-
 
   constructor(private http:HttpClient) {
   }
