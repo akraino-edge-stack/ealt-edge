@@ -1,0 +1,42 @@
+<div class="maindiv">
+  <div class="toolbar">
+    <app-toolbar></app-toolbar>
+  </div>
+
+  <div class="input-carousel" *ngIf="inputimg">
+    <ngb-carousel style="height: 605px;
+        width: 100%;" *ngIf="input_images">
+      <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img style="margin-left: auto;
+              margin-right: auto;display: block;padding: 40px 0;" [src]="thumbnail">
+
+        </div>
+        <div class="carousel-caption">
+        </div>
+      </ng-template>
+      <ng-template ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img style="margin-left: auto;
+              margin-right: auto;display: block;padding: 40px 0;" [src]="thumbnail02">
+        </div>
+
+        <div class="carousel-caption">
+        </div>
+
+      </ng-template>
+      <ng-template ngbSlide>
+
+        <div class="picsum-img-wrapper">
+          <img style="margin-left: auto;
+              margin-right: auto;display: block;padding: 40px 0;" [src]="thumbnail03">
+        </div>
+
+        <div class="carousel-caption">
+        </div>
+      </ng-template>
+      
+    </ngb-carousel>
+  </div>
+
+</div>
