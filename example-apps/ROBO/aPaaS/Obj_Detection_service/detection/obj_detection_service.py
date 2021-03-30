@@ -13,26 +13,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-
 import os
 import cv2
 import config
 from flask_sslify import SSLify
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, Response, send_file
 from flask_cors import CORS
 from werkzeug import secure_filename
+
+app = Flask(__name__)
+CORS(app)
+sslify = SSLify(app)
+app.config['JSON_AS_ASCII'] = False
+app.config['UPLOAD_PATH'] = '/usr/app/images/input/'
+app.config['supports_credentials'] = True
+app.config['CORS_SUPPORTS_CREDENTIALS'] = True
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+MODEL_PATH = '/usr/app/model/'
+IMAGE_PATH = '/usr/app/images/result/'
+count = 0
+listOfMsgs = []
 
 
 class model_info():
     def __init__(self, model_name):
-        self.model = 'model_info/MobileNetSSD_deploy.caffemodel'
-        self.model_name = model_name
-        self.prototxt = 'model_info/MobileNetSSD_deploy.prototxt'
-        self.confidenceLevel = 80
-
-    def get_model(self):
-        return self.model
+        self.model_name = 'MobileNetSSD_deploy.caffemodel'
+        self.prototxt = 'MobileNetSSD_deploy.prototxt'
+        self.confidenceLevel = 0.2
 
     def get_prototxt(self):
         return self.prototxt
@@ -46,9 +54,8 @@ class model_info():
     def get_confidence_level(self):
         return self.confidenceLevel
 
-    def update_model(self, model, prototxt, model_name):
+    def update_model(self, model_loc, prototxt, model_name):
         self.prototxt = prototxt
-        self.model = model
         self.model_name = model_name
 
 
@@ -61,19 +68,6 @@ classNames = {0: 'background',
               17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor'}
 
 
-app = Flask(__name__)
-CORS(app)
-sslify = SSLify(app)
-app.config['JSON_AS_ASCII'] = False
-app.config['UPLOAD_PATH'] = '/usr/app/images/'
-app.config['supports_credentials'] = True
-app.config['CORS_SUPPORTS_CREDENTIALS'] = True
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-count = 0
-listOfMsgs = []
-
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() \
        in ALLOWED_EXTENSIONS
@@ -81,28 +75,26 @@ def allowed_file(filename):
 
 # Obj-detection from input frame
 def Detection(img):
-
+    print ('inside detection func')
     modelInfo = model_info("caffe")
     ConfPercent = modelInfo.get_confidence_level()
-    model = modelInfo.get_model()
-    prototxt = modelInfo.get_prototxt()
+    model_name = modelInfo.get_model_name()
+    prototxt_name = modelInfo.get_prototxt()
 
-    model = '/home/root1/My_Work/Akraino/MEC_BP/Rel4/Retail-apps/aPaaS/' \
-            'src/Obj_Detection_service/' + 'MobileNetSSD_deploy.caffemodel'
-
-    prototxt = '/home/root1/My_Work/Akraino/MEC_BP/Rel4/Retail-apps/aPaaS/' \
-               'src/Obj_Detection_service/' + 'MobileNetSSD_deploy.prototxt'
+    model = MODEL_PATH + model_name
+    prototxt = MODEL_PATH + prototxt_name
+    image = app.config['UPLOAD_PATH'] + img
+    label = 'bottels'
     print(ConfPercent)
     print(model)
     print(prototxt)
+    print("image path is" + image)
 
     # Load the Caffe model
     net = cv2.dnn.readNetFromCaffe(prototxt, model)
     # Load image fro
-    frame = cv2.imread('/home/root1/My_Work/Akraino/MEC_BP/Rel4/Retail-apps/'
-                       'aPaaS/src/Obj_Detection_service/images/' + img)
-    print('/home/root1/My_Work/Akraino/MEC_BP/Rel4/Retail-apps/aPaaS/'
-          'src/Obj_Detection_service/images/' + img)
+    frame = cv2.imread(image)
+
     frame_resized = cv2.resize(frame, (300, 300))  # resize frame for
     # prediction
     heightFactor = frame.shape[0]/300.0
@@ -196,15 +188,17 @@ def Detection(img):
                 count = count + 1
 
     print("total item count", count)
-    cv2.namedWindow("frame", cv2.WINDOW_NORMAL)
-    cv2.imwrite("/home/root1/My_Work/Akraino/MEC_BP/tmp/1.jpeg", frame)
-    cv2.imshow("frame", frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #cv2.namedWindow("frame", cv2.WINDOW_NORMAL)
+    print("before im write")
+    cv2.imwrite(IMAGE_PATH + "result.jpeg", frame)
+    #cv2.imshow("frame", frame)
+    #cv2.waitKey(0)
+    print("before im before destroy window")
+    #cv2.destroyAllWindows()
     # Detect_result = {'ImposedImage': 'frame', 'ObjCount': count,
     # 'ObjType': type, 'Time': time}
-    Detect_result = {'ImposedImage': "frame", 'ObjCount': count,
-                     'labels': label}
+    Detect_result = {'ObjCount': count}
+    print(Detect_result)
     return Detect_result
 
 
@@ -233,13 +227,13 @@ def setConfidenceLevel():
                     + "] Operation [" + request.method + "]" +
                     " Resource [" + request.url + "]")
 
-    confidenceLevel = 80
+    confidenceLevel = 0.2
     modelInfo = model_info("caffe")
     modelInfo.set_confidence_level(confidenceLevel)
     return Response("success")
 
 
-@app.route('/mep/v1/obj_detection/detect', methods=['GET'])
+@app.route('/mep/v1/obj_detection/detect', methods=['POST'])
 def Obj_Detection():
     """
     Trigger the Obj detection on input frame/image
@@ -259,13 +253,30 @@ def Obj_Detection():
         raise IOError('No file')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        print('file name', filename)
         file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
         app.logger.info('File successfully uploaded')
+        print('file path', app.config['UPLOAD_PATH'] + filename)
         Detect_result = Detection(filename)
     else:
         app.logger.info('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
         return Response("failure")
     return jsonify(Detect_result)
+
+
+@app.route('/mep/v1/obj_detection/image', methods=['GET'])
+def image_download():
+    """
+    Trigger the Obj detection on input frame/image
+    Input: frame/image
+    :return: imposed frame, count, Obj type, time taken by detection
+    """
+    app.logger.info("Received message from ClientIP [" + request.remote_addr
+                    + "] Operation [" + request.method + "]" +
+                    " Resource [" + request.url + "]")
+
+    return send_file(IMAGE_PATH + "result.jpeg",
+                  attachment_filename='result.jpeg')
 
 
 def start_server(handler):
