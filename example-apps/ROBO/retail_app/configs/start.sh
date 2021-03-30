@@ -41,66 +41,7 @@ validate_name() {
   return 0
 }
 
-# validates whether file exist
-validate_file_exists() {
-  file_path="$1"
-
-  # checks variable is unset
-  if [ -z "$file_path" ]; then
-    echo "file path variable is not set"
-    return 1
-  fi
-
-  # checks if file exists
-  if [ ! -f "$file_path" ]; then
-    echo "file does not exist"
-    return 1
-  fi
-
-  return 0
-}
-
-validate_ip "$LISTEN_IP"
-valid_listen_ip="$?"
-if [ ! "$valid_listen_ip" -eq "0" ]; then
-  echo "invalid ip address for listen ip"
-  exit 1
-fi
-
-if [ ! -z "$SERVER_NAME" ]; then
-  validate_name "$SERVER_NAME"
-  valid_name="$?"
-  if [ ! "$valid_name" -eq "0" ]; then
-    echo "invalid ssl server name"
-    exit 1
-  fi
-fi
-
-# ssl parameters validation
-validate_file_exists "/usr/app/ssl/server_tls.crt"
-valid_ssl_server_cert="$?"
-if [ ! "$valid_ssl_server_cert" -eq "0" ]; then
-  echo "invalid ssl server certificate"
-  exit 1
-fi
-
-# ssl parameters validation
-validate_file_exists "/usr/app/ssl/server_tls.key"
-valid_ssl_server_key="$?"
-if [ ! "$valid_ssl_server_key" -eq "0" ]; then
-  echo "invalid ssl server key"
-  exit 1
-fi
-
-# ssl parameters validation
-validate_file_exists "/usr/app/ssl/ca.crt"
-valid_ssl_ca_crt="$?"
-if [ ! "$valid_ssl_ca_crt" -eq "0" ]; then
-  echo "invalid ssl ca cert"
-  exit 1
-fi
-
 echo "Running Retail App"
 umask 0027
 cd /usr/app || exit
-python run.py
+python -u run.py

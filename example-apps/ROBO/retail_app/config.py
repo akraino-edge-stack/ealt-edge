@@ -17,8 +17,9 @@
 import os
 
 # [Server Configurations]
-server_port = 9999
-server_address = os.environ.get('LISTEN_IP')
+server_port = 9995
+# server_address = os.environ.get('LISTEN_IP')
+server_address = "0.0.0.0"
 
 # [InfluxDB config]
 IPADDRESS = os.environ.get('INFLUXDB_IP')
@@ -39,7 +40,15 @@ ssl_server_name = os.environ.get('SERVER_NAME', "ealtedge")
 
 # [Service Configurations]
 api_gateway = os.environ.get("API_GATEWAY", "apigw.mep.org")
-Obj_Det = os.environ.get("OBJ_DETECTION", "objdetection")
+# Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP", "localhost")
+
+Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP")
+# Obj_Det_SER_IP = os.environ.get("OBJ_DET_SER_IP")
+Obj_Det_SER_PORT = os.environ.get("OBJ_DET_SER_PORT")
+# Obj_Det_SER_PORT = os.environ.get("OBJ_DET_SER_PORT")
+Obj_Det = os.environ.get("OBJ_DETECTION", "mep/v1/obj_detection")
 
 # [Constants]
-detection_url = "http://" + api_gateway + "/" + Obj_Det
+# detection_url = "http://" + api_gateway + "/" + Obj_Det
+detection_url = "http://" + Obj_Det_SER_IP + ":" + Obj_Det_SER_PORT + "/" + \
+                                           Obj_Det + "/"
