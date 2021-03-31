@@ -24,6 +24,56 @@ Step 2: Install Influx DB
     2. helm repo add influxdata https://influxdata.github.io/helm-charts
     3. helm upgrade -i influxdb influxdata/influxdb --set service.type=NodePort --namespace my-test
 
+Step 3: update influx db IP and nodeport in smart shelf App yaml 
+- update smart shelf yaml file
+    1. update below enviorment variable in smartshelf-deployment.yaml: INFLUXDB_IP, INFLUXDB_PORT from Nodeport and Node IP for Influx DB in k3s cluster.
+
+Step 4: Install MINIO storage and create bucket 
+- Install minio storage server
+    1. docker pull minio/minio
+    2. docker run -d --name minio -p 9000:9000 -v data:/data minio/minio server /data
+    3. docker exec -it minio cat /data/.minio.sys/config/config.json | egrep "(access|secret)_key"
+    4. create credentials-velero file...
+add values as :
+[default]
+aws_access_key_id=minioadmin
+aws_secret_access_key=minioadmin
+
+- Install minio cleint and create bucket for backup
+    1. docker pull minio/mc
+    2. enter to client container to add server and create bucket: docker run -it --entrypoint=/bin/sh minio/mc
+    3. first create server alias in mc client: "mc alias set edge_minio http://159.138.33.54:9000"
+    4. then create bucket: mc mb edge_minio/mybucket
+    5. then list bucket: mc ls edge_minio
+
+Step 5: Install Velero server and client 
+- Install velero client
+    1. download binary velero amd64/arm64: https://github.com/justmeandopensource/kubernetes/blob/master/docs/setup-velero-notes.md
+    2. move binary files to: /usr/local/bin
+    3. test velero cli is working by exec velero cmd
+
+- Install velero server
+    1. helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
+    2. kubectl create ns velero
+    3. install velero using CLI:
+    velero install \
+   --provider aws \
+   --bucket mybucket \
+   --secret-file ./credentials-velero \
+     --plugins velero/velero-plugin-for-aws:v1.0.0 \
+   --backup-location-config
+region=minio,s3ForcePathStyle=true,s3Url=http://hostVMIP:9000
+
 - Some Pre-Checks
     - Check whether the config file is at location /root/.kube/
     - Check that ports are not already occupied
+
+Step 6: Post setup, cleanup velero
+- Install velero resource
+    1. kubectl delete namespace velero
+    2. kubectl delete clusterrolebinding  velero
+    3. kubectl delete crds -l component=velero
+
+
+
+
