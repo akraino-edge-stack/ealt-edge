@@ -11,8 +11,13 @@ docker pull ealtedge/inventory-be:v1.3
 docker pull ealtedge/robo-be
 docker pull ealtedge/robo
 
+Step 2: pretrained model for obj detection
+- copy pretrained model to Host machine where PCB containers are running
+    1. cloen model from gitlab git clone https://gitlab.com/gauravagrawal/ealtedge/-/tree/master/ ROBO-Model
+    2. create folder /root/model/ in host machine.
+    3. scp all files in models cloned to above path. 
 
-Step 2: Install Influx DB
+Step 3: Install Influx DB
 - Install local path storage (if by default is not available on edge node)
     1. git clone https://github.com/rancher/local-path-provisioner.git
     2. cd local-path-provisioner
@@ -24,11 +29,11 @@ Step 2: Install Influx DB
     2. helm repo add influxdata https://influxdata.github.io/helm-charts
     3. helm upgrade -i influxdb influxdata/influxdb --set service.type=NodePort --namespace my-test
 
-Step 3: update influx db IP and nodeport in smart shelf App yaml 
+Step 4: update influx db IP and nodeport in smart shelf App yaml 
 - update smart shelf yaml file
     1. update below enviorment variable in smartshelf-deployment.yaml: INFLUXDB_IP, INFLUXDB_PORT from Nodeport and Node IP for Influx DB in k3s cluster.
 
-Step 4: Install MINIO storage and create bucket 
+Step 5: Install MINIO storage and create bucket 
 - Install minio storage server
     1. docker pull minio/minio
     2. docker run -d --name minio -p 9000:9000 -v data:/data minio/minio server /data
@@ -46,7 +51,7 @@ aws_secret_access_key=minioadmin
     4. then create bucket: mc mb edge_minio/mybucket
     5. then list bucket: mc ls edge_minio
 
-Step 5: Install Velero server and client 
+Step 6: Install Velero server and client 
 - Install velero client
     1. download binary velero amd64/arm64: https://github.com/justmeandopensource/kubernetes/blob/master/docs/setup-velero-notes.md
     2. move binary files to: /usr/local/bin
@@ -68,7 +73,7 @@ region=minio,s3ForcePathStyle=true,s3Url=http://hostVMIP:9000
     - Check whether the config file is at location /root/.kube/
     - Check that ports are not already occupied
 
-Step 6: Post setup, cleanup velero
+Step 7: Post setup, cleanup velero
 - Install velero resource
     1. kubectl delete namespace velero
     2. kubectl delete clusterrolebinding  velero
