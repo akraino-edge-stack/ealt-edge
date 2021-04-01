@@ -103,18 +103,14 @@ RUN apt-get install -y --fix-missing \
 WORKDIR $APP_HOME
 
 # Copy the application & scripts
-COPY config.py requirements.txt run.py $APP_HOME/
+COPY requirements.txt $APP_HOME/
 # Install requirements
 RUN pip install -r requirements.txt
-
-# Install requirements
-RUN pip install Pillow
 
 COPY data $APP_HOME/data/
 COPY help_utils $APP_HOME/help_utils/
 COPY libs $APP_HOME/libs/
 COPY output $APP_HOME/output/
-COPY results $APP_HOME/results/
 COPY tools $APP_HOME/tools/
 COPY input_image/1 $APP_HOME/input_image/beijinglab/camera1
 COPY input_image/2 $APP_HOME/input_image/shenzhenlab/camera1
@@ -126,6 +122,7 @@ COPY input_image/7 $APP_HOME/input_image/shenzhenlab/camera3
 COPY input_image/8 $APP_HOME/input_image/shanghailab/camera2
 COPY input_image/9 $APP_HOME/input_image/shanghailab/camera3
 
+COPY config.py run.py $APP_HOME/
 
 COPY configs/start.sh $APP_HOME/bin
 
