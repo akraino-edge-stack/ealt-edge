@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "455cb51f_421c7ad7",
+        "filename": "ocd/infra/playbooks/ealt-eg-aio-latest.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2021-05-10T14:02:43Z",
+      "side": 1,
+      "message": "2021",
+      "revId": "73f7f49ff3fc2bac7820d52a91ab5f53bf240094",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34e45535_bd20a1ee",
+        "filename": "ocd/infra/playbooks/ealt-eg-aio-latest.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2021-05-10T14:02:43Z",
+      "side": 1,
+      "message": "please give proper comment",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "73f7f49ff3fc2bac7820d52a91ab5f53bf240094",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "feba831e_04c3e7dd",
+        "filename": "ocd/infra/playbooks/ealt-eg-aio-unins-latest.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2021-05-10T14:02:43Z",
+      "side": 1,
+      "message": "year to be checked in all file",
+      "revId": "73f7f49ff3fc2bac7820d52a91ab5f53bf240094",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f70f7f80_5e9bf13e",
+        "filename": "ocd/infra/playbooks/ealt-eg-aio-unins-latest.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 330
+      },
+      "writtenOn": "2021-05-10T14:02:43Z",
+      "side": 1,
+      "message": "description to be checked in all file",
+      "revId": "73f7f49ff3fc2bac7820d52a91ab5f53bf240094",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
