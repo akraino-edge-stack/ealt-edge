@@ -1,0 +1,41 @@
+# Copyright 2021 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Uninstall edgegallery on arm
+  shell:
+    # yamllint disable rule:line-length
+    cmd: ansible-playbook --inventory hosts-aio eg_all_muno_uninstall.yml -e "ansible_user=root" >> aio_remove.log
+    # yamllint disable rule:line-length
+    chdir: /tmp/eg_download/deploy/ansible-all-arm-latest/install
+  when: ansible_architecture == 'aarch64'
+
+- name: Uninstall edgegallery on x86
+  shell:
+    # yamllint disable rule:line-length
+    cmd: ansible-playbook --inventory hosts-aio  eg_all_muno_uninstall.yml -e "ansible_user=root" >> aio_remove.log
+    # yamllint disable rule:line-length
+    chdir: /tmp/eg_download/deploy/ansible-all-x86-latest/install
+  when: ansible_architecture == 'x86_64'
+
+- name: Remove edgegallery tar
+  shell:
+    cmd: rm -rf ansible-all*
+    chdir: /tmp/eg_download/deploy/
+
+- name: Remove aio log
+  shell:
+    cmd: rm -rf aio_log
+    chdir: /tmp/eg_download/deploy/
+
