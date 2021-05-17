@@ -27,7 +27,12 @@
     chdir: /tmp/eg_download/deploy/
   when: ansible_architecture == 'x86_64'
 
-- name: Set inventory file
+- name: Set inventory file for aio
   command: cp hosts-aio /tmp/eg_download/deploy/ansible-all-x86-latest/install
+  args:
+    chdir: "{{playbook_dir}}"
+
+- name: Set inventory file for muno
+  command: cp hosts-muno /tmp/eg_download/deploy/ansible-all-x86-latest/install
   args:
     chdir: "{{playbook_dir}}"
