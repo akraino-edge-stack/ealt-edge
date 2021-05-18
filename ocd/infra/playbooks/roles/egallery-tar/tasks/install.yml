@@ -13,6 +13,13 @@
 # limitations under the License.
 
 ---
+
+- name: Create directory to download EG-TAR
+  command: mkdir -p /tmp/eg_download/deploy
+  args:
+    chdir: "{{playbook_dir}}"
+  ignore_errors: yes
+
 - name: Download 1.1 edgegallery x86
 # yamllint disable rule:line-length
   command: wget https://edgegallery.obs.cn-east-3.myhuaweicloud.com/releases/v1.1/x86/EdgeGallery-v1.1-all-x86.tar.gz
