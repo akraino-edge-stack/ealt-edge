@@ -38,8 +38,26 @@
   command: cp hosts-aio /tmp/eg_download/deploy/ansible-all-x86-latest/install
   args:
     chdir: "{{playbook_dir}}"
+  when: ansible_architecture == 'x86_64'
 
 - name: Set inventory file for muno
   command: cp hosts-muno /tmp/eg_download/deploy/ansible-all-x86-latest/install
   args:
     chdir: "{{playbook_dir}}"
+  when: ansible_architecture == 'x86_64'
+
+- name: Set var.yml to eg path
+  # yamllint disable rule:line-length
+  command: cp var.yml /tmp/eg_download/deploy/ansible-all-x86-latest/install
+  # yamllint disable rule:line-length
+  args:
+    chdir: "{{playbook_dir}}"
+  when: ansible_architecture == 'x86_64'
+
+- name: Set default-var.yml to eg path
+  # yamllint disable rule:line-length
+  command: cp default-var.yml /tmp/eg_download/deploy/ansible-all-x86-latest/install
+  # yamllint disable rule:line-length
+  args:
+    chdir: "{{playbook_dir}}"
+  when: ansible_architecture == 'x86_64'
