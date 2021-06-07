@@ -14,7 +14,4 @@
 #   limitations under the License.
 
 [master]
-master-ip
-
-[worker]
-worker-ip
+controller-ip

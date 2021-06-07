@@ -16,7 +16,7 @@
 - name: Uninstall edgegallery on arm
   shell:
     # yamllint disable rule:line-length
-    cmd: ansible-playbook --inventory hosts-aio eg_all_muno_uninstall.yml -e "ansible_user=root" >> aio_remove.log
+    cmd: ansible-playbook --inventory hosts-aio eg_all_aio_uninstall.yml -e "ansible_user=root" >> aio_remove.log
     # yamllint disable rule:line-length
     chdir: /tmp/eg_download/deploy/ansible-all-arm-latest/install
   when: ansible_architecture == 'aarch64'
@@ -24,7 +24,7 @@
 - name: Uninstall edgegallery on x86
   shell:
     # yamllint disable rule:line-length
-    cmd: ansible-playbook --inventory hosts-aio  eg_all_muno_uninstall.yml -e "ansible_user=root" >> aio_remove.log
+    cmd: ansible-playbook --inventory hosts-aio  eg_all_aio_uninstall.yml -e "ansible_user=root" >> aio_remove.log
     # yamllint disable rule:line-length
     chdir: /tmp/eg_download/deploy/ansible-all-x86-latest/install
   when: ansible_architecture == 'x86_64'

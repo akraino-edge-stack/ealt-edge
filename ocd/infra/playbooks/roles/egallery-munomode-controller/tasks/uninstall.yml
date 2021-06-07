@@ -13,19 +13,17 @@
 # limitations under the License.
 
 ---
-# tasks file for MUNO mode
-- name: Install edgegallery
-  shell:
-    # yamllint disable rule:line-length
-    cmd: ansible-playbook --inventory hosts-aio -e "ansible_user=root" eg_all_muno_install.yml >> muno_log
-    # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/ansible-all-arm-latest/install
-  when: ansible_architecture == 'aarch64'
 
-- name: Install edgegallery
+- name: Uninstall edgegallery controller on x86
   shell:
     # yamllint disable rule:line-length
-    cmd: ansible-playbook --inventory hosts-aio -e "ansible_user=root" eg_all_muno_install.yml >> muno_log
+    cmd: ansible-playbook --inventory hosts-muno-controller  eg_controller_aio_uninstall.yml -e "ansible_user=root" >> muno_controller_remove.log
     # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/ansible-all-x86-latest/install
+    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.1.1-controller-x86/install
+  when: ansible_architecture == 'x86_64'
+
+- name: Remove edgegallery tar ball
+  shell:
+    cmd: rm -rf EdgeGallery-v1.1.1-*
+    chdir: /tmp/eg_download/deploy/
   when: ansible_architecture == 'x86_64'
