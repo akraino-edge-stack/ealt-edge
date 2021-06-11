@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Huawei Technologies Co., Ltd.
+# Copyright 2021 Huawei Technologies Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,39 +16,7 @@
 
 ---
 
-############ OCD ############
-
-- hosts: ocdconsolidated
-  become: yes
-  tags:
-    - ocdhost
-    - ocdconsolidated
-
-  roles:
-    - k8s
-    - helm
-    - docker
-    - eg_prerequisite
-    - eg_registry
-    - eg_helm-repo
-    - eg_certs
-
 ############ Center ############
-
-### Pre-Requisites ###
-
-- hosts: prerequisitecenter
-  become: yes
-  tags:
-    - prerequisitecenter
-    - center
-
-  roles:
-    - eg_trans_certs
-    - eg_prerequisite
-    - helm
-    - eg_set-helm-repo
-    - kubeconfig
 
 ### Other 3rd party related ###
 
@@ -61,49 +29,7 @@
   roles:
     - grafana
 
-### EdgeGallery related ###
-
-- hosts: egcenter
-  become: yes
-  tags:
-    - egcenter
-    - center
-
-  roles:
-    - eg_secret
-    - service_center
-    - eg_user-mgmt
-    - eg_mecm-meo
-    - eg_mecm-fe
-    - eg_appstore
-    - eg_developer
-
-
 ############ Edge ############
-
-### Infrastructure ###
-- hosts: edge-infra
-  become: yes
-  tags:
-    - edge-infra
-    - edge
-
-  roles:
-    - eg_trans_certs
-    - docker
-    - eg_prerequisite
-    - k3s
-
-### Pre-Requisites ###
-
-- hosts: prerequisiteedge
-  become: yes
-  tags:
-    - prerequisiteedge
-    - edge
-
-  roles:
-    - helm
 
 ### Other 3rd party related ###
 
@@ -115,24 +41,7 @@
 
   roles:
     - rabbitmq
-    - prometheus
-    - kubeconfig
-    - mepkubeconfig
     - cadvisor
-
-### EdgeGallery related ###
-
-- hosts: egedge
-  become: yes
-  tags:
-    - egedge
-    - edge
-
-  roles:
-    - eg_secret
-    - eg_set-helm-repo
-    - eg_mep
-    - eg_mecm-mepm
 
 ### Storage ###
 

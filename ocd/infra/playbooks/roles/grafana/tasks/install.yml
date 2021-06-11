@@ -15,7 +15,7 @@
 ---
 - name: check if grafana is already installed
   shell:
-    cmd: helm status mec-grafana
+    cmd: helm status grafana
   register: result
   ignore_errors: yes
   no_log: True
@@ -30,10 +30,23 @@
 # yamllint disable rule:line-length
   when: result.stdout == ""
 
+- name: "INSTALL: Add Grafana Repo on x86"
+  shell:
+    cmd: helm repo add grafana https://grafana.github.io/helm-charts
+  when: result is failed and ansible_architecture == 'x86_64'
+  ignore_errors: yes
+
+- name: "INSTALL: Update helm repo"
+  shell:
+    cmd: helm repo update
+  when: result is failed and ansible_architecture == 'x86_64'
+  ignore_errors: yes
+
 - name: "INSTALL: Install grafana on x86_64"
   shell:
-    cmd: helm install mec-grafana stable/grafana
+    cmd: helm install grafana grafana/grafana
   when: result is failed and ansible_architecture == 'x86_64'
+  ignore_errors: yes
 
 - name: "INSTALL: copy values.yaml to host"
   copy:
@@ -43,5 +56,5 @@
 
 - name: "INSTALL: Install grafana on aarch64"
   shell:
-    cmd: helm install mec-grafana stable/grafana -f /tmp/grafana/values.yaml
+    cmd: helm install grafana stable/grafana -f /tmp/grafana/values.yaml
   when: result is failed and ansible_architecture == 'aarch64'

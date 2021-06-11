@@ -15,7 +15,7 @@
 ---
 - name: check if grafana is installed before deleting
   shell:
-    cmd: helm status mec-grafana
+    cmd: helm status grafana
   register: result
   ignore_errors: yes
   no_log: True
@@ -28,7 +28,12 @@
     msg: Ignore Uninstall Log , Grafana not installed
   when: result.stdout == ""
 
-- name: Uninstall grafana
+- name: Uninstall grafana on arm
   shell:
-    cmd: helm uninstall mec-grafana
-  when: result is succeeded
+    cmd: helm uninstall grafana
+  when: result is succeeded and ansible_architecture == 'aarch64'
+
+- name: Uninstall grafana on x86
+  shell:
+    cmd: helm uninstall grafana
+  when: result is succeeded and ansible_architecture == 'x86_64'
