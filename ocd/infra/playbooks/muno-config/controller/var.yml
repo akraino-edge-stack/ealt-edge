@@ -13,7 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# Set the Password of Harbor admin account, no default value, 
+# Set the Password of Harbor admin account, no default value,
 # must set by users here
 HARBOR_ADMIN_PASSWORD: any_password
 
@@ -24,10 +24,7 @@ HARBOR_ADMIN_PASSWORD: any_password
 # ENABLE_PERSISTENCE: true
 ENABLE_PERSISTENCE: false
 
-
-
-# ip for portals, will be set to private IP of master node default or 
+# ip for portals, will be set to private IP of master node default or
 # reset it to be the public IP of master node here
 # PORTAL_IP: xxx.xxx.xxx.xxx
 PORTAL_IP: IP_master_node
-
