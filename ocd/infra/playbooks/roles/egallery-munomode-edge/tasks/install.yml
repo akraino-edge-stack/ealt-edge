@@ -22,7 +22,7 @@
 
 - name: Download 1.1 edgegallery x86 edge
 # yamllint disable rule:line-length
-  command: wget https://edgegallery.obs.cn-east-3.myhuaweicloud.com/releases/v1.1.1/x86/EdgeGallery-v1.1.1-edge-x86.tar.gz
+  command: wget https://akraino.obs.ap-southeast-1.myhuaweicloud.com/v1.1.1/x86/EdgeGallery-v1.1.1-edge-x86.tar.gz
 # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_download/deploy/
