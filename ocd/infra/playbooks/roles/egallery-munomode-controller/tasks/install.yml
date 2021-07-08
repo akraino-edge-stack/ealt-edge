@@ -37,7 +37,7 @@
   when: not tar_var.stat.exists
 
 - name: Untar Edgegallery offline controller tar file
-  command: tar -xvf EdgeGallery-v1.1.1-controller-x86
+  command: tar -xvf EdgeGallery-v1.1.1-controller-x86.tar.gz
   args:
     chdir: /tmp/eg_download/deploy/
   when: not tar_var.stat.exists
