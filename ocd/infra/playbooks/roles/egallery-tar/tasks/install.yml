@@ -48,8 +48,16 @@
   when: ansible_architecture == 'x86_64'
 
 - name: Set default-var.yml to eg path
-  # yamllint disable rule:line-length
+   # yamllint disable rule:line-length
   command: cp default-var.yml /tmp/eg_download/deploy/EdgeGallery-v1.3.0-all-x86/install
+  # yamllint disable rule:line-length
+  args:
+    chdir: "{{playbook_dir}}"
+  when: ansible_architecture == 'x86_64'
+
+- name: Set password-var.yml to eg path
+  # yamllint disable rule:line-length
+  command: cp password-var.yml /tmp/eg_download/deploy/EdgeGallery-v1.3.0-all-x86/install
   # yamllint disable rule:line-length
   args:
     chdir: "{{playbook_dir}}"
