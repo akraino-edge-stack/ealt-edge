@@ -16,19 +16,19 @@
 
 - name: Check edgegallery tar ball present
   stat:
-    path: /tmp/eg_download/deploy/EdgeGallery-v1.3.0-edge-x86.tar.gz
+    path: /tmp/eg_download/deploy/EdgeGallery-v1.3.2-edge-x86.tar.gz
   register: edge_tar_var
 
-- name: Download 1.3 edgegallery x86 edge
+- name: Download 1.3.2 edgegallery x86 edge
   # yamllint disable rule:line-length
-  command: wget http://edgegallery-v1.3.0.obs.cn-north-4.myhuaweicloud.com/x86/EdgeGallery-v1.3.0-edge-x86.tar.gz
+  command: wget http://edgegallery-v1.3.2.obs.cn-north-4.myhuaweicloud.com/x86/EdgeGallery-v1.3.2-edge-x86.tar.gz
   # yamllint disable rule:line-length
   args:
     chdir: /tmp/eg_download/deploy/
   when: not edge_tar_var.stat.exists
 
 - name: Untar Edgegallery offline edge tar file
-  command: tar -xvf EdgeGallery-v1.3.0-edge-x86.tar.gz
+  command: tar -xvf EdgeGallery-v1.3.2-edge-x86.tar.gz
   args:
      chdir: /tmp/eg_download/deploy/
   when: not edge_tar_var.stat.exists
