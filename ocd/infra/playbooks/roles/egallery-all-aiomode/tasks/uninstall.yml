@@ -26,12 +26,12 @@
     # yamllint disable rule:line-length
     cmd: ansible-playbook --inventory hosts-aio  eg_all_aio_uninstall.yml -e "ansible_user=root" >> aio_remove.log
     # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/ansible-all-x86-latest/install
+    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.3.2-all-x86/install
   when: ansible_architecture == 'x86_64'
 
 - name: Remove edgegallery tar
   shell:
-    cmd: rm -rf ansible-all*
+    cmd: rm -rf EdgeGallery*
     chdir: /tmp/eg_download/deploy/
 
 - name: Remove aio log

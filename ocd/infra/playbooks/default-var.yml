@@ -14,8 +14,8 @@
 #   limitations under the License.
 
 # The image tag here could only be latest, and helm tag could only be 1.1.0
-EG_IMAGE_TAG: latest
-HELM_TAG: 1.1.0
+EG_IMAGE_TAG: v1.3.2
+HELM_TAG: 1.3.2
 
 # Mode for online or offline install, currently only support offline
 NETWORK_MODE: offline
@@ -33,23 +33,58 @@ COPY_TAR_TO_TARGET: yes
 # true means clean and false means not clean
 TARBALL_PATH_CLEANUP: true
 
+# Whether enable ingress
+# true means enable and false means disable
+ENABLE_INGRESS: true
+
+# Whether deploy appPkgTransTool
+# true means deploy and false means undeploy
+ENABLE_APPD: true
+
 HELM_CHARTS_PATH: "{{ TARBALL_PATH }}/helm/helm-charts"
 
+MEP_HELM_RELEASE_NAME: mep-edgegallery
+MEPM_HELM_RELEASE_NAME: mecm-mepm-edgegallery
 APPSTORE_HELM_RELEASE_NAME: appstore-edgegallery
 DEVELOPER_HELM_RELEASE_NAME: developer-edgegallery
-MECM_FE_HELM_RELEASE_NAME: mecm-fe-edgegallery
+MECM_MEO_HELM_RELEASE_NAME: mecm-meo-edgegallery
 ATP_HELM_RELEASE_NAME: atp-edgegallery
+EG_VIEW_HELM_RELEASE_NAME: eg-view-edgegallery
 
+MEPM_PORT: 30097
 APPSTORE_PORT: 30091
 DEVELOPER_PORT: 30092
 MECM_PORT: 30093
 ATP_PORT: 30094
+EDGEGALLERY_PORT: 30095
 USER_MGMT_PORT: 30067
 LAB_PORT: 30096
+HEALTHCHECK_PORT: 32759
+HEALTHCHECK_M_PORT: 32757
 
-# Could be true or false, currently only support false
-ENABLE_PERSISTENCE: false
+# Set the Passwords for developer OpenStack Ubuntu VM
+developerVMImagePassword: 
 
-# Should set the following 2 params if ENABLE_PERSISTENCE is true
-# NFS_SERVER_IP:
-# NFS_PATH:
+# certPassword is used for generating SSL keys
+certPassword: 
+
+# used for signature
+SIGNATURE_SECRET_NAME:
+
+# If harbor is setup in a remote system, then mention the remote system IP as harbor IP
+#HarborIP: xxx.xxx.xxx.xxx
+
+# If SIGNATURE_CERT_P12 and SIGNATURE_CERT_CER are set here, will use it. Otherwise will generate them automatically
+#SIGNATURE_CERT_P12: xxx/xxx/xxx.p12
+#SIGNATURE_CERT_CER: xxx/xxx/xxx.cer
+
+# If the above 2 files are given, should also give the password used to generate them
+#SIGNATURE_PWD: xxx
+
+# Params used by EG NFS persistence storage
+EGUSER_NAME: eguser
+EGGROUP_NAME: eggroup
+EGUSER_UID: 166
+EGGROUP_GID: 166
+APPSTORE_PACKAGES: /edgegallery/appstore/packages
+FILE_SYSTEM_PACKAGES: /edgegallery/filesystem/images

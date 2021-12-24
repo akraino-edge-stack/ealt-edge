@@ -1,4 +1,3 @@
-#
 #   Copyright 2021 Huawei Technologies Co., Ltd.
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,25 +12,31 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# Set the Password of Harbor admin account, no default value,
-# must set by users here
-HARBOR_ADMIN_PASSWORD: Harbor@edge
+# Set the regex name of the network interface for calico
+NETWORK_INTERFACE: ens.*
 
 # Could be true or false
 # true: Deploy k8s NFS Server to keep the persistence of all pods' data
 # false: No need to keep the persistence of all pods' data
-ENABLE_PERSISTENCE: false
+ENABLE_PERSISTENCE: true
 
-# ip for portals, will be set to private IP of master node default or
-# reset it to be the public IP of master node here
-# PORTAL_IP: xxx.xxx.xxx.xxx
+# ip for portals, will be set to private IP of master node default or reset it to be the public IP of master node here
+#PORTAL_IP: xxx.xxx.xxx.xxx
+
+# IP of the Controller master which is used for Edge to connect
+# If you deploy Controller and Edge together in one cluster, then ther is no need to set this param
+#CONTROLLER_MASTER_IP: xxx.xxx.xxx.xxx
 
 # NIC name of master node
-# If master node is with single NIC, not need to set it here and will get
-# the default NIC name during the run time
-# If master node is with multiple NICs, should set it here to be
-# 2 different NICs
+# If master node is with single NIC, not need to set it here and will get the default NIC name during the run time
+# If master node is with multiple NICs, should set it here to be 2 different NICs
 # EG_NODE_EDGE_MP1: eth0
 # EG_NODE_EDGE_MM5: eth0
 
-OCD_IP: 10.0.0.33
+# Email Server Config for User Mgmt
+usermgmt_mail_enabled: false
+# If usermgmt_mail_enabled is true, then the following 4 params need to be set
+# usermgmt_mail_host: xxxxx
+# usermgmt_mail_port: xxxxx
+# usermgmt_mail_sender: xxxxx
+# usermgmt_mail_authcode: xxxxx
