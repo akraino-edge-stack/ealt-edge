@@ -14,8 +14,8 @@
 #   limitations under the License.
 
 # The image tag here could only be latest, and helm tag could only be 1.1.0
-EG_IMAGE_TAG: v1.3.2
-HELM_TAG: 1.3.2
+EG_IMAGE_TAG: v1.5.0
+HELM_TAG: 1.5.0
 
 # Mode for online or offline install, currently only support offline
 NETWORK_MODE: offline
@@ -49,9 +49,10 @@ APPSTORE_HELM_RELEASE_NAME: appstore-edgegallery
 DEVELOPER_HELM_RELEASE_NAME: developer-edgegallery
 MECM_MEO_HELM_RELEASE_NAME: mecm-meo-edgegallery
 ATP_HELM_RELEASE_NAME: atp-edgegallery
+THIRD_SYSTEM_HELM_RELEASE_NAME: thirdsystem-edgegallery
 EG_VIEW_HELM_RELEASE_NAME: eg-view-edgegallery
 
-MEPM_PORT: 30097
+MEPM_PORT: 32152
 APPSTORE_PORT: 30091
 DEVELOPER_PORT: 30092
 MECM_PORT: 30093
@@ -62,14 +63,8 @@ LAB_PORT: 30096
 HEALTHCHECK_PORT: 32759
 HEALTHCHECK_M_PORT: 32757
 
-# Set the Passwords for developer OpenStack Ubuntu VM
-developerVMImagePassword: 
-
-# certPassword is used for generating SSL keys
-certPassword: 
-
 # used for signature
-SIGNATURE_SECRET_NAME:
+SIGNATURE_SECRET_NAME: edgegallery-signature-secret
 
 # If harbor is setup in a remote system, then mention the remote system IP as harbor IP
 #HarborIP: xxx.xxx.xxx.xxx
@@ -88,3 +83,17 @@ EGUSER_UID: 166
 EGGROUP_GID: 166
 APPSTORE_PACKAGES: /edgegallery/appstore/packages
 FILE_SYSTEM_PACKAGES: /edgegallery/filesystem/images
+
+# External IAM Config
+ENABLE_EXTERNAL_IAM: false
+# If ENABLE_EXTERNAL_IAM is true, then the following need to be set
+# EXTERNAL_IAM_ENDPOINT: https://xxx.xxx.xxx.xxx
+
+# Access by proxy for all frontend projects
+# AUTH_SERVER_ADDRESS_CLIENT_ACCESS: https://xxx.xxx.xxx.xxx/xx/xx
+
+# EDGEGALLERY_CLIENT_ACCESS_URL: https://xxx.xxx.xxx.xxx/xx/xx
+# APPSTORE_CLIENT_ACCESS_URL: https://xxx.xxx.xxx.xxx/xx/xx
+# DEVELOPER_CLIENT_ACCESS_URL: https://xxx.xxx.xxx.xxx/xx/xx
+# MECM_CLIENT_ACCESS_URL: https://xxx.xxx.xxx.xxx/xx/xx
+# ATP_CLIENT_ACCESS_URL: https://xxx.xxx.xxx.xxx/xx/xx

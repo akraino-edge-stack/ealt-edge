@@ -19,7 +19,7 @@
     # yamllint disable rule:line-length
     cmd: ansible-playbook --inventory hosts-aio -e "ansible_user=root" eg_all_aio_install.yml >> aio_log
     # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.3.2-all-x86/install
+    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.5.0-all-x86/install
   when: ansible_architecture == 'aarch64'
 
 - name: Install edgegallery
@@ -27,5 +27,5 @@
     # yamllint disable rule:line-length
     cmd: ansible-playbook --inventory hosts-aio -e "ansible_user=root" eg_all_aio_install.yml >> aio_log
     # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.3.2-all-x86/install
+    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.5.0-all-x86/install
   when: ansible_architecture == 'x86_64'
