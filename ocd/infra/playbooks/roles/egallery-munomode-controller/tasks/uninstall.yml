@@ -19,11 +19,11 @@
     # yamllint disable rule:line-length
     cmd: ansible-playbook --inventory hosts-muno-controller  eg_controller_aio_uninstall.yml -e "ansible_user=root" >> muno_controller_remove.log
     # yamllint disable rule:line-length
-    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.3.2-controller-x86/install
+    chdir: /tmp/eg_download/deploy/EdgeGallery-v1.5.0-controller-x86/install
   when: ansible_architecture == 'x86_64'
 
 - name: Remove edgegallery tar ball
   shell:
-    cmd: rm -rf EdgeGallery-v1.3.2-*
+    cmd: rm -rf EdgeGallery-v1.5.0-*
     chdir: /tmp/eg_download/deploy/
   when: ansible_architecture == 'x86_64'
