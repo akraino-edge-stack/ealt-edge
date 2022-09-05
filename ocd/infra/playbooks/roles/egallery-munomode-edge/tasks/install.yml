@@ -35,7 +35,7 @@
 - name: Untar Edgegallery offline edge tar file
   command: tar -xvf EdgeGallery-v1.5.0-edge-x86.tar.gz
   args:
-     chdir: /tmp/eg_download/deploy/
+    chdir: /tmp/eg_download/deploy/
   when: not edge_tar_var.stat.exists
 
 - name: Set inventory file for muno edge
